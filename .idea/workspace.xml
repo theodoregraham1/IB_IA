@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/ExamPaper.java" afterDir="false" />
+    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Work on making an ExamPaper class">
+      <change afterPath="$PROJECT_DIR$/Papers/GCSE/June-2013/GCSE-Computer Science (2013) (Current)-June 2017.pastpapers.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Papers/GCSE/June-2022/GCSE-Computer Science (2020) (Current)-June 2022.pastpapers.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/PDFInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/IB_IA.iml" beforeDir="false" afterPath="$PROJECT_DIR$/IB_IA.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ExamPaper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ExamPaper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PDFInterface.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,18 +43,30 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Theod/OneDrive/Documents/Homework/Computer Science/pdfbox-app-3.0.0.jar",
+    "last_opened_file_path": "C:/Users/Theod/IdeaProjects/IB Projects/IB_IA/Papers",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
+    "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Theod\IdeaProjects\IB Projects\IB_IA\Papers" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Theod\IdeaProjects\IB Projects\IB_IA\Papers\GCSE\June-2022" />
+      <recent name="C:\Users\Theod\IdeaProjects\IB Projects\IB_IA\Papers\GCSE\June-2013" />
+      <recent name="C:\Users\Theod\IdeaProjects\IB Projects\IB_IA\Papers\GCSE\June-2013\" />
+      <recent name="C:\Users\Theod\IdeaProjects\IB Projects\IB_IA\Papers\GCSE" />
+      <recent name="C:\Users\Theod\IdeaProjects\IB Projects\IB_IA\Papers\GCSE\June-2022\Mark-scheme\Mark-scheme" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -63,8 +76,17 @@
       <option name="presentableId" value="Default" />
       <updated>1700332904645</updated>
       <workItem from="1700332905644" duration="4061000" />
-      <workItem from="1700391358355" duration="543000" />
+      <workItem from="1700391358355" duration="3970000" />
     </task>
+    <task id="LOCAL-00001" summary="Work on making an ExamPaper class">
+      <option name="closed" value="true" />
+      <created>1700391955276</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1700391955276</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -80,5 +102,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Work on making an ExamPaper class" />
+    <option name="LAST_COMMIT_MESSAGE" value="Work on making an ExamPaper class" />
   </component>
 </project>

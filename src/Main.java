@@ -10,6 +10,7 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) {
+        /*
         try {
             // Load an existing PDF document
             PDDocument document = new PDDocument();
@@ -34,5 +35,9 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+         */
+        ExamPaper paper = new ExamPaper("./papers/GCSE/June-2013/Question-paper/Questionpaper-Paper1-June2017.pdf");
+        System.out.println(paper.getText());
     }
 }
