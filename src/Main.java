@@ -6,6 +6,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -35,9 +36,13 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+b
          */
         ExamPaper paper = new ExamPaper("./papers/GCSE/June-2013/Question-paper/Questionpaper-Paper1-June2017.pdf");
-        System.out.println(paper.getText());
+        ArrayList<String> questions = paper.splitToQuestions();
+
+        for (String q: questions) {
+            System.out.print(q);
+        }
     }
 }

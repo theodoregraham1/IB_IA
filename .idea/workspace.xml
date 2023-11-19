@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Work on making an ExamPaper class">
-      <change afterPath="$PROJECT_DIR$/Papers/GCSE/June-2013/GCSE-Computer Science (2013) (Current)-June 2017.pastpapers.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Papers/GCSE/June-2022/GCSE-Computer Science (2020) (Current)-June 2022.pastpapers.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PDFInterface.java" afterDir="false" />
+    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Add test paper files and add ExamPaper.getText">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ExamPaper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ExamPaper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
@@ -27,6 +24,20 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;theodoregraham1&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="641e917b-8a99-466a-8799-3938df605242" />
+        <option name="url" value="https://github.com/theodoregraham1/IB_IA.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -36,25 +47,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Theod/IdeaProjects/IB Projects/IB_IA/Papers",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Theod/IdeaProjects/IB Projects/IB_IA/Papers&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Theod\IdeaProjects\IB Projects\IB_IA\Papers" />
@@ -67,6 +78,20 @@
       <recent name="C:\Users\Theod\IdeaProjects\IB Projects\IB_IA\Papers\GCSE\June-2022\Mark-scheme\Mark-scheme" />
     </key>
   </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="\n" />
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="IB_IA" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -76,7 +101,8 @@
       <option name="presentableId" value="Default" />
       <updated>1700332904645</updated>
       <workItem from="1700332905644" duration="4061000" />
-      <workItem from="1700391358355" duration="3970000" />
+      <workItem from="1700391358355" duration="4936000" />
+      <workItem from="1700413305958" duration="2058000" />
     </task>
     <task id="LOCAL-00001" summary="Work on making an ExamPaper class">
       <option name="closed" value="true" />
@@ -86,7 +112,15 @@
       <option name="project" value="LOCAL" />
       <updated>1700391955276</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Add test paper files and add ExamPaper.getText">
+      <option name="closed" value="true" />
+      <created>1700395635516</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1700395635516</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -105,6 +139,14 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Work on making an ExamPaper class" />
-    <option name="LAST_COMMIT_MESSAGE" value="Work on making an ExamPaper class" />
+    <MESSAGE value="Add test paper files and add ExamPaper.getText" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add test paper files and add ExamPaper.getText" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="text" language="JAVA" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
