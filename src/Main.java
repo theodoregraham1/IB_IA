@@ -1,5 +1,38 @@
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
+
+import java.io.IOException;
+
 public class Main {
+
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        try {
+            // Load an existing PDF document
+            PDDocument document = new PDDocument();
+            document.addPage(new PDPage());
+            PDPage page = document.getPage(0);
+
+            PDPageContentStream contentStream = new PDPageContentStream(document, page);
+
+            contentStream.beginText();
+            contentStream.newLineAtOffset(25, 700);
+            contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.COURIER), 12);
+
+            contentStream.showText("hello world");
+            contentStream.endText();
+            contentStream.close();
+
+            document.save("output.pdf");
+
+            // Close the document
+            document.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
