@@ -39,6 +39,8 @@ public class Main {
 b
          */
         ExamPaper paper = new ExamPaper("./papers/GCSE/June-2013/Question-paper/Questionpaper-Paper1-June2017.pdf");
+        System.out.println(paper.getText());
+
         ArrayList<String> questions = paper.splitToQuestions();
 
         for (String q: questions) {
