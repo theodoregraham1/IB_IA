@@ -2,7 +2,8 @@ import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.graphics.form.PDFormXObject;
+import org.apache.pdfbox.pdmodel.PDPageTree;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.util.Matrix;
 
 import java.io.File;
@@ -13,7 +14,7 @@ public class SplitPDFHorizontally {
     public static void main(String[] args) {
         try {
             // Specify the path to the existing PDF file
-            String inputFilePath = "./papers/GCSE/June-2013/Question-paper/Questionpaper-Paper1-June2017.pdf";
+            String inputFilePath = "path/to/your/existing/file.pdf";
 
             // Load the existing PDF document
             PDDocument inputDocument = Loader.loadPDF(new File(inputFilePath));
@@ -21,10 +22,12 @@ public class SplitPDFHorizontally {
             // Create a new PDF document for the split pages
             PDDocument outputDocument = new PDDocument();
 
-            for (PDPage inputPage : inputDocument.getPages()) {
+            PDPageTree inputPages = inputDocument.getPages();
+
+            for (PDPage inputPage : inputPages) {
                 // Create two new pages for each existing page
-                PDPage topHalfPage = new PDPage(inputPage.getMediaBox());
-                PDPage bottomHalfPage = new PDPage(inputPage.getMediaBox());
+                PDPage topHalfPage = new PDPage(new PDRectangle(inputPage.getMediaBox().getWidth(), inputPage.getMediaBox().getHeight() / 2));
+                PDPage bottomHalfPage = new PDPage(new PDRectangle(inputPage.getMediaBox().getWidth(), inputPage.getMediaBox().getHeight() / 2));
 
                 // Add the new pages to the output document
                 outputDocument.addPage(topHalfPage);
@@ -35,11 +38,11 @@ public class SplitPDFHorizontally {
                         PDPageContentStream topContentStream = new PDPageContentStream(outputDocument, topHalfPage);
                         PDPageContentStream bottomContentStream = new PDPageContentStream(outputDocument, bottomHalfPage)
                 ) {
-                    // Draw the top half of the content on the top page
-                    topContentStream.drawForm(new PDFormXObject(inputPage.getMetadata()));
+                    // Copy the content from the existing page to the top half of the new page
+                    topContentStream.drawXObject(inputPage);
 
-                    // Draw the bottom half of the content on the bottom page
-                    bottomContentStream.drawForm(new PDFormXObject(inputPage.getMetadata()));
+                    // Copy the content from the existing page to the bottom half of the new page
+                    bottomContentStream.drawXObject(inputPage);
                     bottomContentStream.transform(Matrix.getTranslateInstance(0, -inputPage.getMediaBox().getHeight() / 2));
                 }
             }
