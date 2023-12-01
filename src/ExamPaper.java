@@ -9,7 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ExamPaper extends PDFInterface {
-
     public ExamPaper(String fileName) {
         super(fileName, Logger.getLogger(String.format("ExamPaper-%s", fileName)));
 

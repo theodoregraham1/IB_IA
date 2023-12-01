@@ -24,6 +24,8 @@ public class PDFInterface {
 
 
     protected PDDocument getDocument() throws IOException {
-        return Loader.loadPDF(new File(this.filePath));
+        PDDocument pdf = Loader.loadPDF(new File(this.filePath));
+        logger.log(Level.FINE, "PDF loaded with file path: %s".formatted(filePath));
+        return pdf;
     }
 }
