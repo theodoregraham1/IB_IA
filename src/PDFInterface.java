@@ -54,10 +54,10 @@ public class PDFInterface {
         return text;
     }
 
-    /*
+
     public void saveAsImages() {
 
-    }*/
+    }
 
     public String getFilePath() {
         return dirPath + filePath;
