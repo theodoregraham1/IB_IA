@@ -5,6 +5,11 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -38,13 +43,12 @@ public class Main {
         }
 b
          */
-        ExamPaper paper = new ExamPaper("./papers/GCSE/June-2013/Question-paper/Questionpaper-Paper1-June2017.pdf");
-        System.out.println(paper.getText());
-
-        ArrayList<String> questions = paper.splitToQuestions();
-
-        for (String q: questions) {
-            System.out.print(q);
+        // ExamPaper paper = new ExamPaper("./papers/GCSE/June-2013/Question-paper/Questionpaper-Paper1-June2017.pdf");
+        BufferedImage[] images = PDFToImage.toImages("./papers/GCSE/June-2013/Question-paper/Questionpaper-Paper1-June2017.pdf");
+        try {
+            ImageIO.write(images[0], "jpg", new File("./image"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

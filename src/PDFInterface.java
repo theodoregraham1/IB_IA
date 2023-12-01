@@ -1,32 +1,43 @@
 import org.apache.commons.logging.Log;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.ImageType;
+import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.text.PDFTextStripper;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class PDFInterface {
-    protected Logger logger;
     protected final String filePath;
+    protected final String dirPath;
 
 
-    public PDFInterface(String fileName, Logger logger) {
-        this.logger = logger;
+    public PDFInterface(String fileName, String dirPath) {
+        this.dirPath = dirPath;
         this.filePath = fileName;
     }
-
-    public PDFInterface(String fileName) {
-        this.logger = Logger.getLogger(String.format("PDFInterface-%s", fileName));
-        this.filePath = fileName;
-    }
-
 
     protected PDDocument getDocument() throws IOException {
-        PDDocument pdf = Loader.loadPDF(new File(this.filePath));
-        logger.log(Level.FINE, "PDF loaded with file path: %s".formatted(filePath));
+        return PDFInterface.getDocument(this.getFilePath());
+    }
+
+    protected static PDDocument getDocument(String filePath) throws IOException {
+        // Returns a PDDocument from that file path
+        File file = new File(filePath);
+
+        if (!(file.exists())) {
+            throw new FileNotFoundException("File at path %s does not exist".formatted(filePath));
+        }
+
+        PDDocument pdf = Loader.loadPDF(new File(filePath));
+        System.out.printf("PDF loaded with file path: %s", filePath);
+
         return pdf;
     }
 
@@ -40,11 +51,17 @@ public class PDFInterface {
             text = textStripper.getText(document);
 
             document.close();
+
+            System.out.printf("Text stripped from PDF with file path: %s", this.getFilePath());
         } catch (IOException e) {
             text = "";
-            logger.log(Level.WARNING, e.toString());
+            e.printStackTrace();
         }
 
         return text;
+    }
+
+    public String getFilePath() {
+        return dirPath + filePath;
     }
 }
