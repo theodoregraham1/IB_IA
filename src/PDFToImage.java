@@ -1,15 +1,11 @@
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
 public class PDFToImage {
-    private static int dpi = 600;
+    private final static int DPI = 600;
 
     public static BufferedImage[] toImages(String filePath) {
         // Converts the PDF to an array of PNGs
@@ -21,9 +17,10 @@ public class PDFToImage {
             BufferedImage[] images = new BufferedImage[numberOfPages];
 
             for (int i = 0; i < 1; ++i) {
-                images[i] = pdfRenderer.renderImageWithDPI(i, dpi, ImageType.RGB);
+                images[i] = pdfRenderer.renderImageWithDPI(i, DPI, ImageType.RGB);
             }
             document.close();
+
             System.out.printf("%d images from PDF (with file path %s) saved", numberOfPages, filePath);
 
             return images;
@@ -33,4 +30,6 @@ public class PDFToImage {
             return null;
         }
     }
+
+    //public static void saveAsImages()
 }

@@ -1,17 +1,10 @@
-import org.apache.commons.logging.Log;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.rendering.ImageType;
-import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.text.PDFTextStripper;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class PDFInterface {
     protected final String filePath;
@@ -60,6 +53,11 @@ public class PDFInterface {
 
         return text;
     }
+
+    /*
+    public void saveAsImages() {
+
+    }*/
 
     public String getFilePath() {
         return dirPath + filePath;

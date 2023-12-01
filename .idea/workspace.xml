@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Refactor methods in PDFInterface and ExamPaper">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Remove loggers and replace with System.out">
       <change beforePath="$PROJECT_DIR$/src/ExamPaper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ExamPaper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/PDFInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PDFInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ToImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PDFToImage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PDFToImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PDFToImage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,7 +138,14 @@
       <option name="project" value="LOCAL" />
       <updated>1701421149640</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Remove loggers and replace with System.out">
+      <created>1701441784377</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1701441784377</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -161,7 +167,8 @@
     <MESSAGE value="Add test paper files and add ExamPaper.getText" />
     <MESSAGE value="Remove splitPDFHorizontally.java (as it is redundant) and add logging to getDocument()" />
     <MESSAGE value="Refactor methods in PDFInterface and ExamPaper" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor methods in PDFInterface and ExamPaper" />
+    <MESSAGE value="Remove loggers and replace with System.out" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove loggers and replace with System.out" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
