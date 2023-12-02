@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class PDFInterface {
+    protected static final String IMAGES_DIR_NAME = "/images";
     protected final String filePath;
     protected final String dirPath;
 
@@ -56,7 +57,7 @@ public class PDFInterface {
 
 
     public void saveAsImages() {
-
+        PDFToImage.saveAsImages(filePath, dirPath);
     }
 
     public String getFilePath() {
