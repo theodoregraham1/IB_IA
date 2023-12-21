@@ -5,13 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Remove unnecessary code (mainly imports)">
-      <change afterPath="$PROJECT_DIR$/src/Question.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/pdfbox_app_3_0_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/pdfbox_app_3_0_0.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_10.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_12.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_13.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_14.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_15.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_17.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_18.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_19.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_20.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_21.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_22.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_23.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_9.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ExamPaper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ExamPaper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PDFInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PDFInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PDFToImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PDFToImage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,25 +70,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Theod/OneDrive/Documents/Homework/Computer Science/pdfbox-app-3.0.0.jar",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Theod/OneDrive/Documents/Homework/Computer Science/pdfbox-app-3.0.0.jar&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Theod\IdeaProjects\IB Projects\IB_IA\Papers" />
@@ -182,10 +201,14 @@
     <option name="LAST_COMMIT_MESSAGE" value="Remove unnecessary code (mainly imports)" />
   </component>
   <component name="XDebuggerManager">
-    <watches-manager>
-      <configuration name="Application">
-        <watch expression="text" language="JAVA" />
-      </configuration>
-    </watches-manager>
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/ExamPaper.java</url>
+          <line>12</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

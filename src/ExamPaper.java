@@ -1,7 +1,6 @@
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Objects;
 
 public class ExamPaper extends PDFInterface {
@@ -18,9 +17,13 @@ public class ExamPaper extends PDFInterface {
             // Check if it has already been split to images
             File imagesDir = new File(this.dirPath + IMAGES_DIR_NAME);
 
-            imagesSaved = !(imagesDir.exists())
-                    && !(Objects.requireNonNull(imagesDir.listFiles()).length > 0);
-        } catch (IOException e) {
+            if (imagesDir.listFiles() == null)
+                imagesSaved = false;
+            else
+                imagesSaved = imagesDir.exists()
+                    && Objects.requireNonNull(imagesDir.listFiles()).length > 0;
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -30,9 +33,11 @@ public class ExamPaper extends PDFInterface {
     public void saveAsImages() {
         if (!(imagesSaved)) {
             super.saveAsImages();
+            imagesSaved = true;
         }
     }
     public void makeQuestions() {
+        // TODO: Split the images into questions
         this.saveAsImages();
         File imagesDir = new File(this.dirPath + IMAGES_DIR_NAME);
 
