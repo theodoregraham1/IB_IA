@@ -1,5 +1,7 @@
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
@@ -10,7 +12,7 @@ import javax.imageio.ImageIO;
 public class PDFToImage {
     protected final static String IMAGES_DIR_NAME = "/images";
     private final static int DPI = 600;
-    public final static String IMAGE_IO_FORMAT = "png";
+    private final static String IMAGE_IO_FORMAT = "png";
 
     public static BufferedImage[] toImages(String filePath, int startPage, int endPage) {
         /*
@@ -83,6 +85,26 @@ public class PDFToImage {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static boolean checkImageDir(PDFInterface pdfInterface) {
+        // Check if pdfInterface has already been split to images
+
+        boolean saved = false;
+
+        try {
+            File imagesDir = new File(pdfInterface.dirPath + IMAGES_DIR_NAME);
+
+            File[] files = imagesDir.listFiles();
+            if (files == null)
+                saved = false;
+            else
+                saved = imagesDir.exists()
+                        && Objects.requireNonNull(files.length) > 0;
+
+        } catch (IOException e) {
+
         }
     }
 }

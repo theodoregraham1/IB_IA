@@ -3,25 +3,19 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import java.io.File;
 import java.util.Objects;
 
-public class ExamPaper extends PDFInterface {
+public class ExamPaper {
+    private final String dirPath;
+    private final String fileName;
     private boolean imagesSaved;
+    private PDFInterface documentInterface;
 
-    public ExamPaper(String fileName, String dirName) {
-        super(fileName, dirName);
+    public ExamPaper(String fileName, String dirPath) {
+        this.dirPath = dirPath;
+        this.fileName = fileName;
 
         try {
-            PDDocument document = super.getDocument();
+            documentInterface = new PDFInterface(fileName, dirPath);
 
-            document.close();
-
-            // Check if it has already been split to images
-            File imagesDir = new File(this.dirPath + IMAGES_DIR_NAME);
-
-            if (imagesDir.listFiles() == null)
-                imagesSaved = false;
-            else
-                imagesSaved = imagesDir.exists()
-                    && Objects.requireNonNull(imagesDir.listFiles()).length > 0;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -32,7 +26,7 @@ public class ExamPaper extends PDFInterface {
     @Override
     public void saveAsImages() {
         if (!(imagesSaved)) {
-            super.saveAsImages();
+            PDFToImage.saveAsImages(fileName, dirPath);
             imagesSaved = true;
         }
     }

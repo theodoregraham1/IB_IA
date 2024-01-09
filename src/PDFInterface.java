@@ -5,16 +5,28 @@ import org.apache.pdfbox.text.PDFTextStripper;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PDFInterface {
     protected static final String IMAGES_DIR_NAME = "/images";
+    protected static final Logger logger = Logger.getLogger(PDFInterface.class.getName());
+
     protected final String filePath;
     protected final String dirPath;
 
 
-    public PDFInterface(String fileName, String dirPath) {
+    public PDFInterface(String fileName, String dirPath) throws IOException {
+        logger.setLevel(Level.FINEST);
+
         this.dirPath = dirPath;
         this.filePath = fileName;
+
+        try {
+            this.getDocument().close();
+        } catch (IOException e) {
+            throw e;
+        }
     }
 
     protected PDDocument getDocument() throws IOException {
@@ -29,9 +41,9 @@ public class PDFInterface {
         if (!(file.exists())) {
             throw new FileNotFoundException("File at path %s does not exist".formatted(filePath));
         }
-
         PDDocument pdf = Loader.loadPDF(new File(filePath));
-        System.out.printf("PDF loaded with file path: %s", filePath);
+
+        logger.log(Level.FINER, "PDF loaded with file path: %s".formatted(filePath));
 
         return pdf;
     }
@@ -47,10 +59,11 @@ public class PDFInterface {
 
             document.close();
 
-            System.out.printf("Text stripped from PDF with file path: %s", this.getFilePath());
+            logger.log(Level.FINER, "Text stripped from PDF with file path: %s".formatted(getFilePath()));
         } catch (IOException e) {
             text = "";
-            e.printStackTrace();
+
+            logger.log(Level.SEVERE, e.toString());
         }
 
         return text;
