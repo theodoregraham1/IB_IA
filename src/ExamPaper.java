@@ -36,9 +36,13 @@ public class ExamPaper extends PDFInterface {
             imagesSaved = true;
         }
     }
+
     public void makeQuestions() {
         // TODO: Split the images into questions
+
+        // TODO: Throw runtime exception if there are no images instead of saving them
         this.saveAsImages();
+
         File imagesDir = new File(this.dirPath + IMAGES_DIR_NAME);
 
         File[] images = imagesDir.listFiles();

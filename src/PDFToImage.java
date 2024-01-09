@@ -78,7 +78,7 @@ public class PDFToImage {
             }
             document.close();
 
-            System.out.printf("%d images from PDF (with file path %s) saved to %s",
+            System.out.printf("%d images from PDF (with file path %s) saved to %s\n",
                     numberOfPages, dirPath + fileName, outputDir.getPath());
 
         } catch (Exception e) {

@@ -21,6 +21,7 @@ public class PDFInterface {
         return PDFInterface.getDocument(this.getFilePath());
     }
 
+    // TODO: Restructure everything to save ImagePDFs as such and remove statics
     protected static PDDocument getDocument(String filePath) throws IOException {
         // Returns a PDDocument from that file path
         File file = new File(filePath);

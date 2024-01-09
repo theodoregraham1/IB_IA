@@ -4,33 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Remove unnecessary code (mainly imports)">
+    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_0.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_11.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_13.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_14.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_15.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_16.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_17.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_18.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_19.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_21.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_22.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_23.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/June-2013/Question-paper/image/Questionpaper-Paper1-June2017_9.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ExamPaper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ExamPaper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PDFInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PDFInterface.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,7 +152,14 @@
       <option name="project" value="LOCAL" />
       <updated>1701442112831</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Make it so images aren't resaved if they already exist">
+      <created>1703150700152</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1703150700152</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -192,23 +177,22 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="Work on making an ExamPaper class" />
     <MESSAGE value="Add test paper files and add ExamPaper.getText" />
     <MESSAGE value="Remove splitPDFHorizontally.java (as it is redundant) and add logging to getDocument()" />
     <MESSAGE value="Refactor methods in PDFInterface and ExamPaper" />
     <MESSAGE value="Remove loggers and replace with System.out" />
     <MESSAGE value="Remove unnecessary code (mainly imports)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove unnecessary code (mainly imports)" />
+    <MESSAGE value="Make it so images aren't resaved if they already exist" />
+    <option name="LAST_COMMIT_MESSAGE" value="Make it so images aren't resaved if they already exist" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/ExamPaper.java</url>
-          <line>12</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="imagesDir.listFiles()" language="JAVA" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
