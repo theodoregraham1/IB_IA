@@ -1,7 +1,6 @@
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import java.io.File;
-import java.util.Objects;
 
 public class ExamPaper {
     private final String dirPath;
@@ -16,14 +15,13 @@ public class ExamPaper {
         try {
             documentInterface = new PDFInterface(fileName, dirPath);
 
-
+            this.imagesSaved = PDFToImage.checkImageDir(documentInterface);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    @Override
     public void saveAsImages() {
         if (!(imagesSaved)) {
             PDFToImage.saveAsImages(fileName, dirPath);
@@ -37,8 +35,8 @@ public class ExamPaper {
         // TODO: Throw runtime exception if there are no images instead of saving them
         this.saveAsImages();
 
-        File imagesDir = new File(this.dirPath + IMAGES_DIR_NAME);
+        // File imagesDir = new File(this.dirPath + IMAGES_DIR_NAME);
 
-        File[] images = imagesDir.listFiles();
+        //File[] images = imagesDir.listFiles();
     }
 }

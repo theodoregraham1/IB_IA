@@ -2,6 +2,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
@@ -10,9 +12,14 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 import javax.imageio.ImageIO;
 
 public class PDFToImage {
-    protected final static String IMAGES_DIR_NAME = "/images";
+    private final static String IMAGES_DIR_NAME = "/images";
     private final static int DPI = 600;
     private final static String IMAGE_IO_FORMAT = "png";
+    private final static Logger logger = Logger.getLogger(PDFToImage.class.getName());
+
+    static {
+        logger.setLevel(Level.FINEST);
+    }
 
     public static BufferedImage[] toImages(String filePath, int startPage, int endPage) {
         /*
@@ -20,13 +27,14 @@ public class PDFToImage {
             at startPage (inclusive) and ending at endPage (exclusive)
         */
 
-        if (startPage < endPage) {
+        if (startPage < endPage || endPage == -1) {
             try {
                 PDDocument document = PDFInterface.getDocument(filePath);
                 PDFRenderer pdfRenderer = new PDFRenderer(document);
 
                 int numberOfPages = document.getNumberOfPages();
                 int end = numberOfPages;
+
                 if ((endPage == -1) || (endPage > 0 && endPage < numberOfPages)) {
                     if (endPage != -1) {
                         end = endPage;
@@ -39,13 +47,13 @@ public class PDFToImage {
                     }
                     document.close();
 
-                    System.out.printf("%d images from PDF (with file path %s) converted", numberOfPages, filePath);
+                    logger.log(Level.FINER, "%d images from PDF (with file path %s) converted".formatted(numberOfPages, filePath));
 
                     return images;
                 }
 
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (IOException e) {
+                logger.log(Level.SEVERE, e.toString());
             }
         }
         return null;
@@ -74,17 +82,18 @@ public class PDFToImage {
             // Save all pages as images
             for (int i=0; i<numberOfPages; i++) {
                 BufferedImage pageImage = pdfRenderer.renderImageWithDPI(i, DPI, ImageType.RGB);
-                ImageIO.write(pageImage,
+                ImageIO.write(
+                        pageImage,
                         IMAGE_IO_FORMAT,
                         new File("%s_%d.png".formatted(outputFileName, i)));
             }
             document.close();
 
-            System.out.printf("%d images from PDF (with file path %s) saved to %s\n",
-                    numberOfPages, dirPath + fileName, outputDir.getPath());
+            logger.log(Level.FINER, "%d images from PDF (with file path %s) saved to %s\n".formatted(
+                    numberOfPages, dirPath + fileName, outputDir.getPath()));
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, e.toString());
         }
     }
 
@@ -93,18 +102,15 @@ public class PDFToImage {
 
         boolean saved = false;
 
-        try {
-            File imagesDir = new File(pdfInterface.dirPath + IMAGES_DIR_NAME);
+        File imagesDir = new File(pdfInterface.dirPath + IMAGES_DIR_NAME);
 
-            File[] files = imagesDir.listFiles();
-            if (files == null)
-                saved = false;
-            else
-                saved = imagesDir.exists()
-                        && Objects.requireNonNull(files.length) > 0;
+        File[] files = imagesDir.listFiles();
+        if (files == null)
+            saved = false;
+        else
+            saved = imagesDir.exists()
+                    && Objects.requireNonNull(files.length) > 0;
 
-        } catch (IOException e) {
-
-        }
+        return saved;
     }
 }

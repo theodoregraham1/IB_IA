@@ -22,7 +22,6 @@ public class Main {
 
             BufferedImage halfImage = img.getSubimage(0, h/2, w, h/2);
             System.out.println(ImageIO.write(halfImage, "png", new File("./Papers/output.png")));
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

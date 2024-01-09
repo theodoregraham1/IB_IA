@@ -15,25 +15,21 @@ public class PDFInterface {
     protected final String filePath;
     protected final String dirPath;
 
+    static {
+        logger.setLevel(Level.FINEST);
+    }
 
     public PDFInterface(String fileName, String dirPath) throws IOException {
-        logger.setLevel(Level.FINEST);
-
         this.dirPath = dirPath;
         this.filePath = fileName;
 
-        try {
-            this.getDocument().close();
-        } catch (IOException e) {
-            throw e;
-        }
+        this.getDocument().close();
     }
 
     protected PDDocument getDocument() throws IOException {
         return PDFInterface.getDocument(this.getFilePath());
     }
 
-    // TODO: Restructure everything to save ImagePDFs as such and remove statics
     protected static PDDocument getDocument(String filePath) throws IOException {
         // Returns a PDDocument from that file path
         File file = new File(filePath);
