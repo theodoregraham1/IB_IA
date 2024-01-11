@@ -1,30 +1,25 @@
-import org.apache.pdfbox.pdmodel.PDDocument;
-
-import java.io.File;
+import java.util.logging.Logger;
 
 public class ExamPaper {
+    private static final Logger logger = Logger.getLogger(ExamPaper.class.getName());
+
     private final String dirPath;
     private final String fileName;
     private boolean imagesSaved;
-    private PDFInterface documentInterface;
+    private final Document document;
 
     public ExamPaper(String fileName, String dirPath) {
         this.dirPath = dirPath;
         this.fileName = fileName;
 
-        try {
-            documentInterface = new PDFInterface(fileName, dirPath);
+        this.document = new Document(fileName, dirPath);
 
-            this.imagesSaved = PDFToImage.checkImageDir(documentInterface);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        this.imagesSaved = document.checkImageDir();
     }
 
     public void saveAsImages() {
         if (!(imagesSaved)) {
-            PDFToImage.saveAsImages(fileName, dirPath);
+            document.sa;
             imagesSaved = true;
         }
     }

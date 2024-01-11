@@ -13,8 +13,7 @@ import javax.imageio.ImageIO;
 
 public class PDFToImage {
     private final static String IMAGES_DIR_NAME = "/images";
-    private final static int DPI = 600;
-    private final static String IMAGE_IO_FORMAT = "png";
+
     private final static Logger logger = Logger.getLogger(PDFToImage.class.getName());
 
     static {
@@ -63,39 +62,7 @@ public class PDFToImage {
         return PDFToImage.toImages(filePath, 0, -1);
     }
 
-    public static void saveAsImages(String fileName, String dirPath) {
-        try {
-            // Make the output directory
-            File outputDir = new File(dirPath + IMAGES_DIR_NAME);
 
-            if (!(outputDir.exists())) {
-                outputDir.mkdirs();
-            }
-            String outputFileName = "%s/%s".formatted(outputDir.getPath(), fileName.replace(".pdf", ""));
-
-            // Get the document
-            PDDocument document = PDFInterface.getDocument(dirPath + fileName);
-            PDFRenderer pdfRenderer = new PDFRenderer(document);
-
-            int numberOfPages = document.getNumberOfPages();
-
-            // Save all pages as images
-            for (int i=0; i<numberOfPages; i++) {
-                BufferedImage pageImage = pdfRenderer.renderImageWithDPI(i, DPI, ImageType.RGB);
-                ImageIO.write(
-                        pageImage,
-                        IMAGE_IO_FORMAT,
-                        new File("%s_%d.png".formatted(outputFileName, i)));
-            }
-            document.close();
-
-            logger.log(Level.FINER, "%d images from PDF (with file path %s) saved to %s\n".formatted(
-                    numberOfPages, dirPath + fileName, outputDir.getPath()));
-
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, e.toString());
-        }
-    }
 
     public static boolean checkImageDir(PDFInterface pdfInterface) {
         // Check if pdfInterface has already been split to images
