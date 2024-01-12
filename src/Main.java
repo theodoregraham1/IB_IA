@@ -12,20 +12,19 @@ public class Main {
         ExamPaper paper = new ExamPaper("Questionpaper-Paper1-June2017.pdf", "./papers/GCSE/June-2013/Question-paper/");
         paper.saveAsImages();
 
-        // Test splitting an image
-        File file = new File("./Papers/GCSE/June-2013/Question-paper/images/Questionpaper-Paper1-June2017_0.png");
+        /* Test splitting an image
+            File file = new File("./Papers/GCSE/June-2013/Question-paper/images/Questionpaper-Paper1-June2017_0.png");
 
-        try {
-            BufferedImage img = ImageIO.read(file);
-            int h = img.getHeight();
-            int w = img.getWidth();
+            try {
+                BufferedImage img = ImageIO.read(file);
+                int h = img.getHeight();
+                int w = img.getWidth();
 
-            BufferedImage halfImage = img.getSubimage(0, h/2, w, h/2);
-            System.out.println(ImageIO.write(halfImage, "png", new File("./Papers/output.png")));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
+                BufferedImage halfImage = img.getSubimage(0, h/2, w, h/2);
+                System.out.println(ImageIO.write(halfImage, "png", new File("./Papers/output.png")));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        */
     }
 }

@@ -29,8 +29,8 @@ public class Document {
 
     /**
      * Creates new Document instance for a specific pdf file and checks that it is valid
-     * @param fileName
-     * @param dirPath
+     * @param fileName name of the file not including parent directories
+     * @param dirPath route for parent directories
      */
     public Document(String fileName, String dirPath) {
         this.dirPath = dirPath;
@@ -48,7 +48,7 @@ public class Document {
     /**
      * Returns the pdfbox document for this document
      * @return Opened PDDocument for this file
-     * @throws IOException
+     * @throws IOException if file does not exist or can't be opened
      */
     private PDDocument getDocument() throws IOException {
         // Returns the PDDocument for this file
@@ -66,6 +66,10 @@ public class Document {
         return pdf;
     }
 
+    /**
+     * Returns the text content for this document
+     * @return all the text
+     */
     public String getText() {
         String text;
 
@@ -87,11 +91,13 @@ public class Document {
         return text;
     }
 
+    /**
+     * Converts the PDF to an array of images for each page
+     * @param startPage the index of the first page to convert (inclusive)
+     * @param endPage the index of the last page to convert (exclusive), -1 to convert all the pages
+     * @return array of the images
+     */
     public BufferedImage[] getImages(int startPage, int endPage) {
-        /*
-            Converts the PDF to an array of images including the pages starting
-            at startPage (inclusive) and ending at endPage (exclusive)
-        */
         // TODO: Make this take from saved images if they have been saved already
 
         if (startPage > endPage && endPage != -1) {
@@ -131,10 +137,20 @@ public class Document {
 
         return null;
     }
-    public BufferedImage[] getImages(String filePath) {
+
+    /**
+     * Converts all the pages of the pdf to images
+     * @return an array of all the images for the pdf
+     */
+    public BufferedImage[] getImages() {
         return getImages(0, -1);
     }
 
+    /**
+     * Saves all the images for this pdf to files in the same parent directory as the pdf
+     * in a directory called '/images/'
+     * @return a boolean for whether the access was successful
+     */
     public boolean saveAsImages() {
         try {
             // Make the output directory
@@ -151,7 +167,7 @@ public class Document {
             // Get name for output files
             String outputFileName = "%s/%s".formatted(
                     outputDir.getPath(),
-                    fileName.replace("." + Constants.IMAGE_IO_FORMAT, ""));
+                    fileName.replace(".pdf", ""));
 
             // Get the document
             PDDocument document = getDocument();
@@ -181,6 +197,11 @@ public class Document {
         }
         return false;
     }
+
+    /**
+     * Checks whether there are already files in this pdf's images directory
+     * @return a boolean value for whether the files have been saved
+     */
     public boolean checkImageDir() {
         // Check if this has already been split to images
 
@@ -198,6 +219,10 @@ public class Document {
         return saved;
     }
 
+    /**
+     * Returns the full filepath to the file from the root directory
+     * @return a String of the filepath
+     */
     public String getFilePath() {
         return dirPath + fileName;
     }
