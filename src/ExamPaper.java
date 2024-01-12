@@ -19,8 +19,7 @@ public class ExamPaper {
 
     public void saveAsImages() {
         if (!(imagesSaved)) {
-            document.sa;
-            imagesSaved = true;
+            imagesSaved = document.saveAsImages();
         }
     }
 

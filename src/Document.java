@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,7 +17,7 @@ import javax.imageio.ImageIO;
 
 
 public class Document {
-    private static final Logger logger = Logger.getLogger(PDFInterface.class.getName());
+    private static final Logger logger = Logger.getLogger(Document.class.getName());
 
     private final String fileName;
     private final String dirPath;
@@ -28,6 +27,11 @@ public class Document {
         logger.setLevel(Level.FINEST);
     }
 
+    /**
+     * Creates new Document instance for a specific pdf file and checks that it is valid
+     * @param fileName
+     * @param dirPath
+     */
     public Document(String fileName, String dirPath) {
         this.dirPath = dirPath;
         this.fileName = fileName;
@@ -35,11 +39,17 @@ public class Document {
         try {
             this.getDocument().close();
         } catch (IOException e) {
+            // TODO: More robust error handling
             logger.log(Level.SEVERE, e.toString());
 
         }
     }
 
+    /**
+     * Returns the pdfbox document for this document
+     * @return Opened PDDocument for this file
+     * @throws IOException
+     */
     private PDDocument getDocument() throws IOException {
         // Returns the PDDocument for this file
         String filePath = getFilePath();
@@ -121,31 +131,39 @@ public class Document {
 
         return null;
     }
-    public BufferedImage[] toImages(String filePath) {
-        return PDFToImage.toImages(filePath, 0, -1);
+    public BufferedImage[] getImages(String filePath) {
+        return getImages(0, -1);
     }
 
-    public void saveAsImages() {
+    public boolean saveAsImages() {
         try {
             // Make the output directory
             File outputDir = new File(dirPath + Constants.IMAGES_DIR_NAME);
 
+            // If the output directory has not been made, make it
             if (!(outputDir.exists())) {
-                outputDir.mkdirs();
+                // Guard clause
+                 if (!outputDir.mkdirs()) {
+                     return false;
+                 }
             }
+
+            // Get name for output files
             String outputFileName = "%s/%s".formatted(
                     outputDir.getPath(),
-                    fileName.replace("."+Constants.IMAGE_IO_FORMAT, ""));
+                    fileName.replace("." + Constants.IMAGE_IO_FORMAT, ""));
 
             // Get the document
-            PDDocument document = PDFInterface.getDocument(dirPath + fileName);
+            PDDocument document = getDocument();
             PDFRenderer pdfRenderer = new PDFRenderer(document);
 
             int numberOfPages = document.getNumberOfPages();
 
             // Save all pages as images
+            BufferedImage pageImage;
             for (int i=0; i<numberOfPages; i++) {
-                BufferedImage pageImage = pdfRenderer.renderImageWithDPI(i, Constants.DPI, ImageType.RGB);
+                pageImage = pdfRenderer.renderImageWithDPI(i, Constants.DPI, ImageType.RGB);
+
                 ImageIO.write(
                         pageImage,
                         Constants.IMAGE_IO_FORMAT,
@@ -156,9 +174,12 @@ public class Document {
             logger.log(Level.INFO, "%d images from PDF (with file path %s) saved to %s\n".formatted(
                     numberOfPages, dirPath + fileName, outputDir.getPath()));
 
-        } catch (Exception e) {
+            return true;
+
+        } catch (IOException e) {
             logger.log(Level.SEVERE, e.toString());
         }
+        return false;
     }
     public boolean checkImageDir() {
         // Check if this has already been split to images
