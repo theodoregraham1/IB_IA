@@ -30,6 +30,8 @@ public class ExamPaper {
 
         this.saveAsImages();
 
+        // Get the next image
+        // Check if a question ends on this image
 
 
         // File imagesDir = new File(this.dirPath + IMAGES_DIR_NAME);
