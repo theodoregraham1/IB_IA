@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -98,39 +99,35 @@ public class Document {
      * @return array of the images
      */
     public BufferedImage[] getImages(int startPage, int endPage) {
-        // TODO: Make this take from saved images if they have been saved already
-
-        if (startPage > endPage && endPage != -1) {
-            logger.log(Level.SEVERE, "ERROR: Start page must be before end page for Image Conversion");
-            return null;
+        if (checkImageDir()) {
+            return getImagesFromFile(startPage, endPage);
         }
 
         String filePath = getFilePath();
 
-        try {
-            PDDocument document = getDocument();
+        try (PDDocument document = getDocument()){
             PDFRenderer pdfRenderer = new PDFRenderer(document);
 
             int numberOfPages = document.getNumberOfPages();
             int end = numberOfPages;
 
-            if ((endPage == -1) || (endPage > 0 && endPage < numberOfPages)) {
-                if (endPage != -1) {
-                    end = endPage;
-                }
-
-                BufferedImage[] images = new BufferedImage[end-startPage];
-
-                for (int i = startPage; i < end; ++i) {
-                    images[i] = pdfRenderer.renderImageWithDPI(i, Constants.DPI, ImageType.RGB);
-                }
-                document.close();
-
-                logger.log(Level.FINER, "%d images from PDF (with file path %s) converted".formatted(numberOfPages, filePath));
-
-                return images;
+            if ((endPage != -1) && (endPage < 0 || endPage > numberOfPages || startPage > endPage)) {
+                throw new IOException("endPage for image reading must be greater than startPage or -1 for all pages");
+            }
+            if (endPage != -1) {
+                end = endPage;
             }
 
+            BufferedImage[] images = new BufferedImage[end-startPage];
+
+            for (int i = startPage; i < end; ++i) {
+                images[i] = pdfRenderer.renderImageWithDPI(i, Constants.DPI, ImageType.RGB);
+            }
+
+            logger.log(Level.FINER,
+                    "%d images from PDF (with file path %s) converted".formatted(numberOfPages, filePath));
+
+            return images;
         } catch (IOException e) {
             logger.log(Level.SEVERE, e.toString());
         }
@@ -152,25 +149,21 @@ public class Document {
      * @return a boolean for whether the access was successful
      */
     public boolean saveAsImages() {
-        try {
-            // Make the output directory
-            File outputDir = new File(dirPath + Constants.IMAGES_DIR_NAME);
+        String outputPath = dirPath + Constants.IMAGES_DIR_NAME;
 
-            // If the output directory has not been made, make it
-            if (!(outputDir.exists())) {
-                // Guard clause
-                 if (!outputDir.mkdirs()) {
-                     return false;
-                 }
+        // Make the output directory
+        File outputDir = new File(outputPath);
+
+        // If the output directory has not been made, make it
+        if (!(outputDir.exists())) {
+            // Guard clause
+            if (!outputDir.mkdirs()) {
+                return false;
             }
+        }
 
-            // Get name for output files
-            String outputFileName = "%s/%s".formatted(
-                    outputDir.getPath(),
-                    fileName.replace(".pdf", ""));
+        try (PDDocument document = getDocument()) {
 
-            // Get the document
-            PDDocument document = getDocument();
             PDFRenderer pdfRenderer = new PDFRenderer(document);
 
             int numberOfPages = document.getNumberOfPages();
@@ -183,9 +176,8 @@ public class Document {
                 ImageIO.write(
                         pageImage,
                         Constants.IMAGE_IO_FORMAT,
-                        new File("%s_%d.%s".formatted(outputFileName, i, Constants.IMAGE_IO_FORMAT)));
+                        new File("%s/page_%d.%s".formatted(outputPath, i, Constants.IMAGE_IO_FORMAT)));
             }
-            document.close();
 
             logger.log(Level.INFO, "%d images from PDF (with file path %s) saved to %s\n".formatted(
                     numberOfPages, dirPath + fileName, outputDir.getPath()));
@@ -217,6 +209,51 @@ public class Document {
                     && files.length > 0;
 
         return saved;
+    }
+
+    /**
+     * Gets the images for this PDF, but without rendering it and attempts to find them in its file system
+     * @param startPage the index of the first page to convert (inclusive)
+     * @param endPage the index of the last page to convert (exclusive), -1 to convert all the pages
+     * @return an array of the images found, null if there has been an error
+     */
+    private BufferedImage[] getImagesFromFile(int startPage, int endPage) {
+        // Find where the images are
+        String imagesPath = dirPath + Constants.IMAGES_DIR_NAME;
+
+        File imagesDir = new File(imagesPath);
+
+        try {
+            // Get all the files in the directory
+            File[] files = imagesDir.listFiles();
+            if (files == null) {
+                throw new RuntimeException("No images in image directory of PDF");
+            }
+            int numFiles = files.length;
+
+            // Make sure page indexes are valid
+            if ((endPage != -1)
+                    && (endPage < 0
+                    || endPage > numFiles
+                    || startPage > endPage)) {
+                throw new IOException("endPage for image reading must be greater than startPage or -1 for all pages");
+            } else if (endPage == -1) {
+                endPage = numFiles;
+            }
+
+            // Read images
+            BufferedImage[] images = new BufferedImage[endPage - startPage];
+
+            for (int i = startPage; i < endPage; i++) {
+                images[i] = ImageIO.read(files[startPage + i]);
+            }
+
+            return images;
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, e.toString());
+        }
+
+        return null;
     }
 
     /**
