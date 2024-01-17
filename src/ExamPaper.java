@@ -1,3 +1,7 @@
+import utils.Command;
+import utils.Commands;
+
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,12 +48,34 @@ public class ExamPaper {
         boolean ended = false, inQuestion = false;
 
         while (!ended) {
+            // Command line interfacing
+
+            // TODO: Encapsulate/decompose this better
             System.out.printf("Page number %d reached\n", page_number);
 
             if (inQuestion) {
                 System.out.print("Does a question end here? ");
             } else {
                 System.out.print("Does a question start here? ");
+            }
+
+            Command command = null;
+            while (command == null) {
+                command = Commands.getCommand(scanner.next());
+
+                // Check command is valid
+                if (command != null) {
+                    if (!(command.equals("yes") || command.equals("no"))) {
+                        command = null;
+                    }
+                } else {
+                    System.out.println("Input yes or no");
+                }
+            }
+
+            if (command.equals("yes")) {
+                System.out.println("Enter line number:");
+
             }
 
 

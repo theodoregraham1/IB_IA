@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Add a class for commands">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Document.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Document.java" afterDir="false" />
+    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Work on allowing selection of questions">
+      <change afterPath="$PROJECT_DIR$/src/utils/Command.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ExamPaper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ExamPaper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/Commands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Commands.java" afterDir="false" />
     </list>
@@ -178,7 +177,14 @@
       <option name="project" value="LOCAL" />
       <updated>1705499259664</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Work on allowing selection of questions">
+      <created>1705499992254</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1705499992254</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -219,7 +225,8 @@
     <MESSAGE value="Make it so images aren't resaved if they already exist" />
     <MESSAGE value="Put some code in to testing splitting an image by BufferedImage.subImage" />
     <MESSAGE value="Add a class for commands" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add a class for commands" />
+    <MESSAGE value="Work on allowing selection of questions" />
+    <option name="LAST_COMMIT_MESSAGE" value="Work on allowing selection of questions" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

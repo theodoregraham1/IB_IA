@@ -16,27 +16,4 @@ public class Commands {
         }
         return null;
     }
-
-    private static class Command {
-        private final String name;
-        private String[] inputs;
-
-        public Command(String name, String[] inputs) {
-            this.name = name;
-            this.inputs = inputs;
-        }
-
-        public boolean inInputs(String s) {
-            for (String input: inputs) {
-                if (s.equalsIgnoreCase(input)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public String getName() {
-            return name;
-        }
-    }
 }
