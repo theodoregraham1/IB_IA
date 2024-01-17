@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,12 +36,11 @@ public class Document {
         this.dirPath = dirPath;
         this.fileName = fileName;
 
-        try {
-            this.getDocument().close();
-        } catch (IOException e) {
+        // Attempt to open and close document to make sure it works
+        try (PDDocument ignored = this.getDocument()) {}
+        catch (IOException e) {
             // TODO: More robust error handling
             logger.log(Level.SEVERE, e.toString());
-
         }
     }
 
