@@ -1,7 +1,8 @@
 import utils.Command;
 import utils.Commands;
 
-import java.util.Objects;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,24 +40,35 @@ public class ExamPaper {
 
     public void makeQuestions() {
         // TODO: Split the images into questions
+        ArrayList<Question> questions = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
 
         this.saveAsImages();
 
-        Scanner scanner = new Scanner(System.in);
+        int BUFFER_SIZE = 5;
 
-        int page_number = 0;
+        BufferedImage[] imagesBuffer;
+        BufferedImage currentImage;
+
+        int page_number = 0, startHeight = 0, endHeight = 0;
         boolean ended = false, inQuestion = false;
 
         while (!ended) {
-            // Command line interfacing
+            // Use a buffer of images to reduce time taken
+            if (page_number % BUFFER_SIZE == 0) {
+                 imagesBuffer = document.getImages(page_number, page_number+);
+            }
+            currentImage = imagesBuffer[page_number % BUFFER_SIZE];
 
+            // Command line interfacing
             // TODO: Encapsulate/decompose this better
             System.out.printf("Page number %d reached\n", page_number);
 
             if (inQuestion) {
-                System.out.print("Does a question end here? ");
+                // Check if a question ends on this image
+                System.out.print("Does a question end here? - ");
             } else {
-                System.out.print("Does a question start here? ");
+                System.out.print("Does a question start here? - ");
             }
 
             Command command = null;
@@ -75,17 +87,30 @@ public class ExamPaper {
 
             if (command.equals("yes")) {
                 System.out.println("Enter line number:");
+                int lineNum = Integer.parseInt(scanner.nextLine());
 
+                if (!inQuestion) {
+                    startHeight = lineNum;
+                } else {
+                    endHeight = lineNum;
+
+
+                }
+                inQuestion = !inQuestion;
             }
 
 
             // Get the next image
-
-            // Check if a question ends on this image
-
-            // File imagesDir = new File(this.dirPath + IMAGES_DIR_NAME);
-
-            //File[] images = imagesDir.listFiles();
+            page_number ++;
         }
+    }
+
+    public Question saveImage(BufferedImage[] images, int startHeight, int endHeight) {
+        int width = images[0].getWidth();
+        int height = images[0].getHeight();
+
+        BufferedImage firstImage = images[0].getSubimage(0, startHeight, width, startHeight);
+
+        M
     }
 }

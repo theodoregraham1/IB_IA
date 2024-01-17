@@ -72,15 +72,13 @@ public class Document {
     public String getText() {
         String text;
 
-        try {
-            PDDocument document = this.getDocument();
-            PDFTextStripper textStripper = new PDFTextStripper();
+        try (PDDocument document = getDocument();) {
 
+            PDFTextStripper textStripper = new PDFTextStripper();
             text = textStripper.getText(document);
 
-            document.close();
-
             logger.log(Level.FINER, "Text stripped from PDF with file path: %s".formatted(getFilePath()));
+
         } catch (IOException e) {
             text = "";
 
