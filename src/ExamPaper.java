@@ -30,7 +30,9 @@ public class ExamPaper {
 
         this.saveAsImages();
 
+        int page = 0;
         // Get the next image
+
         // Check if a question ends on this image
 
 
