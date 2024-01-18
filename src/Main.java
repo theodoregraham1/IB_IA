@@ -11,6 +11,7 @@ public class Main {
     public static void main(String[] args) {
         ExamPaper paper = new ExamPaper("Questionpaper-Paper1-June2017.pdf", "./papers/GCSE/June-2013/Question-paper/");
         paper.saveAsImages();
+        paper.makeQuestions();
 
         /* Test splitting an image
             File file = new File("./Papers/GCSE/June-2013/Question-paper/images/Questionpaper-Paper1-June2017_0.png");

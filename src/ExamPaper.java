@@ -1,6 +1,7 @@
 import utils.Command;
 import utils.Commands;
 import utils.Constants;
+import utils.FileHandler;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics;
@@ -24,12 +25,15 @@ public class ExamPaper {
         logger.setLevel(Level.FINEST);
     }
 
+    /**
+     * Creates a new exam paper and checks whether its images have been saved, but does not save them
+     * @param fileName the name of the file, relative to dirPath
+     * @param dirPath the path to the directory where the paper, its questions and its page images are stored. From the root directory
+     */
     public ExamPaper(String fileName, String dirPath) {
         this.document = new Document(fileName, dirPath);
 
         this.imagesSaved = document.checkImageDir();
-
-        makeQuestions();
     }
 
     /**
@@ -46,27 +50,33 @@ public class ExamPaper {
         }
     }
 
+    /**
+     * Saves all the questions in files and updates the instance's questions to match.
+     * Based on user input
+     */
     public void makeQuestions() {
-        // TODO: Split the images into questions
+        // TODO: Allow exiting of question making using commands
+        int BUFFER_SIZE = 5;
 
-        // TODO: Make question directory
-        questions = new ArrayList<>();
-        Scanner scanner = new Scanner(System.in);
+        // Make question directory
+        String questionDirPath = document.getDirPath() + Constants.QUESTIONS_DIR_NAME;
+        FileHandler.clearDirectory(questionDirPath);
 
         this.saveAsImages();
 
-        int BUFFER_SIZE = 5;
+        questions = new ArrayList<>();
+
+        Scanner scanner = new Scanner(System.in);
 
         BufferedImage[] imagesBuffer = null;
         ArrayList<BufferedImage> currentImages = null;
 
         int pageNumber = 0, startHeight = 0, endHeight = 0;
         boolean ended = false, inQuestion = false;
-        String questionDirPath = document.getDirPath() + Constants.QUESTIONS_DIR_NAME;
 
         while (!ended) {
             // Use a buffer of images to reduce time taken
-            if (pageNumber % BUFFER_SIZE == 0) {
+            if ((pageNumber % BUFFER_SIZE) == 0) {
                  imagesBuffer = document.getImages(pageNumber, pageNumber+BUFFER_SIZE);
             }
 
@@ -87,7 +97,7 @@ public class ExamPaper {
 
                 // Check command is valid
                 if (command != null) {
-                    if (!(command.equals("yes") || command.equals("no"))) {
+                    if (!(command.equals("yes") || command.equals("no") || command.equals(""))) {
                         command = null;
                     }
                 } else {
