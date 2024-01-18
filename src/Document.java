@@ -172,7 +172,7 @@ public class Document {
                 ImageIO.write(
                         pageImage,
                         Constants.IMAGE_IO_FORMAT,
-                        new File("%s/page_%d.%s".formatted(outputPath, i, Constants.IMAGE_IO_FORMAT)));
+                        new File(Constants.PAGE_FILE_FORMAT.formatted(outputPath, i)));
             }
 
             logger.log(Level.INFO, "%d images from PDF (with file path %s) saved to %s\n".formatted(
@@ -258,5 +258,13 @@ public class Document {
      */
     public String getFilePath() {
         return dirPath + fileName;
+    }
+
+    /**
+     * Returns the path to the directory where this document is stored, from the root directory
+     * @return a String of the directory path
+     */
+    public String getDirPath() {
+        return dirPath;
     }
 }
