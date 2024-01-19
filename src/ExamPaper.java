@@ -57,15 +57,21 @@ public class ExamPaper {
     public void makeQuestions() {
         // TODO: Allow exiting of question making using commands
         int BUFFER_SIZE = 5;
+        Commands commands = new Commands(new Command[]{
+                new Command("end", new String[]{"end, e"}),
+                new Command("start", new String[]{"start", "s"}),
+                new Command("exit", new String[]{"exit"}),
+                new Command("pass", new String[]{"pass", "p", " "})
+        });
 
         // Make question directory
         String questionDirPath = document.getDirPath() + Constants.QUESTIONS_DIR_NAME;
         FileHandler.clearDirectory(questionDirPath);
 
+        // Save page images
         this.saveAsImages();
 
         questions = new ArrayList<>();
-
         Scanner scanner = new Scanner(System.in);
 
         BufferedImage[] imagesBuffer = null;
@@ -77,31 +83,29 @@ public class ExamPaper {
         while (!ended) {
             // Use a buffer of images to reduce time taken
             if ((pageNumber % BUFFER_SIZE) == 0) {
-                 imagesBuffer = document.getImages(pageNumber, pageNumber+BUFFER_SIZE);
+                 imagesBuffer = document.getImages(pageNumber, pageNumber + BUFFER_SIZE + 1);
             }
 
-            // Command line interfacing
-            // TODO: Encapsulate/decompose this better
+            // Command line interface
+            System.out.printf("Page number %d reached\n", pageNumber);
             System.out.printf("Page number %d reached\n", pageNumber);
 
-            if (inQuestion) {
-                // Check if a question ends on this image
-                System.out.print("Does a question end here? - ");
-            } else {
-                System.out.print("Does a question start here? - ");
-            }
+            System.out.print("$ split questions - ");
 
             Command command = null;
             while (command == null) {
-                command = Commands.getCommand(scanner.next());
+                command = commands.getCommand(scanner.next());
 
-                // Check command is valid
-                if (command != null) {
-                    if (!(command.equals("yes") || command.equals("no") || command.equals(""))) {
-                        command = null;
-                    }
-                } else {
-                    System.out.println("Input yes or no");
+                if (command == null) {
+                    // Output error message
+                    System.out.print("Allowed commands: ");
+                    System.out.println(commands.getAllowedCommandsStr());
+                } else
+                    // Check that questions are being started/ended at correct times
+                    if (command.equals("start") && inQuestion) {
+                        System.out.println("Question cannot be started until current has been ended");
+                } else if (command.equals("end") && !inQuestion) {
+                        System.out.println("Question must be started before being ended");
                 }
             }
 
@@ -109,17 +113,20 @@ public class ExamPaper {
                 currentImages.add(imagesBuffer[pageNumber % BUFFER_SIZE]);
             }
 
-            if (command.equals("yes")) {
-                System.out.print("Enter line number: ");
+            if (command.equals("end") || command.equals("start")) {
+                System.out.print("Line number: ");
                 int lineNum = Integer.parseInt(scanner.next());
 
                 if (!inQuestion) {
+                    // Start creating new question
                     startHeight = lineNum;
+
                     currentImages = new ArrayList<>();
                     currentImages.add(imagesBuffer[pageNumber % BUFFER_SIZE]);
-
                 } else {
+                    // Save the current question
                     endHeight = lineNum;
+
                     BufferedImage questionImage = createQuestionImage(
                             currentImages.toArray(new BufferedImage[0]),
                             startHeight,
@@ -131,7 +138,10 @@ public class ExamPaper {
                             questionDirPath
                             ));
                 }
+
                 inQuestion = !inQuestion;
+            } else if (command.equals("exit")) {
+                ended = true;
             }
 
 
@@ -178,6 +188,13 @@ public class ExamPaper {
         return combinedImage;
     }
 
+    /**
+     * Save a question to the directory for images
+     * @param questionImage the complete image to be saved for the question
+     * @param questionNumber the number of the question in the paper
+     * @param dirPath the directory where the question should be saved
+     * @return the created question, null if there was an error
+     */
     public Question saveQuestion(BufferedImage questionImage, int questionNumber, String dirPath) {
         File outputFile = new File(Constants.QUESTION_FILE_FORMAT.formatted(dirPath, questionNumber));
 

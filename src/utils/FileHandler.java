@@ -27,7 +27,7 @@ public class FileHandler {
 
                 // If one File fails to delete, fail the whole thing
                 if (!(deleted)) {
-                    success = deleted
+                    success = deleted;
                 }
             }
         }

@@ -5,12 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Work on allowing selection of questions">
-      <change afterPath="$PROJECT_DIR$/src/utils/FileHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/pdfbox_app_3_0_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/pdfbox_app_3_0_0.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ExamPaper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ExamPaper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/Commands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Commands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/FileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/FileHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +63,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Theod/Computer Science/pdfbox-app-3.0.0.jar",
+    "last_opened_file_path": "N:/pdfbox-app-3.0.0.jar",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -233,6 +233,15 @@
     <option name="LAST_COMMIT_MESSAGE" value="Work on allowing selection of questions" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/ExamPaper.java</url>
+          <line>84</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
         <watch expression="imagesDir.listFiles()" language="JAVA" />
