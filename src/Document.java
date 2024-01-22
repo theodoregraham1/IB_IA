@@ -72,7 +72,7 @@ public class Document {
     public String getText() {
         String text;
 
-        try (PDDocument document = getDocument();) {
+        try (PDDocument document = getDocument()) {
 
             PDFTextStripper textStripper = new PDFTextStripper();
             text = textStripper.getText(document);
@@ -237,10 +237,12 @@ public class Document {
                 endPage = numFiles;
             }
 
-            // Read images
-            BufferedImage[] images = new BufferedImage[endPage - startPage];
+            int difference = endPage - startPage;
 
-            for (int i = startPage; i < endPage; i++) {
+            // Read images
+            BufferedImage[] images = new BufferedImage[difference];
+
+            for (int i = 0; i < difference; i++) {
                 images[i] = ImageIO.read(files[startPage + i]);
             }
 

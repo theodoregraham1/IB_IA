@@ -57,7 +57,7 @@ public class ExamPaper {
     public void makeQuestions() {
         int BUFFER_SIZE = 5;
         Commands commands = new Commands(new Command[]{
-                new Command("end", new String[]{"end, e"}),
+                new Command("end", new String[]{"end", "e"}),
                 new Command("start", new String[]{"start", "s"}),
                 new Command("exit", new String[]{"exit"}),
                 new Command("pass", new String[]{"pass", "p", " "})
@@ -82,11 +82,10 @@ public class ExamPaper {
         while (!ended) {
             // Use a buffer of images to reduce time taken
             if ((pageNumber % BUFFER_SIZE) == 0) {
-                 imagesBuffer = document.getImages(pageNumber, pageNumber + BUFFER_SIZE + 1);
+                 imagesBuffer = document.getImages(pageNumber, pageNumber + BUFFER_SIZE);
             }
 
             // Command line interface
-            System.out.printf("Page number %d reached\n", pageNumber);
             System.out.printf("Page number %d reached\n", pageNumber);
 
             // Get command
@@ -164,6 +163,7 @@ public class ExamPaper {
 
         int combinedHeight = height*(inputImages.length-2) + startHeight + endHeight;
 
+        // TODO: Make this work properly
         BufferedImage combinedImage = new BufferedImage(width, combinedHeight, BufferedImage.TYPE_INT_RGB);
         Graphics graphics = combinedImage.getGraphics();
 
@@ -172,7 +172,7 @@ public class ExamPaper {
 
         // Draw middle images
         for (int i = 1; i < inputImages.length-1; i++) {
-            graphics.drawImage(inputImages[i], 0, height * (i+1), null);
+            graphics.drawImage(inputImages[i], 0, height * i, null);
         }
 
         // Draw last image

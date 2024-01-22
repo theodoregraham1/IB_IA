@@ -11,6 +11,7 @@ public class Question {
 
     public Question(File imageFile, Logger logger) {
         this.imageFile = imageFile;
+        this.logger = logger;
     }
 
     public BufferedImage getImage() {
