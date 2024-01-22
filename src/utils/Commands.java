@@ -1,5 +1,7 @@
 package utils;
 
+import java.util.Scanner;
+
 public class Commands {
     private final Command[] commands;
 
@@ -24,5 +26,21 @@ public class Commands {
         }
 
         return output.toString();
+    }
+
+
+    public Command scanCommand(Scanner scanner) {
+        // Get command
+        Command command = null;
+        while (command == null) {
+            command = getCommand(scanner.next());
+
+            if (command == null) {
+                // Output error message
+                System.out.print("Allowed commands: ");
+                System.out.println(getAllowedCommandsStr());
+            }
+        }
+        return command;
     }
 }

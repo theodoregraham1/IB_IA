@@ -55,7 +55,6 @@ public class ExamPaper {
      * Based on user input
      */
     public void makeQuestions() {
-        // TODO: Allow exiting of question making using commands
         int BUFFER_SIZE = 5;
         Commands commands = new Commands(new Command[]{
                 new Command("end", new String[]{"end, e"}),
@@ -90,25 +89,22 @@ public class ExamPaper {
             System.out.printf("Page number %d reached\n", pageNumber);
             System.out.printf("Page number %d reached\n", pageNumber);
 
-            System.out.print("$ split questions - ");
-
+            // Get command
             Command command = null;
             while (command == null) {
-                command = commands.getCommand(scanner.next());
+                command = commands.scanCommand(scanner);
 
-                if (command == null) {
-                    // Output error message
-                    System.out.print("Allowed commands: ");
-                    System.out.println(commands.getAllowedCommandsStr());
-                } else
-                    // Check that questions are being started/ended at correct times
-                    if (command.equals("start") && inQuestion) {
+                // Check that questions are being started/ended at correct times
+                if (command.equals("start") && inQuestion) {
                         System.out.println("Question cannot be started until current has been ended");
+                        command = null;
                 } else if (command.equals("end") && !inQuestion) {
                         System.out.println("Question must be started before being ended");
+                        command = null;
                 }
             }
 
+            // Result of command
             if (inQuestion) {
                 currentImages.add(imagesBuffer[pageNumber % BUFFER_SIZE]);
             }
@@ -143,7 +139,6 @@ public class ExamPaper {
             } else if (command.equals("exit")) {
                 ended = true;
             }
-
 
             // Get the next image
             pageNumber ++;
