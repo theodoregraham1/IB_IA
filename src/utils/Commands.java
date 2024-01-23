@@ -38,7 +38,7 @@ public class Commands {
             if (command == null) {
                 // Output error message
                 System.out.println("Allowed commands: ");
-                System.out.println(getAllowedCommandsStr() + "\n");
+                System.out.println(getAllowedCommandsStr());
             }
         }
         return command;

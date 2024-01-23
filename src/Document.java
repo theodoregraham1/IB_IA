@@ -242,6 +242,7 @@ public class Document {
             // Read images
             BufferedImage[] images = new BufferedImage[difference];
 
+            // Beware, this relies on images being alphabetical in dictionary
             for (int i = 0; i < difference; i++) {
                 images[i] = ImageIO.read(files[startPage + i]);
             }

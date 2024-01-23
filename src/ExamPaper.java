@@ -157,11 +157,11 @@ public class ExamPaper {
 
         // Get cut off images at start and end
         BufferedImage firstImage = inputImages[0]
-                .getSubimage(0, startHeight, width, startHeight);
+                .getSubimage(0, startHeight, width, height-startHeight);
         BufferedImage lastImage = inputImages[inputImages.length-1]
                 .getSubimage(0, 0, width, endHeight);
 
-        int combinedHeight = height*(inputImages.length-2) + startHeight + endHeight;
+        int combinedHeight = height*(inputImages.length-2) + firstImage.getHeight() + lastImage.getHeight();
 
         // TODO: Make this work properly
         BufferedImage combinedImage = new BufferedImage(width, combinedHeight, BufferedImage.TYPE_INT_RGB);
@@ -172,14 +172,18 @@ public class ExamPaper {
 
         // Draw middle images
         for (int i = 1; i < inputImages.length-1; i++) {
-            graphics.drawImage(inputImages[i], 0, height * i, null);
+            graphics.drawImage(
+                    inputImages[i],
+                    0,
+                    firstImage.getHeight() + (height * (i-1)),
+                    null);
         }
 
         // Draw last image
-        graphics.drawImage(lastImage, 0,height * (inputImages.length+1), null);
+        graphics.drawImage(lastImage, 0,combinedHeight - lastImage.getHeight(), null);
 
         graphics.dispose();
-
+        logger.log(Level.INFO, "Made question from %d images".formatted(inputImages.length));
         return combinedImage;
     }
 
@@ -197,6 +201,8 @@ public class ExamPaper {
             ImageIO.write(questionImage,
                     Constants.IMAGE_IO_FORMAT,
                     outputFile);
+
+            logger.log(Level.INFO, "Saved question number %d to file location: %s".formatted(questionNumber, outputFile.getCanonicalPath()));
         } catch (IOException e) {
             logger.log(Level.SEVERE, e.toString());
             return null;

@@ -10,6 +10,7 @@
       <change beforePath="$PROJECT_DIR$/src/Document.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Document.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ExamPaper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ExamPaper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/Commands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Commands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Constants.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +63,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Theod/Computer Science/pdfbox-app-3.0.0.jar",
+    "last_opened_file_path": "N:/pdfbox-app-3.0.0.jar",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
