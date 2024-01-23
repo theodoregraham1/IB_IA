@@ -1,5 +1,7 @@
-import utils.Command;
-import utils.Commands;
+package examdocs;
+
+import commands.Command;
+import commands.Commands;
 import utils.Constants;
 import utils.FileHandler;
 
@@ -55,8 +57,9 @@ public class ExamPaper {
      * Based on user input
      */
     public void makeQuestions() {
+        // TODO: Write the file information to a random access file and then read it back in if it exists
         int BUFFER_SIZE = 5;
-        Commands commands = new Commands(new Command[]{
+        Commands commands = new Commands(new Command[] {
                 new Command("end", new String[]{"end", "e"}),
                 new Command("start", new String[]{"start", "s"}),
                 new Command("exit", new String[]{"exit"}),
@@ -95,10 +98,10 @@ public class ExamPaper {
 
                 // Check that questions are being started/ended at correct times
                 if (command.equals("start") && inQuestion) {
-                        System.out.println("Question cannot be started until current has been ended");
+                        System.out.println("examdocs.Question cannot be started until current has been ended");
                         command = null;
                 } else if (command.equals("end") && !inQuestion) {
-                        System.out.println("Question must be started before being ended");
+                        System.out.println("examdocs.Question must be started before being ended");
                         command = null;
                 }
             }

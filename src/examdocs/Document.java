@@ -1,3 +1,5 @@
+package examdocs;
+
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
@@ -15,7 +17,6 @@ import utils.Constants;
 
 import javax.imageio.ImageIO;
 
-
 public class Document {
     private static final Logger logger = Logger.getLogger(Document.class.getName());
 
@@ -28,7 +29,7 @@ public class Document {
     }
 
     /**
-     * Creates new Document instance for a specific pdf file and checks that it is valid
+     * Creates new examdocs.Document instance for a specific pdf file and checks that it is valid
      * @param fileName name of the file not including parent directories
      * @param dirPath route for parent directories
      */

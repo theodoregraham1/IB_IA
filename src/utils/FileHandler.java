@@ -1,8 +1,13 @@
 package utils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class FileHandler {
+
     /**
      * Clears the directory passed in if it exists. If it doesn't exist, creates it.
      * @param dirPath The path to the directory from the root folder
@@ -23,14 +28,34 @@ public class FileHandler {
 
         if (previousFiles != null) {
             for (File f : previousFiles) {
-                boolean deleted = f.delete();
 
                 // If one File fails to delete, fail the whole thing
-                if (!(deleted)) {
-                    success = deleted;
+                if (!(f.delete())) {
+                    success = false;
                 }
             }
         }
         return success;
+    }
+
+    /**
+     * Reads all the lines from the specified text file and returns them
+     * @param file the file to read from
+     * @return an array of all the lines, one line per element
+     */
+    public static String[] readLines(File file) {
+        ArrayList<String> lines = new ArrayList<>();
+
+        try (BufferedReader fileReader = new BufferedReader(new FileReader(file))) {
+            String line = fileReader.readLine();
+
+            while (line != null) {
+                lines.add(line);
+                line = fileReader.readLine();
+            }
+        } catch (IOException e) {
+
+        }
+        return lines.toArray(new String[0]);
     }
 }

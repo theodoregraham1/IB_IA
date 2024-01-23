@@ -1,4 +1,4 @@
-package utils;
+package commands;
 
 public class Command {
     private final String name;
