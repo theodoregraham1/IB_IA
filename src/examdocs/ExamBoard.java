@@ -3,6 +3,7 @@ package examdocs;
 import static utils.Constants.*;
 import utils.FileHandler;
 
+import static java.io.File.separatorChar;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -36,21 +37,18 @@ public class ExamBoard {
     public ExamBoard(String name, String dirPath) {
         this.name = name;
         this.dirPath = dirPath;
-        this.infoFile = new File(dirPath + INFO_FILE_NAME);
+        this.infoFile = new File(dirPath + separatorChar + INFO_FILE_NAME);
 
-        makePapers(infoFile);
+        makePapers();
     }
 
     /**
      * Updates the exam papers list with the data from the input file. File has first line as the directory
      * path and every other as the directory of the exam paper
-     * @param examPapersFile the file where the exam board information is stored
      */
-    public void makePapers(File examPapersFile) {
+    public void makePapers() {
         try {
-            String[] lines = FileHandler.readLines(examPapersFile);
-
-            this.dirPath = lines[0];
+            String[] lines = FileHandler.readLines(infoFile);
 
             papers = new ArrayList<>();
             for (int i = 1; i < lines.length - 1; i++) {
@@ -60,7 +58,7 @@ public class ExamBoard {
             }
 
         } catch (FileNotFoundException e) {
-            boolean ignored = FileHandler.makeFile(examPapersFile);
+            boolean ignored = FileHandler.makeFile(infoFile);
 
         } catch (IOException e) {
             // TODO: More robust error handling
@@ -75,19 +73,30 @@ public class ExamBoard {
      * @param name the name of the paper, in the format: YEAR/MONTH/NUMBER
      */
     public void addPaper(File document, String name) {
+        String paperDirPath = PAPER_DIR_FORMAT.formatted(dirPath, name);
+
+        try {
+            FileHandler.makeFile()
+            File newPaperFile = new File(paperDirPath + separatorChar + PAPER_FILE_NAME);
+            boolean success = newPaperFile.createNewFile();
+
+            if (!success) {
+                throw new IOException("Could not make new file for paper: " + newPaperFile.getPath());
+            }
+
+            Files.copy(document.toPath(), newPaperFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Unable to add paper due to IOException: " + e);
+            return;
+        }
+
         ExamPaper paper = new ExamPaper(
                 PAPER_FILE_NAME,
                 PAPER_DIR_FORMAT.formatted(dirPath, name));
 
-        try {
-            Files.copy(document.toPath(), paper.getFile().toPath(), StandardCopyOption.REPLACE_EXISTING);
-            paper.saveAsImages();
+        paper.saveAsImages();
+        paper.makeQuestions();
 
-            paper.makeQuestions();
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, "Unable to add paper due to IOException");
-            return;
-        }
         papers.add(paper);
 
         FileHandler.addLine(name, infoFile);

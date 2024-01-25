@@ -79,7 +79,7 @@ public class ExamPaper {
         BufferedImage[] imagesBuffer = null;
         ArrayList<BufferedImage> currentImages = null;
 
-        int pageNumber = 0, startHeight = 0, endHeight = 0;
+        int pageNumber = 0, startHeight = 0, endHeight;
         boolean ended = false, inQuestion = false;
 
         while (!ended) {
@@ -98,10 +98,10 @@ public class ExamPaper {
 
                 // Check that questions are being started/ended at correct times
                 if (command.equals("start") && inQuestion) {
-                        System.out.println("examdocs.Question cannot be started until current has been ended");
+                        System.out.println("Question cannot be started until current has been ended");
                         command = null;
                 } else if (command.equals("end") && !inQuestion) {
-                        System.out.println("examdocs.Question must be started before being ended");
+                        System.out.println("Question must be started before being ended");
                         command = null;
                 }
             }

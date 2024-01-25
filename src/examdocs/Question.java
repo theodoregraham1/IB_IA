@@ -11,11 +11,20 @@ public class Question {
     File imageFile;
     Logger logger;
 
+    /**
+     * Constructs a new question from its file location
+     * @param imageFile the File where the image for this question is stored
+     * @param logger the Logger of the owner of this question
+     */
     public Question(File imageFile, Logger logger) {
         this.imageFile = imageFile;
         this.logger = logger;
     }
 
+    /**
+     * Gets the image for this question from its file
+     * @return this question's image
+     */
     public BufferedImage getImage() {
         try {
             return ImageIO.read(imageFile);
