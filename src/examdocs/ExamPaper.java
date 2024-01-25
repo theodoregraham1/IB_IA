@@ -213,4 +213,12 @@ public class ExamPaper {
 
         return new Question(outputFile, logger);
     }
+
+    /**
+     * Returns the pdf file location for this paper
+     * @return a File for this paper's file
+     */
+    public File getFile() {
+        return new File(document.getFilePath());
+    }
 }

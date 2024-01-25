@@ -67,25 +67,35 @@ public class FileHandler {
         return lines.toArray(new String[0]);
     }
 
+    /**
+     * Appends a line to a text file
+     * @param newLine the new line (with attached line terminators) to be added
+     * @param file the text file to add a line to
+     * @return a boolean for whether the line was successfully added
+     */
     public static boolean addLine(String newLine, File file) {
         try (
-
                 FileWriter writer = new FileWriter(file, true)
         ) {
-
+            writer.write(newLine);
+            return true;
         } catch (FileNotFoundException e) {
+            // If the file does not yet exist, make it and then add the line
             boolean success = makeFile(file);
 
             if (success) {
-                addLine(newLine, file);
+                return addLine(newLine, file);
             }
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, e.toString());
         }
+        return false;
     }
 
     /**
-     *
-     * @param file
-     * @return
+     * Attempts to create a new file
+     * @param file where the new file should be created
+     * @return a boolean for whether the file was created
      */
     public static boolean makeFile(File file) {
         try {
