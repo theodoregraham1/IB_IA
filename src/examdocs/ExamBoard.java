@@ -70,24 +70,20 @@ public class ExamBoard {
      * Adds a new paper from scratch, assuming nothing has been saved before.
      * Then saves images and questions
      * @param document the pdf file to make the paper from
-     * @param name the name of the paper, in the format: YEAR/MONTH/NUMBER
+     * @param name the name of the paper, in the format: YEAR-MONTH-NUMBER
      */
     public void addPaper(File document, String name) {
         String paperDirPath = PAPER_DIR_FORMAT.formatted(dirPath, name);
 
         try {
-            File newPaperFile = new File(paperDirPath + separatorChar + PAPER_FILE_NAME);
-            /*
-            boolean success = FileHandler.makeFile(newPaperFile);
-
-            if (!success) {
-                throw new IOException("Could not make new file for paper: " + newPaperFile.getPath());
+            // Make required directories
+            boolean success = FileHandler.clearDirectory(paperDirPath);
+            if (success) {
+                File newPaperFile = new File(paperDirPath + PAPER_FILE_NAME);
+                Files.copy(document.toPath(), newPaperFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             }
-
-             */
-
-            Files.copy(document.toPath(), newPaperFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
+            // TODO: Better file handling here
             logger.log(Level.SEVERE, "Unable to add paper due to IOException: " + e);
             return;
         }

@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static java.io.File.separatorChar;
+
 public class FileHandler {
     private static final Logger logger = Logger.getLogger(FileHandler.class.getName());
 
@@ -17,13 +19,21 @@ public class FileHandler {
 
     /**
      * Clears the directory passed in if it exists. If it doesn't exist, creates it.
-     * @param dirPath The path to the directory from the root folder
+     * @param dirPath the path to the directory from the root folder
      * @return true if the directory was cleared successfully, false if not
      */
-    public static boolean clearDirectory(String dirPath) {
-        File directory = new File(dirPath);
 
-        // Guard clause if the directory doesn't yet exist, it doesn't need to be made
+    public static boolean clearDirectory(String dirPath) {
+        return clearDirectory(new File(dirPath));
+    }
+
+    /**
+     * Clears the directory passed in if it exists. If it doesn't exist, creates it.
+     * @param directory the file for the directory to clear
+     * @return true if the directory was cleared successfully, false if not
+     */
+    public static boolean clearDirectory(File directory) {
+        // If the directory doesn't yet exist, make it
         if (!directory.exists()) {
             return directory.mkdirs();
         }
@@ -33,11 +43,18 @@ public class FileHandler {
         // Delete the files that were previously there
         File[] previousFiles = directory.listFiles();
 
-        if (previousFiles != null) {
-            for (File f : previousFiles) {
+        if (previousFiles == null) {
+            return true;
+        }
 
-                // If one File fails to delete, fail the whole thing
-                if (!(f.delete())) {
+        for (File f : previousFiles) {
+
+            // If a directory has files in it, so it fails to delete,
+            // clear it then delete (recursive tree structure for files)
+            if (!(f.delete())) {
+                if (f.isDirectory()) {
+                    success = clearDirectory(f);
+                } else {
                     success = false;
                 }
             }
@@ -99,11 +116,16 @@ public class FileHandler {
      */
     public static boolean makeFile(File file) {
         try {
-            boolean success = file.mkdirs();
-            return success = file.createNewFile();
+            return file.createNewFile();
         } catch (IOException e) {
             logger.log(Level.SEVERE, "File with route %s couldn't be created");
         }
         return false;
+    }
+
+    public static void makeDirs(String dirPath)
+            throws IOException {
+        File file = new File(dirPath);
+        boolean ignored = file.mkdir();
     }
 }
