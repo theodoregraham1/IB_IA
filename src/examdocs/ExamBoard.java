@@ -76,13 +76,15 @@ public class ExamBoard {
         String paperDirPath = PAPER_DIR_FORMAT.formatted(dirPath, name);
 
         try {
-            FileHandler.makeFile()
             File newPaperFile = new File(paperDirPath + separatorChar + PAPER_FILE_NAME);
-            boolean success = newPaperFile.createNewFile();
+            /*
+            boolean success = FileHandler.makeFile(newPaperFile);
 
             if (!success) {
                 throw new IOException("Could not make new file for paper: " + newPaperFile.getPath());
             }
+
+             */
 
             Files.copy(document.toPath(), newPaperFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
