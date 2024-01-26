@@ -77,8 +77,8 @@ public class ExamBoard {
 
         try {
             // Make required directories
-            boolean success = FileHandler.clearDirectory(paperDirPath);
-            if (success) {
+            if (FileHandler.clearDirectory(paperDirPath)) {
+                // Copy the old paper into the new file
                 File newPaperFile = new File(paperDirPath + PAPER_FILE_NAME);
                 Files.copy(document.toPath(), newPaperFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             }
