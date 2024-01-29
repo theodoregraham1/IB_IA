@@ -66,8 +66,10 @@ public class FileHandler {
      * Reads all the lines from the specified text file and returns them
      * @param file the file to read from
      * @return an array of all the lines, one line per element
+     * @throws IOException if an I/O Exception occurs
      */
-    public static String[] readLines(File file) throws IOException {
+    public static String[] readLines(File file)
+            throws IOException {
         ArrayList<String> lines = new ArrayList<>();
 
         try (
