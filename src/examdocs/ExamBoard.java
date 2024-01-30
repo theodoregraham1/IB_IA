@@ -20,8 +20,9 @@ public class ExamBoard {
 
     private final String dirPath;
     private final File infoFile;
-    private BoardLevel level;
+    private final BoardLevel level;
     private ArrayList<ExamPaper> papers;
+
 
     // Initialise logging level
     static {
@@ -30,8 +31,8 @@ public class ExamBoard {
 
     /**
      * Makes a new instance of Exam Board and pulls its papers from the text file
-     * @param level - the level of this exam board
-     * @param dirPath - the path to the root folder of this exam board
+     * @param level the level of this exam board
+     * @param dirPath the path to the root folder of this exam board
      */
     public ExamBoard(BoardLevel level, String dirPath) {
         this.level = level;
@@ -76,11 +77,13 @@ public class ExamBoard {
 
         try {
             // Make required directories
-            if (FileHandler.clearDirectory(paperDirPath)) {
-                // Copy the old paper into the new file
-                File newPaperFile = new File(paperDirPath + PAPER_FILE_NAME);
-                Files.copy(document.toPath(), newPaperFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            if (!FileHandler.clearDirectory(paperDirPath)) {
+                return false;
             }
+            // Copy the old paper into the new file
+            File newPaperFile = new File(paperDirPath + PAPER_FILE_NAME);
+            Files.copy(document.toPath(), newPaperFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
 
         } catch (IOException e) {
             // TODO: Better file handling here
@@ -98,17 +101,7 @@ public class ExamBoard {
 
         // Check if the paper is already in the info file
         try {
-            String[] text = FileHandler.readLines(infoFile);
-
-            boolean contains = false;
-            for (String s: text) {
-                if (s.contains(name)) {
-                    contains = true;
-                }
-            }
-
-            // TODO: This doesn't work
-            if (!contains) {
+            if (!FileHandler.contains(name, infoFile)) {
                 FileHandler.addLine(name + "\n", infoFile);
             }
         } catch (IOException e) {
@@ -117,5 +110,9 @@ public class ExamBoard {
         }
 
         return true;
+    }
+
+    public boolean addPaper(ArrayList<Question> questions, String name) {
+        // How tf do I do this
     }
 }

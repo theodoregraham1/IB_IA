@@ -8,8 +8,7 @@ import utils.FileHandler;
 import javax.imageio.ImageIO;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -58,6 +57,7 @@ public class ExamPaper {
      */
     public void makeQuestions() {
         // TODO: Write the file information to a random access file and then read it back in if it exists
+
         int BUFFER_SIZE = 5;
         Commands commands = new Commands(new Command[] {
                 new Command("end", new String[]{"end", "e"}),
@@ -79,7 +79,7 @@ public class ExamPaper {
         BufferedImage[] imagesBuffer = null;
         ArrayList<BufferedImage> currentImages = null;
 
-        int pageNumber = 0, startHeight = 0, endHeight;
+        int pageNumber = 0, imageNumber = 0, startHeight = 0, endHeight;
         boolean ended = false, inQuestion = false;
 
         while (!ended) {
@@ -87,6 +87,7 @@ public class ExamPaper {
             if ((pageNumber % BUFFER_SIZE) == 0) {
                  imagesBuffer = document.getImages(pageNumber, pageNumber + BUFFER_SIZE);
             }
+            imageNumber = pageNumber % BUFFER_SIZE;
 
             // Command line interface
             System.out.printf("Page number %d reached\n", pageNumber);
@@ -108,19 +109,19 @@ public class ExamPaper {
 
             // Result of command
             if (inQuestion) {
-                currentImages.add(imagesBuffer[pageNumber % BUFFER_SIZE]);
+                currentImages.add(imagesBuffer[imageNumber]);
             }
 
             if (command.equals("end") || command.equals("start")) {
-                System.out.print("Line number: ");
-                int lineNum = Integer.parseInt(scanner.next());
+                System.out.print("Percentage: ");
+                int lineNum = imagesBuffer[imageNumber].getHeight() * Integer.parseInt(scanner.next()) / 100;
 
                 if (!inQuestion) {
                     // Start creating new question
                     startHeight = lineNum;
 
                     currentImages = new ArrayList<>();
-                    currentImages.add(imagesBuffer[pageNumber % BUFFER_SIZE]);
+                    currentImages.add(imagesBuffer[imageNumber]);
                 } else {
                     // Save the current question
                     endHeight = lineNum;
@@ -136,6 +137,8 @@ public class ExamPaper {
                             questionDirPath
                             ));
                 }
+
+                // TODO: Allow a question to start on the same page as one ends
 
                 inQuestion = !inQuestion;
             } else if (command.equals("exit")) {
@@ -166,7 +169,6 @@ public class ExamPaper {
 
         int combinedHeight = height*(inputImages.length-2) + firstImage.getHeight() + lastImage.getHeight();
 
-        // TODO: Make this work properly
         BufferedImage combinedImage = new BufferedImage(width, combinedHeight, BufferedImage.TYPE_INT_RGB);
         Graphics graphics = combinedImage.getGraphics();
 
@@ -221,4 +223,44 @@ public class ExamPaper {
     public File getFile() {
         return new File(document.getFilePath());
     }
+
+    /*
+    public boolean getFileQuestions() {
+        /*
+            Format:
+            - s or p for start or pass
+            - 000 for percentage down page
+            - e or p for end or pass
+            - 000 for percentage down page
+
+        File questionsFile = new File(document.getDirPath() + Constants.QUESTIONS_LIST_FILE_NAME);
+        int pageNumber = 0, lineNumber = 0;
+
+        try (
+                RandomAccessFile randomQuestionsFile = new RandomAccessFile(questionsFile, "r");
+        ) {
+            randomQuestionsFile.seek(0);
+
+            while (true) {
+                char c = randomQuestionsFile.readChar();
+
+                if (c == 'p') {
+                    randomQuestionsFile.seek(randomQuestionsFile.getFilePointer() + 3);
+                }
+
+                pageNumber ++;
+            }
+        } catch (FileNotFoundException e) {
+            FileHandler.makeFile(questionsFile);
+            return false;
+
+        } catch (EOFException e) {
+            return true;
+
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, e.toString());
+            return false;
+        }
+    }
+    */
 }

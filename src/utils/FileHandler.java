@@ -1,13 +1,9 @@
 package utils;
 
-import examdocs.ExamPaper;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static java.io.File.separatorChar;
 
 public class FileHandler {
     private static final Logger logger = Logger.getLogger(FileHandler.class.getName());
@@ -125,9 +121,19 @@ public class FileHandler {
         return false;
     }
 
-    public static void makeDirs(String dirPath)
-            throws IOException {
-        File file = new File(dirPath);
-        boolean ignored = file.mkdir();
+    public static boolean contains(String text, File file) {
+        String[] lines;
+        try {
+            lines = readLines(file);
+        } catch (IOException e) {
+            return false;
+        }
+
+        for (String s: lines) {
+            if (s.contains(text)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

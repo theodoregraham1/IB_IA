@@ -17,7 +17,8 @@ import utils.Constants;
 
 import javax.imageio.ImageIO;
 
-public class Document {
+public class Document
+        implements Comparable<File> {
     private static final Logger logger = Logger.getLogger(Document.class.getName());
 
     private final String fileName;
@@ -270,5 +271,10 @@ public class Document {
      */
     public String getDirPath() {
         return dirPath;
+    }
+
+    @Override
+    public int compareTo(File file) {
+        return file.getPath().compareTo(this.getFilePath());
     }
 }
