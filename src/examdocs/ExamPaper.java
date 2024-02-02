@@ -2,6 +2,9 @@ package examdocs;
 
 import commands.Command;
 import commands.Commands;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.rendering.PDFRenderer;
 import utils.Constants;
 import utils.FileHandler;
 
@@ -9,8 +12,7 @@ import javax.imageio.ImageIO;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,6 +37,15 @@ public class ExamPaper {
         this.document = new Document(fileName, dirPath);
 
         this.imagesSaved = document.checkImageDir();
+    }
+
+    public ExamPaper(ArrayList<Question> questions, String filename, String dirPath) {
+        FileHandler.clearDirectory(dirPath);
+        this.document = new Document(filename, dirPath);
+
+        for (Question question: questions) {
+            document.addPage(question);
+        }
     }
 
     /**
@@ -214,6 +225,10 @@ public class ExamPaper {
         }
 
         return new Question(outputFile, logger);
+    }
+
+    public Question getQuestion(int index) {
+        return questions.get(index);
     }
 
     /**

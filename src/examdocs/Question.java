@@ -7,9 +7,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Question {
-    File imageFile;
-    Logger logger;
+public class Question
+        implements DocumentPageData{
+    protected File imageFile;
+    protected Logger logger;
 
     /**
      * Constructs a new question from its file location
@@ -32,5 +33,10 @@ public class Question {
             logger.log(Level.SEVERE, e.toString());
         }
         return null;
+    }
+
+    @Override
+    public File getFile() {
+        return this.imageFile;
     }
 }

@@ -1,12 +1,19 @@
 package examdocs;
 
 import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.contentstream.PDContentStream;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.apache.pdfbox.pdmodel.graphics.image.PDInlineImage;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.text.PDFTextStripper;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import utils.Constants;
+import utils.FileHandler;
 
 import javax.imageio.ImageIO;
 
@@ -40,7 +48,9 @@ public class Document
 
         // Attempt to open and close document to make sure it works
         try (PDDocument ignored = this.getDocument()) {}
-        catch (IOException e) {
+        catch (FileNotFoundException e) {
+            FileHandler.makeFile(new File(dirPath + File.separatorChar + fileName));
+        } catch (IOException e) {
             // TODO: More robust error handling
             logger.log(Level.SEVERE, e.toString());
         }
@@ -51,8 +61,8 @@ public class Document
      * @return Opened PDDocument for this file
      * @throws IOException if file does not exist or can't be opened
      */
-    private PDDocument getDocument() throws IOException {
-        // Returns the PDDocument for this file
+    private PDDocument getDocument()
+            throws IOException {
         String filePath = getFilePath();
 
         File file = new File(filePath);
@@ -255,6 +265,34 @@ public class Document
         }
 
         return null;
+    }
+
+    public boolean addPage(PDPage page) {
+        try (PDDocument document = getDocument()) {
+            document.addPage(page);
+            return true;
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, e.toString());
+        }
+        return false;
+    }
+
+    public boolean addPage(DocumentPageData data) {
+        PDPage page = new PDPage(PDRectangle.A4);
+        addPage(page);
+
+        try (
+                PDDocument document = getDocument();
+                PDPageContentStream contentStream = new PDPageContentStream(document, page)
+        ) {
+            contentStream.drawImage(PDImageXObject.createFromFileByContent(data.getFile(), document), 0, 0);
+            document.save(getFilePath());
+            return true;
+
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, e.toString());
+        }
+        return false;
     }
 
     /**

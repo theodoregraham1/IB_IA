@@ -10,11 +10,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 // TODO: Be able to join questions into a big paper
-public class ExamBoard {
+public class ExamBoard
+        implements Iterable<Question> {
     private static final Logger logger = Logger.getLogger(ExamBoard.class.getName());
     private static final String INFO_FILE_NAME = "board_information.txt";
 
@@ -100,19 +102,37 @@ public class ExamBoard {
         papers.add(paper);
 
         // Check if the paper is already in the info file
-        try {
-            if (!FileHandler.contains(name, infoFile)) {
-                FileHandler.addLine(name + "\n", infoFile);
-            }
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, "Unable to add paper to info file");
-            return false;
+        if (!FileHandler.contains(name, infoFile)) {
+            return FileHandler.addLine(name + "\n", infoFile);
         }
-
         return true;
     }
 
-    public boolean addPaper(ArrayList<Question> questions, String name) {
-        // How tf do I do this
+    public void addPaper(ArrayList<Question> questions, String name) {
+        papers.add(new ExamPaper(
+                questions,
+                PAPER_FILE_NAME,
+                PAPER_DIR_FORMAT.formatted(dirPath, name)
+        ));
+    }
+
+    @Override
+    public Iterator<Question> iterator() {
+        return new Iterator<Question>() {
+            int paperNum = 0;
+            int questionIndex = -1;
+            @Override
+            public boolean hasNext() {
+                if () {
+
+                }
+            }
+
+            @Override
+            public Question next() {
+                questionIndex ++;
+                return papers.get(paperNum).getQuestion(questionIndex);
+            }
+        };
     }
 }
