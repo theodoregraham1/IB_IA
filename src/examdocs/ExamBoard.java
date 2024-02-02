@@ -120,18 +120,21 @@ public class ExamBoard
     public Iterator<Question> iterator() {
         return new Iterator<Question>() {
             int paperNum = 0;
-            int questionIndex = -1;
+            int questionIndex = 0;
             @Override
             public boolean hasNext() {
-                if () {
-
+                if (papers.get(paperNum).getQuestion(questionIndex) != null) {
+                    return true;
+                } else if (papers.get(paperNum+1) != null) {
+                    return papers.get(paperNum + 1).getQuestion(0) != null;
                 }
+                return false;
             }
 
             @Override
             public Question next() {
                 questionIndex ++;
-                return papers.get(paperNum).getQuestion(questionIndex);
+                return papers.get(paperNum).getQuestion(questionIndex-1);
             }
         };
     }
