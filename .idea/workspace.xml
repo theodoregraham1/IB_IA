@@ -4,15 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Work on making papers">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/examdocs/PaperDatabase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/pdfbox_app_3_0_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/pdfbox_app_3_0_0.xml" afterDir="false" />
+    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Work on making databases for the papers">
+      <change afterPath="$PROJECT_DIR$/src/database/TableMode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/examdocs/Page.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/examdocs/ExamBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/ExamBoard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/examdocs/ExamPaper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/ExamPaper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/examdocs/Question.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/Question.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/examdocs/Document.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/Document.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/examdocs/PaperDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/PaperDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Constants.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,8 +20,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Enum" />
         <option value="Interface" />
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -62,6 +60,10 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
@@ -76,6 +78,7 @@
     "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "advanced.settings",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -119,6 +122,7 @@
       <workItem from="1700332905644" duration="4061000" />
       <workItem from="1700391358355" duration="4936000" />
       <workItem from="1700413305958" duration="2058000" />
+      <workItem from="1707065937614" duration="2778000" />
     </task>
     <task id="LOCAL-00001" summary="Work on making an ExamPaper class">
       <option name="closed" value="true" />
@@ -235,7 +239,15 @@
       <option name="project" value="LOCAL" />
       <updated>1706281192154</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Work on making databases for the papers">
+      <option name="closed" value="true" />
+      <created>1707057793487</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1707057793487</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -283,6 +295,7 @@
     <MESSAGE value="Allow ExamBoard to add new papers" />
     <MESSAGE value="Allow papers to add new papers" />
     <MESSAGE value="Work on making papers" />
-    <option name="LAST_COMMIT_MESSAGE" value="Work on making papers" />
+    <MESSAGE value="Work on making databases for the papers" />
+    <option name="LAST_COMMIT_MESSAGE" value="Work on making databases for the papers" />
   </component>
 </project>
