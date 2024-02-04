@@ -1,5 +1,6 @@
 package examdocs;
 
+import database.ImageFile;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -26,13 +27,15 @@ public class Document
         implements Comparable<File> {
     private static final Logger logger = Logger.getLogger(Document.class.getName());
 
-    private final String fileName;
-    private final String dirPath;
-
     // Initialise logging level
     static {
         logger.setLevel(Level.FINEST);
     }
+
+    private final String fileName;
+    private final String dirPath;
+
+
 
     /**
      * Creates new examdocs.Document instance for a specific pdf file and checks that it is valid
@@ -154,7 +157,7 @@ public class Document
      * @return a boolean for whether the access was successful
      */
     public boolean saveAsImages() {
-        String outputPath = dirPath + Constants.IMAGES_DIR_NAME;
+        String outputPath = dirPath + Constants.PAGES_DIR_NAME;
 
         // Make the output directory
         File outputDir = new File(outputPath);
@@ -204,7 +207,7 @@ public class Document
 
         boolean saved;
 
-        File imagesDir = new File(dirPath + Constants.IMAGES_DIR_NAME);
+        File imagesDir = new File(dirPath + Constants.PAGES_DIR_NAME);
 
         File[] files = imagesDir.listFiles();
         if (files == null)
@@ -224,7 +227,7 @@ public class Document
      */
     private BufferedImage[] getImagesFromFile(int startPage, int endPage) {
         // Find where the images are
-        String imagesPath = dirPath + Constants.IMAGES_DIR_NAME;
+        String imagesPath = dirPath + Constants.PAGES_DIR_NAME;
 
         File imagesDir = new File(imagesPath);
 
@@ -274,7 +277,7 @@ public class Document
         return false;
     }
 
-    public boolean addPage(DocumentPageData data) {
+    public boolean addPage(ImageFile data) {
         PDPage page = new PDPage(PDRectangle.A4);
         addPage(page);
 

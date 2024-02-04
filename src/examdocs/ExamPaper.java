@@ -53,6 +53,7 @@ public class ExamPaper {
      * images if they are not already saved
      */
     public void saveAsImages() {
+        // TODO: refactor image file processing into the database
         if (!(imagesSaved)) {
             imagesSaved = document.saveAsImages();
 
@@ -68,6 +69,7 @@ public class ExamPaper {
      */
     public void makeQuestions() {
         // TODO: Write the file information to a random access file and then read it back in if it exists
+        // FIXME: use the database and pages here
 
         int BUFFER_SIZE = 5;
         Commands commands = new Commands(new Command[] {
@@ -90,7 +92,7 @@ public class ExamPaper {
         BufferedImage[] imagesBuffer = null;
         ArrayList<BufferedImage> currentImages = null;
 
-        int pageNumber = 0, imageNumber = 0, startHeight = 0, endHeight;
+        int pageNumber = 0, imageNumber = 0, startPercent = 0, endPercent;
         boolean ended = false, inQuestion = false;
 
         while (!ended) {
@@ -125,22 +127,23 @@ public class ExamPaper {
 
             if (command.equals("end") || command.equals("start")) {
                 System.out.print("Percentage: ");
-                int lineNum = imagesBuffer[imageNumber].getHeight() * Integer.parseInt(scanner.next()) / 100;
+                int linePercent = Integer.parseInt(scanner.next());
 
                 if (!inQuestion) {
                     // Start creating new question
-                    startHeight = lineNum;
+                    startPercent = linePercent;
 
                     currentImages = new ArrayList<>();
                     currentImages.add(imagesBuffer[imageNumber]);
+
                 } else {
                     // Save the current question
-                    endHeight = lineNum;
+                    endPercent = linePercent;
 
                     BufferedImage questionImage = createQuestionImage(
                             currentImages.toArray(new BufferedImage[0]),
-                            startHeight,
-                            endHeight
+                            startPercent,
+                            endPercent
                             );
                     questions.add(saveQuestion(
                             questionImage,
@@ -168,17 +171,25 @@ public class ExamPaper {
      * @param endHeight The height where the last image is cut off
      * @return a single Buffered Image made up of all the inputImages joined vertically
      */
-    public BufferedImage createQuestionImage(BufferedImage[] inputImages, int startHeight, int endHeight) {
-        int width = inputImages[0].getWidth();
-        int height = inputImages[0].getHeight();
+    public BufferedImage createQuestionImage(Page[] inputPages, int startPercent, int endPercent) {
+        // TODO: Think about moving this to more appropriate class (possibly Question)
+
+        // Find the sizes for the full pages
+        int width = inputPages[0].getImage().getWidth();
+        int height = inputPages[0].getImage().getHeight();
+
+        // Find the heights for the partial pages
+        int startHeight = height * startPercent / 100;
+        int endHeight = height * endPercent / 100;
 
         // Get cut off images at start and end
-        BufferedImage firstImage = inputImages[0]
+        BufferedImage firstImage = inputPages[0].getImage()
                 .getSubimage(0, startHeight, width, height-startHeight);
-        BufferedImage lastImage = inputImages[inputImages.length-1]
+        BufferedImage lastImage = inputPages[inputPages.length-1].getImage()
                 .getSubimage(0, 0, width, endHeight);
 
-        int combinedHeight = height*(inputImages.length-2) + firstImage.getHeight() + lastImage.getHeight();
+        // Make the combined image, ready to be filled
+        int combinedHeight = height*(inputPages.length-2) + firstImage.getHeight() + lastImage.getHeight();
 
         BufferedImage combinedImage = new BufferedImage(width, combinedHeight, BufferedImage.TYPE_INT_RGB);
         Graphics graphics = combinedImage.getGraphics();
@@ -187,9 +198,9 @@ public class ExamPaper {
         graphics.drawImage(firstImage, 0, 0, null);
 
         // Draw middle images
-        for (int i = 1; i < inputImages.length-1; i++) {
+        for (int i = 1; i < inputPages.length-1; i++) {
             graphics.drawImage(
-                    inputImages[i],
+                    inputPages[i].getImage(),
                     0,
                     firstImage.getHeight() + (height * (i-1)),
                     null);
@@ -199,7 +210,8 @@ public class ExamPaper {
         graphics.drawImage(lastImage, 0,combinedHeight - lastImage.getHeight(), null);
 
         graphics.dispose();
-        logger.log(Level.INFO, "Made question from %d images".formatted(inputImages.length));
+
+        logger.log(Level.INFO, "Made question from %d images".formatted(inputPages.length));
         return combinedImage;
     }
 

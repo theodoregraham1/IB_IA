@@ -4,13 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Work on making databases for the papers">
-      <change afterPath="$PROJECT_DIR$/src/database/TableMode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/examdocs/Page.java" afterDir="false" />
+    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Continue on making databases for the papers">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/database/PaperDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/PaperDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/database/TableMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/TableMode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/examdocs/Document.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/Document.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/examdocs/PaperDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/PaperDatabase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/examdocs/DocumentPageData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/ImageFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/examdocs/ExamPaper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/ExamPaper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/examdocs/Page.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/Page.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/examdocs/Question.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/Question.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +50,9 @@
         <option name="url" value="https://github.com/theodoregraham1/IB_IA.git" />
       </UrlAndAccount>
     </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
@@ -122,7 +127,7 @@
       <workItem from="1700332905644" duration="4061000" />
       <workItem from="1700391358355" duration="4936000" />
       <workItem from="1700413305958" duration="2058000" />
-      <workItem from="1707065937614" duration="2778000" />
+      <workItem from="1707065937614" duration="7611000" />
     </task>
     <task id="LOCAL-00001" summary="Work on making an ExamPaper class">
       <option name="closed" value="true" />
@@ -247,7 +252,15 @@
       <option name="project" value="LOCAL" />
       <updated>1707057793487</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Continue on making databases for the papers">
+      <option name="closed" value="true" />
+      <created>1707069142102</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1707069142102</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -296,6 +309,7 @@
     <MESSAGE value="Allow papers to add new papers" />
     <MESSAGE value="Work on making papers" />
     <MESSAGE value="Work on making databases for the papers" />
-    <option name="LAST_COMMIT_MESSAGE" value="Work on making databases for the papers" />
+    <MESSAGE value="Continue on making databases for the papers" />
+    <option name="LAST_COMMIT_MESSAGE" value="Continue on making databases for the papers" />
   </component>
 </project>

@@ -1,5 +1,7 @@
 package examdocs;
 
+import database.ImageFile;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -8,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Question
-        implements DocumentPageData {
+        implements ImageFile {
 
     protected Logger logger;
     protected File imageFile;
@@ -23,10 +25,16 @@ public class Question
         this.logger = logger;
     }
 
+    @Override
+    public File getFile() {
+        return this.imageFile;
+    }
+
     /**
      * Gets the image for this question from its file
      * @return this question's image
      */
+    @Override
     public BufferedImage getImage() {
         try {
             return ImageIO.read(imageFile);
@@ -34,10 +42,5 @@ public class Question
             logger.log(Level.SEVERE, e.toString());
         }
         return null;
-    }
-
-    @Override
-    public File getFile() {
-        return this.imageFile;
     }
 }
