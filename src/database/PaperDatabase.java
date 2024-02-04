@@ -45,11 +45,18 @@ public class PaperDatabase {
 
 
     private class ImageTable {
+        // Optimised mainly for memory usage (not speed)
+
         private final TableMode mode;
 
         private final File dataFile;
         private final File imageDir;
 
+        /**
+         * Creates a new table of images for the file
+         * @param imageDir the directory where the images and the data file are stored
+         * @param mode the type of data for the table to hold
+         */
         public ImageTable(File imageDir, TableMode mode) {
             this.mode = mode;
 
@@ -64,6 +71,12 @@ public class PaperDatabase {
             }
         }
 
+        /**
+         * Retrieves the selected ImageFiles from the database
+         * @param start the first piece of data to be retrieved
+         * @param end the last piece of data to be retrieved (exclusive)
+         * @return a list of the requested files
+         */
         public ArrayList<ImageFile> getData(int start, int end) {
             ArrayList<ImageFile> data = new ArrayList<>();
 
@@ -168,6 +181,10 @@ public class PaperDatabase {
             return null;
         }
 
+        /**
+         * Returns the length of each piece of data in the RandomAccessFile
+         * @return the number of bytes per ImageFile
+         */
         private int getDataLength() {
             if (mode == TableMode.QUESTIONS) {
                 return 5;
