@@ -8,9 +8,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Question
-        implements DocumentPageData{
-    protected File imageFile;
+        implements DocumentPageData {
+
     protected Logger logger;
+    protected File imageFile;
 
     /**
      * Constructs a new question from its file location

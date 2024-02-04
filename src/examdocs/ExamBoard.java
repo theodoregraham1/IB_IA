@@ -50,16 +50,18 @@ public class ExamBoard
      */
     public void makePapers() {
         try {
+            // Get all the papers from the data file
             String[] lines = FileHandler.readLines(infoFile);
 
             papers = new ArrayList<>();
-            for (int i = 1; i < lines.length - 1; i++) {
+            for(String line: lines) {
                 papers.add(new ExamPaper(
                                 PAPER_FILE_NAME,
-                                PAPER_DIR_FORMAT.formatted(dirPath, lines[i])));
+                                PAPER_DIR_FORMAT.formatted(dirPath, line)));
             }
 
         } catch (FileNotFoundException e) {
+            // If the file doesn't exist, make it ready for papers to be added
             boolean ignored = FileHandler.makeFile(infoFile);
 
         } catch (IOException e) {
@@ -123,9 +125,12 @@ public class ExamBoard
             int questionIndex = 0;
             @Override
             public boolean hasNext() {
+                // Check if there is another question in the current paper
                 if (papers.get(paperNum).getQuestion(questionIndex) != null) {
                     return true;
                 } else if (papers.get(paperNum+1) != null) {
+                    // Check if the next paper exists and if it has any questions
+                    paperNum ++;
                     return papers.get(paperNum + 1).getQuestion(0) != null;
                 }
                 return false;

@@ -227,8 +227,16 @@ public class ExamPaper {
         return new Question(outputFile, logger);
     }
 
+    /**
+     * Get specific question from the paper
+     * @param index the number for the question
+     * @return a reference to the Question
+     */
     public Question getQuestion(int index) {
-        return questions.get(index);
+        if (questions != null) {
+            return questions.get(index);
+        }
+        return null;
     }
 
     /**
@@ -243,10 +251,8 @@ public class ExamPaper {
     public boolean getFileQuestions() {
         /*
             Format:
-            - s or p for start or pass
-            - 000 for percentage down page
-            - e or p for end or pass
-            - 000 for percentage down page
+            - start page (000)
+            - end page
 
         File questionsFile = new File(document.getDirPath() + Constants.QUESTIONS_LIST_FILE_NAME);
         int pageNumber = 0, lineNumber = 0;
@@ -278,4 +284,5 @@ public class ExamPaper {
         }
     }
     */
+
 }
