@@ -123,6 +123,7 @@ public class ExamBoard
         return new Iterator<Question>() {
             int paperNum = 0;
             int questionIndex = 0;
+
             @Override
             public boolean hasNext() {
                 // Check if there is another question in the current paper
