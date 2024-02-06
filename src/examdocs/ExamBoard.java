@@ -39,6 +39,7 @@ public class ExamBoard
     public ExamBoard(BoardLevel level, String dirPath) {
         this.level = level;
         this.dirPath = dirPath;
+
         this.infoFile = new File(dirPath + separatorChar + INFO_FILE_NAME);
 
         makePapers();
@@ -84,10 +85,10 @@ public class ExamBoard
             if (!FileHandler.clearDirectory(paperDirPath)) {
                 return false;
             }
+
             // Copy the old paper into the new file
             File newPaperFile = new File(paperDirPath + PAPER_FILE_NAME);
             Files.copy(document.toPath(), newPaperFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
 
         } catch (IOException e) {
             // TODO: Better file handling here
@@ -99,6 +100,7 @@ public class ExamBoard
                 PAPER_FILE_NAME,
                 PAPER_DIR_FORMAT.formatted(dirPath, name));
 
+        paper.saveAsImages();
         paper.makeQuestions();
 
         papers.add(paper);
@@ -110,12 +112,21 @@ public class ExamBoard
         return true;
     }
 
-    public void addPaper(ArrayList<Question> questions, String name) {
-        papers.add(new ExamPaper(
+    public boolean addPaper(ArrayList<Question> questions, String name) {
+        ExamPaper paper = new ExamPaper(
                 questions,
                 PAPER_FILE_NAME,
                 PAPER_DIR_FORMAT.formatted(dirPath, name)
-        ));
+        );
+        paper.saveAsImages();
+
+        papers.add(paper);
+
+        // Check if the paper is already in the info file
+        if (!FileHandler.contains(name, infoFile)) {
+            return FileHandler.addLine(name + "\n", infoFile);
+        }
+        return true;
     }
 
     @Override
@@ -132,7 +143,7 @@ public class ExamBoard
                 } else if (papers.get(paperNum+1) != null) {
                     // Check if the next paper exists and if it has any questions
                     paperNum ++;
-                    return papers.get(paperNum + 1).getQuestion(0) != null;
+                    return papers.get(paperNum).getQuestion(0) != null;
                 }
                 return false;
             }

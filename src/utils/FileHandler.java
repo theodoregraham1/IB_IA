@@ -114,9 +114,10 @@ public class FileHandler {
      */
     public static boolean makeFile(File file) {
         try {
+            file.mkdirs();
             return file.createNewFile();
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "File with route %s couldn't be created");
+            logger.log(Level.SEVERE, "File with route %s couldn't be created".formatted(file.getPath()));
         }
         return false;
     }

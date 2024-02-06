@@ -55,10 +55,11 @@ public class PaperDatabase {
                 throw new IllegalArgumentException("Mode must not be null");
             }
 
-            this.dataFile = new File(imageDir.getPath() + File.separator + DATABASE_INFO_FILE_NAME);
+            this.dataFile = new File(imageDir, DATABASE_INFO_FILE_NAME);
             this.imageDir = imageDir;
 
             imageDir.mkdirs();
+            FileHandler.makeFile(imageDir);
             FileHandler.makeFile(dataFile);
 
             if (!imageDir.isDirectory()) {
@@ -68,7 +69,6 @@ public class PaperDatabase {
 
         /**
          * Retrieves the selected ImageFiles from the database
-         *
          * @param start the first piece of data to be retrieved
          * @param end   the last piece of data to be retrieved (exclusive)
          * @return a list of the requested files
@@ -85,10 +85,9 @@ public class PaperDatabase {
 
                 rf.seek((long) start * getDataLength());
 
-                int index = start;
+                int index = rf.read();
 
-                while (index < end) {
-                    index = rf.read();
+                while (index < end && index != -1) {
 
                     File imageFile = new File(QUESTION_FILE_FORMAT.formatted(imageDir.getPath() + File.separator, index));
 
@@ -111,7 +110,7 @@ public class PaperDatabase {
                             int endPercent = rf.read();
 
                             // Make the question
-                            Page[] pages = (Page[]) pageTable.getRows(startPage, endPage).toArray();
+                            Page[] pages = pageTable.getRows(startPage, endPage).toArray(new Page[0]);
 
                             BufferedImage image = Question.createQuestionImage(pages, startPercent, endPercent);
 
@@ -119,7 +118,7 @@ public class PaperDatabase {
                             data.add(saveImage(image, index));
                         }
                     }
-
+                    index = rf.read();
                 }
             } catch (IOException e) {
                 return data;
@@ -203,7 +202,7 @@ public class PaperDatabase {
             }
             return super.setRow(
                     Question.createQuestionImage(
-                        (Page[]) pageTable.getRows(data[1], data[3] + 1).toArray(),
+                        (Page[]) pageTable.getRows(data[1], data[3] + 1).toArray(new ImageFile[0]),
                         data[2],
                         data[4]
                     ),
@@ -233,7 +232,7 @@ public class PaperDatabase {
 
             try (RandomAccessFile rf = new RandomAccessFile(dataFile, "r")) {
                 // Check if the document has already been saved
-                if ((long) document.length() * getDataLength() == rf.length()) {
+                if (((long) document.length() * getDataLength()) == rf.length()) {
                     return true;
                 }
                 rf.close();
@@ -252,7 +251,7 @@ public class PaperDatabase {
             // Write the images
             int index = 0;
             for (BufferedImage image: document.splitToImages()) {
-                setRow(image, new int[]{index});
+                setRow(image, new int[]{index}); // FIXME: This tries to access the same file twice at the same time
                 index ++;
             }
             return true;

@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Move Question and Page instantiation into ImageFile (their interface)">
+    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Remove one whitespace">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/database/ImageFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/ImageFile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/PaperDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/PaperDatabase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/examdocs/Document.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/Document.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/examdocs/ExamBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/ExamBoard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/examdocs/ExamPaper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/ExamPaper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/FileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/FileHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -274,7 +276,21 @@
       <option name="project" value="LOCAL" />
       <updated>1707135297411</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Move all database access into Database and remove unnecessary methods from Document">
+      <created>1707219827467</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1707219827467</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Remove one whitespace">
+      <created>1707219887999</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1707219887999</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -326,6 +342,8 @@
     <MESSAGE value="Continue on making databases for the papers" />
     <MESSAGE value="Continue building database" />
     <MESSAGE value="Move Question and Page instantiation into ImageFile (their interface)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Move Question and Page instantiation into ImageFile (their interface)" />
+    <MESSAGE value="Move all database access into Database and remove unnecessary methods from Document" />
+    <MESSAGE value="Remove one whitespace" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove one whitespace" />
   </component>
 </project>

@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 public class ExamPaper {
     private static final Logger logger = Logger.getLogger(ExamPaper.class.getName());
 
-    // TODO: Move this to database
     private final Document document;
     private final PaperDatabase database;
 
@@ -29,24 +28,23 @@ public class ExamPaper {
      */
     public ExamPaper(String fileName, String dirPath) {
         this.document = new Document(fileName, dirPath);
-        this.database = new PaperDatabase(new File(fileName + File.separator + dirPath));
+        this.database = new PaperDatabase(new File(dirPath));
     }
 
     public ExamPaper(ArrayList<Question> questions, String fileName, String dirPath) {
         FileHandler.clearDirectory(dirPath);
 
         this.document = new Document(fileName, dirPath);
-        this.database = new PaperDatabase(new File(fileName + File.separator + dirPath));
+        this.database = new PaperDatabase(new File(dirPath + File.separator + fileName));
 
         int index = 0;
         for (Question question: questions) {
             int startPage = document.length();
             document.addPage(question);
 
-            // TODO: Work out how to do this
             database.questionTable.setRow(
                     question.getImage(),
-                    new int[] {index, startPage, 0, document.length(), 0});
+                    new int[] {index, startPage, 0, document.length(), 0}); // TODO: Improve this to actually use the correct page
             index ++;
         }
 
@@ -58,7 +56,9 @@ public class ExamPaper {
      * images if they are not already saved
      */
     public void saveAsImages() {
-        database.pageTable.makeFromDocument(document);
+        if (!database.pageTable.makeFromDocument(document)) {
+            throw new IllegalArgumentException("Database invalid");
+        }
     }
 
     /**
@@ -141,6 +141,10 @@ public class ExamPaper {
      * @return a reference to the Question
      */
     public Question getQuestion(int index) {
-        return (Question) database.questionTable.getRows(index, index+1).get(0);
+        try {
+            return (Question) database.questionTable.getRows(index, index + 1).get(0);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
     }
 }

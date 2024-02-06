@@ -18,6 +18,7 @@ public interface ImageFile {
     File getFile();
     BufferedImage getImage();
 
+
     static ImageFile getInstance(File file, TableMode mode, Logger logger) {
         if (mode == TableMode.QUESTIONS) {
             return new Question(file, logger);
