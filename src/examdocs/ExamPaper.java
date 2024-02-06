@@ -135,7 +135,6 @@ public class ExamPaper {
         }
     }
 
-
     /**
      * Get specific question from the paper
      * @param index the number for the question
