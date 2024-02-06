@@ -1,9 +1,7 @@
 import examdocs.BoardLevel;
 import examdocs.ExamBoard;
-import examdocs.ExamPaper;
 import examdocs.Question;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class Main {

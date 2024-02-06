@@ -1,8 +1,10 @@
 package database;
 
+import examdocs.Document;
 import examdocs.ExamPaper;
 import examdocs.Page;
 import examdocs.Question;
+import org.bouncycastle.asn1.cmp.Challenge;
 import utils.Constants;
 import utils.FileHandler;
 
@@ -226,9 +228,38 @@ public class PaperDatabase {
             super(imageDir, TableMode.PAGES);
         }
 
+        public boolean makeFromDocument(Document document) {
+            // Assume document is not too large where images will overflow memory
+
+            try (RandomAccessFile rf = new RandomAccessFile(dataFile, "r")) {
+                // Check if the document has already been saved
+                if ((long) document.length() * getDataLength() == rf.length()) {
+                    return true;
+                }
+                rf.close();
+
+                // Destroy and recreate the data file
+                if (!dataFile.delete()) {
+                    return false;
+                }
+                if (!dataFile.createNewFile()) {
+                    return false;
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            // Write the images
+            int index = 0;
+            for (BufferedImage image: document.splitToImages()) {
+                setRow(image, new int[]{index});
+                index ++;
+            }
+            return true;
+        }
+
         /**
          * Returns the length of each piece of data in the RandomAccessFile
-         *
          * @return the number of bytes per ImageFile
          */
         @Override

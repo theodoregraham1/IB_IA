@@ -3,15 +3,8 @@ package examdocs;
 import commands.Command;
 import commands.Commands;
 import database.PaperDatabase;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.rendering.PDFRenderer;
-import utils.Constants;
 import utils.FileHandler;
 
-import javax.imageio.ImageIO;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
 import java.util.logging.Level;
@@ -21,7 +14,6 @@ public class ExamPaper {
     private static final Logger logger = Logger.getLogger(ExamPaper.class.getName());
 
     // TODO: Move this to database
-    private boolean imagesSaved;
     private final Document document;
     private final PaperDatabase database;
 
@@ -38,8 +30,6 @@ public class ExamPaper {
     public ExamPaper(String fileName, String dirPath) {
         this.document = new Document(fileName, dirPath);
         this.database = new PaperDatabase(new File(fileName + File.separator + dirPath));
-
-        this.imagesSaved = document.checkImageDir();
     }
 
     public ExamPaper(ArrayList<Question> questions, String fileName, String dirPath) {
@@ -48,10 +38,19 @@ public class ExamPaper {
         this.document = new Document(fileName, dirPath);
         this.database = new PaperDatabase(new File(fileName + File.separator + dirPath));
 
-        // TODO: Change this to be based on document interacting with database
+        int index = 0;
         for (Question question: questions) {
+            int startPage = document.length();
             document.addPage(question);
+
+            // TODO: Work out how to do this
+            database.questionTable.setRow(
+                    question.getImage(),
+                    new int[] {index, startPage, 0, document.length(), 0});
+            index ++;
         }
+
+        database.pageTable.makeFromDocument(document);
     }
 
     /**
@@ -59,14 +58,7 @@ public class ExamPaper {
      * images if they are not already saved
      */
     public void saveAsImages() {
-        // TODO: refactor image file processing into the database
-        if (!(imagesSaved)) {
-            imagesSaved = document.saveAsImages();
-
-            if (imagesSaved) {
-                logger.log(Level.INFO, "Saved images from paper to directory");
-            }
-        }
+        database.pageTable.makeFromDocument(document);
     }
 
     /**
@@ -143,29 +135,6 @@ public class ExamPaper {
         }
     }
 
-    /**
-     * Save a question to the directory for images
-     * @param questionImage the complete image to be saved for the question
-     * @param questionNumber the number of the question in the paper
-     * @param dirPath the directory where the question should be saved
-     * @return the created question, null if there was an error
-     */
-    public Question saveQuestion(BufferedImage questionImage, int questionNumber, String dirPath) {
-        File outputFile = new File(Constants.QUESTION_FILE_FORMAT.formatted(dirPath, questionNumber));
-
-        try {
-            ImageIO.write(questionImage,
-                    Constants.IMAGE_IO_FORMAT,
-                    outputFile);
-
-            logger.log(Level.INFO, "Saved question number %d to file location: %s".formatted(questionNumber, outputFile.getCanonicalPath()));
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, e.toString());
-            return null;
-        }
-
-        return new Question(outputFile, logger);
-    }
 
     /**
      * Get specific question from the paper
@@ -174,13 +143,5 @@ public class ExamPaper {
      */
     public Question getQuestion(int index) {
         return (Question) database.questionTable.getRows(index, index+1).get(0);
-    }
-
-    /**
-     * Returns the pdf file location for this paper
-     * @return a File for this paper's file
-     */
-    public File getFile() {
-        return new File(document.getFilePath());
     }
 }
