@@ -38,7 +38,7 @@ public class Document
 
 
     /**
-     * Creates new examdocs.Document instance for a specific pdf file and checks that it is valid
+     * Creates new Document instance for a specific pdf file and checks that it is valid
      * @param fileName name of the file not including parent directories
      * @param dirPath route for parent directories
      */
@@ -301,14 +301,6 @@ public class Document
      */
     public String getFilePath() {
         return dirPath + fileName;
-    }
-
-    /**
-     * Returns the path to the directory where this document is stored, from the root directory
-     * @return a String of the directory path
-     */
-    public String getDirPath() {
-        return dirPath;
     }
 
     @Override

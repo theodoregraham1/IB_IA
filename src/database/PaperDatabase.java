@@ -2,6 +2,7 @@ package database;
 
 import examdocs.ExamPaper;
 import examdocs.Page;
+import examdocs.Question;
 import utils.Constants;
 import utils.FileHandler;
 
@@ -23,21 +24,15 @@ public class PaperDatabase {
         logger.setLevel(Level.FINEST);
     }
 
-    public final ImageTable pageTable;
-    public final ImageTable questionTable;
+    public final PageTable pageTable;
+    public final QuestionTable questionTable;
 
-    private final ExamPaper paper;
-
-    public PaperDatabase(File directory, ExamPaper paper) {
+    public PaperDatabase(File directory) {
         this.pageTable = new PageTable(new File(directory + PAGES_DIR_NAME));
-
         this.questionTable = new QuestionTable(new File(directory + QUESTIONS_DIR_NAME));
-
-        this.paper = paper;
     }
 
-
-    private abstract class ImageTable {
+    public abstract class ImageTable {
         // Optimised mainly for memory usage (not speed)
 
         protected final TableMode mode;
@@ -116,7 +111,7 @@ public class PaperDatabase {
                             // Make the question
                             Page[] pages = (Page[]) pageTable.getRows(startPage, endPage).toArray();
 
-                            BufferedImage image = paper.createQuestionImage(pages, startPercent, endPercent);
+                            BufferedImage image = Question.createQuestionImage(pages, startPercent, endPercent);
 
                             // Save the question
                             data.add(saveImage(image, index));
@@ -158,28 +153,11 @@ public class PaperDatabase {
             return ImageFile.getInstance(outputFile, mode, logger);
         }
 
-        public abstract boolean setRow(BufferedImage image, int[] data);
-
-        /**
-         * Returns the length of each piece of data in the RandomAccessFile
-         * @return the number of bytes per ImageFile
-         */
-        protected abstract int getDataLength();
-
-    }
-
-    private class QuestionTable
-            extends ImageTable {
-
-        public QuestionTable(File imageDir) {
-            super(imageDir, TableMode.QUESTIONS);
-        }
-
-        @Override
         public boolean setRow(BufferedImage image, int[] data) {
             if (data.length != getDataLength()) {
                 return false;
             }
+
             // Convert data to bytes for writing
             byte[] bytes = new byte[data.length];
 
@@ -206,23 +184,46 @@ public class PaperDatabase {
          * Returns the length of each piece of data in the RandomAccessFile
          * @return the number of bytes per ImageFile
          */
+        protected abstract int getDataLength();
+
+    }
+
+    public class QuestionTable
+            extends ImageTable {
+
+        public QuestionTable(File imageDir) {
+            super(imageDir, TableMode.QUESTIONS);
+        }
+
+        public boolean setRow(int[] data) {
+            if (data.length != getDataLength()) {
+                return false;
+            }
+            return super.setRow(
+                    Question.createQuestionImage(
+                        (Page[]) pageTable.getRows(data[1], data[3] + 1).toArray(),
+                        data[2],
+                        data[4]
+                    ),
+                    data
+            );
+        }
+
+        /**
+         * Returns the length of each piece of data in the RandomAccessFile
+         * @return the number of bytes per ImageFile
+         */
         @Override
         protected int getDataLength() {
             return 5;
         }
     }
 
-    private class PageTable
+    public class PageTable
         extends ImageTable {
 
         public PageTable(File imageDir) {
             super(imageDir, TableMode.PAGES);
-        }
-
-        @Override
-        public boolean setRow(BufferedImage image, int[] data) {
-            // TODO
-            return false;
         }
 
         /**

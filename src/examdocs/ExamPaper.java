@@ -2,6 +2,7 @@ package examdocs;
 
 import commands.Command;
 import commands.Commands;
+import database.PaperDatabase;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -19,9 +20,10 @@ import java.util.logging.Logger;
 public class ExamPaper {
     private static final Logger logger = Logger.getLogger(ExamPaper.class.getName());
 
+    // TODO: Move this to database
     private boolean imagesSaved;
     private final Document document;
-    private ArrayList<Question> questions;
+    private final PaperDatabase database;
 
     // Initialise logging level
     static {
@@ -35,14 +37,18 @@ public class ExamPaper {
      */
     public ExamPaper(String fileName, String dirPath) {
         this.document = new Document(fileName, dirPath);
+        this.database = new PaperDatabase(new File(fileName + File.separator + dirPath));
 
         this.imagesSaved = document.checkImageDir();
     }
 
-    public ExamPaper(ArrayList<Question> questions, String filename, String dirPath) {
+    public ExamPaper(ArrayList<Question> questions, String fileName, String dirPath) {
         FileHandler.clearDirectory(dirPath);
-        this.document = new Document(filename, dirPath);
 
+        this.document = new Document(fileName, dirPath);
+        this.database = new PaperDatabase(new File(fileName + File.separator + dirPath));
+
+        // TODO: Change this to be based on document interacting with database
         for (Question question: questions) {
             document.addPage(question);
         }
@@ -68,10 +74,6 @@ public class ExamPaper {
      * Based on user input
      */
     public void makeQuestions() {
-        // TODO: Write the file information to a random access file and then read it back in if it exists
-        // FIXME: use the database and pages here
-
-        int BUFFER_SIZE = 5;
         Commands commands = new Commands(new Command[] {
                 new Command("end", new String[]{"end", "e"}),
                 new Command("start", new String[]{"start", "s"}),
@@ -79,29 +81,15 @@ public class ExamPaper {
                 new Command("pass", new String[]{"pass", "p", " "})
         });
 
-        // Make question directory
-        String questionDirPath = document.getDirPath() + Constants.QUESTIONS_DIR_NAME;
-        FileHandler.clearDirectory(questionDirPath);
-
         // Save page images
         this.saveAsImages();
 
-        questions = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
 
-        BufferedImage[] imagesBuffer = null;
-        ArrayList<BufferedImage> currentImages = null;
-
-        int pageNumber = 0, imageNumber = 0, startPercent = 0, endPercent;
+        int pageNumber = 0, startPercent = 0, startPage = 0, questionNumber = 0;
         boolean ended = false, inQuestion = false;
 
         while (!ended) {
-            // Use a buffer of images to reduce time taken
-            if ((pageNumber % BUFFER_SIZE) == 0) {
-                 imagesBuffer = document.getImages(pageNumber, pageNumber + BUFFER_SIZE);
-            }
-            imageNumber = pageNumber % BUFFER_SIZE;
-
             // Command line interface
             System.out.printf("Page number %d reached\n", pageNumber);
 
@@ -120,11 +108,6 @@ public class ExamPaper {
                 }
             }
 
-            // Result of command
-            if (inQuestion) {
-                currentImages.add(imagesBuffer[imageNumber]);
-            }
-
             if (command.equals("end") || command.equals("start")) {
                 System.out.print("Percentage: ");
                 int linePercent = Integer.parseInt(scanner.next());
@@ -132,27 +115,23 @@ public class ExamPaper {
                 if (!inQuestion) {
                     // Start creating new question
                     startPercent = linePercent;
-
-                    currentImages = new ArrayList<>();
-                    currentImages.add(imagesBuffer[imageNumber]);
+                    startPage = pageNumber;
 
                 } else {
                     // Save the current question
-                    endPercent = linePercent;
-
-                    BufferedImage questionImage = createQuestionImage(
-                            currentImages.toArray(new BufferedImage[0]),
+                    database.questionTable.setRow(new int[] {
+                            questionNumber,
+                            startPage,
                             startPercent,
-                            endPercent
-                            );
-                    questions.add(saveQuestion(
-                            questionImage,
-                            questions.size(),
-                            questionDirPath
-                            ));
+                            pageNumber,
+                            linePercent
+                    });
+
+                    questionNumber ++;
                 }
 
-                // TODO: Allow a question to start on the same page as one ends
+                // Allow a question to start on the same page as the previous one ended
+                pageNumber --;
 
                 inQuestion = !inQuestion;
             } else if (command.equals("exit")) {
@@ -162,57 +141,6 @@ public class ExamPaper {
             // Get the next image
             pageNumber ++;
         }
-    }
-
-    /**
-     * Returns a combined image of all the images in a question put together
-     * @param inputImages An array of the images for the question, in order
-     * @param startHeight The height where the first image is cut off
-     * @param endHeight The height where the last image is cut off
-     * @return a single Buffered Image made up of all the inputImages joined vertically
-     */
-    public BufferedImage createQuestionImage(Page[] inputPages, int startPercent, int endPercent) {
-        // TODO: Think about moving this to more appropriate class (possibly Question)
-
-        // Find the sizes for the full pages
-        int width = inputPages[0].getImage().getWidth();
-        int height = inputPages[0].getImage().getHeight();
-
-        // Find the heights for the partial pages
-        int startHeight = height * startPercent / 100;
-        int endHeight = height * endPercent / 100;
-
-        // Get cut off images at start and end
-        BufferedImage firstImage = inputPages[0].getImage()
-                .getSubimage(0, startHeight, width, height-startHeight);
-        BufferedImage lastImage = inputPages[inputPages.length-1].getImage()
-                .getSubimage(0, 0, width, endHeight);
-
-        // Make the combined image, ready to be filled
-        int combinedHeight = height*(inputPages.length-2) + firstImage.getHeight() + lastImage.getHeight();
-
-        BufferedImage combinedImage = new BufferedImage(width, combinedHeight, BufferedImage.TYPE_INT_RGB);
-        Graphics graphics = combinedImage.getGraphics();
-
-        // Draw first image
-        graphics.drawImage(firstImage, 0, 0, null);
-
-        // Draw middle images
-        for (int i = 1; i < inputPages.length-1; i++) {
-            graphics.drawImage(
-                    inputPages[i].getImage(),
-                    0,
-                    firstImage.getHeight() + (height * (i-1)),
-                    null);
-        }
-
-        // Draw last image
-        graphics.drawImage(lastImage, 0,combinedHeight - lastImage.getHeight(), null);
-
-        graphics.dispose();
-
-        logger.log(Level.INFO, "Made question from %d images".formatted(inputPages.length));
-        return combinedImage;
     }
 
     /**
@@ -245,10 +173,7 @@ public class ExamPaper {
      * @return a reference to the Question
      */
     public Question getQuestion(int index) {
-        if (questions != null) {
-            return questions.get(index);
-        }
-        return null;
+        return (Question) database.questionTable.getRows(index, index+1).get(0);
     }
 
     /**
@@ -258,43 +183,4 @@ public class ExamPaper {
     public File getFile() {
         return new File(document.getFilePath());
     }
-
-    /*
-    public boolean getFileQuestions() {
-        /*
-            Format:
-            - start page (000)
-            - end page
-
-        File questionsFile = new File(document.getDirPath() + Constants.QUESTIONS_LIST_FILE_NAME);
-        int pageNumber = 0, lineNumber = 0;
-
-        try (
-                RandomAccessFile randomQuestionsFile = new RandomAccessFile(questionsFile, "r");
-        ) {
-            randomQuestionsFile.seek(0);
-
-            while (true) {
-                char c = randomQuestionsFile.readChar();
-
-                if (c == 'p') {
-                    randomQuestionsFile.seek(randomQuestionsFile.getFilePointer() + 3);
-                }
-
-                pageNumber ++;
-            }
-        } catch (FileNotFoundException e) {
-            FileHandler.makeFile(questionsFile);
-            return false;
-
-        } catch (EOFException e) {
-            return true;
-
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, e.toString());
-            return false;
-        }
-    }
-    */
-
 }
