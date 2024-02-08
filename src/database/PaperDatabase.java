@@ -89,7 +89,7 @@ public class PaperDatabase {
 
                 while (index < end && index != -1) {
 
-                    File imageFile = new File(QUESTION_FILE_FORMAT.formatted(imageDir.getPath() + File.separator, index));
+                    File imageFile = ImageFile.getInstanceFile(imageDir, index, mode);
 
                     if (imageFile.exists()) {
                         // If the image exists, get the data from there

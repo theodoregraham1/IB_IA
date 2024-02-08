@@ -156,7 +156,7 @@ public class ExamPaper
             int count = 0;
             @Override
             public boolean hasNext() {
-                return database.pageTable.getRows(count, count+1).get(0) != null;
+                return database.pageTable.getRows(count, count+1).size() > 0;
             }
 
             @Override

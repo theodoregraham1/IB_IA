@@ -4,14 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Remove one whitespace">
+    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Continue working on accessing database">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/database/PaperDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/PaperDatabase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/examdocs/ExamBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/ExamBoard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/examdocs/ExamPaper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/ExamPaper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/FileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/FileHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +39,7 @@
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
-        <option name="accountId" value="1fb65940-7849-42a1-810f-b760b980d5a3" />
+        <option name="accountId" value="17164b2d-1cd9-419a-a9f9-7cbb33bdf05c" />
         <option name="url" value="https://github.com/theodoregraham1/IB_IA.git" />
       </UrlAndAccount>
     </option>
@@ -290,7 +284,14 @@
       <option name="project" value="LOCAL" />
       <updated>1707219887999</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Continue working on accessing database">
+      <created>1707383312103</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1707383312103</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -359,6 +360,18 @@
     <MESSAGE value="Move Question and Page instantiation into ImageFile (their interface)" />
     <MESSAGE value="Move all database access into Database and remove unnecessary methods from Document" />
     <MESSAGE value="Remove one whitespace" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove one whitespace" />
+    <MESSAGE value="Continue working on accessing database" />
+    <option name="LAST_COMMIT_MESSAGE" value="Continue working on accessing database" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/examdocs/ExamBoard.java</url>
+          <line>39</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
