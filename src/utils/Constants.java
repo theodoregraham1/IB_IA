@@ -11,7 +11,7 @@ public class Constants {
 
     public final static String PAPER_DIR_FORMAT = "%s/%s/";
     public final static String PAPER_FILE_NAME = "paper.pdf";
-    public final static String DATABASE_INFO_FILE_NAME = "data.txt";
+    public final static String DATABASE_INFO_FILE_NAME = "data.bin";
 
     public static final String PAGES_DIR_NAME = "/pages";
     public static final String QUESTIONS_DIR_NAME = "/questions";

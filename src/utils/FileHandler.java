@@ -114,7 +114,7 @@ public class FileHandler {
      */
     public static boolean makeFile(File file) {
         try {
-            file.mkdirs();
+            file.getParentFile().mkdirs();
             return file.createNewFile();
         } catch (IOException e) {
             logger.log(Level.SEVERE, "File with route %s couldn't be created".formatted(file.getPath()));

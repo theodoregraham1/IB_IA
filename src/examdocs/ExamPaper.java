@@ -2,6 +2,7 @@ package examdocs;
 
 import commands.Command;
 import commands.Commands;
+import database.ImageFile;
 import database.PaperDatabase;
 import utils.FileHandler;
 
@@ -10,7 +11,8 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ExamPaper {
+public class ExamPaper
+    implements Iterable<Page> {
     private static final Logger logger = Logger.getLogger(ExamPaper.class.getName());
 
     private final Document document;
@@ -146,5 +148,22 @@ public class ExamPaper {
         } catch (IndexOutOfBoundsException e) {
             return null;
         }
+    }
+
+    @Override
+    public Iterator<Page> iterator() {
+        return new Iterator<Page>() {
+            int count = 0;
+            @Override
+            public boolean hasNext() {
+                return database.pageTable.getRows(count, count+1).get(0) != null;
+            }
+
+            @Override
+            public Page next() {
+                count ++;
+                return (Page) database.pageTable.getRows(count-1, count).get(0);
+            }
+        };
     }
 }

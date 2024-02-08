@@ -129,6 +129,10 @@ public class ExamBoard
         return true;
     }
 
+    public ExamPaper getPaper(int index) {
+        return papers.get(index);
+    }
+
     @Override
     public Iterator<Question> iterator() {
         return new Iterator<Question>() {

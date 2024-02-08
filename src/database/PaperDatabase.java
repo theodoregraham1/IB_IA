@@ -159,6 +159,8 @@ public class PaperDatabase {
                 return false;
             }
 
+            saveImage(image, data[0]);
+
             // Convert data to bytes for writing
             byte[] bytes = new byte[data.length];
 
@@ -176,7 +178,6 @@ public class PaperDatabase {
                 logger.log(Level.SEVERE, e.toString());
                 return false;
             }
-            saveImage(image, data[0]);
 
             return true;
         }
@@ -244,6 +245,10 @@ public class PaperDatabase {
                 if (!dataFile.createNewFile()) {
                     return false;
                 }
+            } catch (FileNotFoundException e) {
+                FileHandler.clearDirectory(dataFile.getParent());
+                FileHandler.makeFile(dataFile);
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -251,7 +256,7 @@ public class PaperDatabase {
             // Write the images
             int index = 0;
             for (BufferedImage image: document.splitToImages()) {
-                setRow(image, new int[]{index}); // FIXME: This tries to access the same file twice at the same time
+                setRow(image, new int[]{index});
                 index ++;
             }
             return true;
