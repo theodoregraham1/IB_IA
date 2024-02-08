@@ -49,18 +49,6 @@ public class ExamPaper
                     new int[] {index, startPage, 0, document.length(), 0}); // TODO: Improve this to actually use the correct page
             index ++;
         }
-
-        database.pageTable.makeFromDocument(document);
-    }
-
-    /**
-     * Saves images from exam paper's document, updating imagesSaved if it was successful. Only saves
-     * images if they are not already saved
-     */
-    public void saveAsImages() {
-        if (!database.pageTable.makeFromDocument(document)) {
-            throw new IllegalArgumentException("Database invalid");
-        }
     }
 
     /**

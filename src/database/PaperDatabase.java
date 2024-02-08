@@ -116,6 +116,10 @@ public class PaperDatabase {
 
                             // Save the question
                             data.add(saveImage(image, index));
+                        } else if (mode == TableMode.PAGES){
+                            int pageNumber = rf.read();
+
+                            // TODO: Use the document in page table to allow dynamic page creation
                         }
                     }
                     index = rf.read();
@@ -224,11 +228,16 @@ public class PaperDatabase {
     public class PageTable
         extends ImageTable {
 
-        public PageTable(File imageDir) {
+        private Document document;
+
+        public PageTable(File imageDir, Document document) {
             super(imageDir, TableMode.PAGES);
+
+            this.document = document;
+            makeFromDocument();
         }
 
-        public boolean makeFromDocument(Document document) {
+        public boolean makeFromDocument() {
             // Assume document is not too large where images will overflow memory
 
             try (RandomAccessFile rf = new RandomAccessFile(dataFile, "r")) {
