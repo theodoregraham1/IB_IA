@@ -1,10 +1,8 @@
 package database;
 
 import examdocs.Document;
-import examdocs.ExamPaper;
 import examdocs.Page;
 import examdocs.Question;
-import org.bouncycastle.asn1.cmp.Challenge;
 import utils.Constants;
 import utils.FileHandler;
 
@@ -29,8 +27,8 @@ public class PaperDatabase {
     public final PageTable pageTable;
     public final QuestionTable questionTable;
 
-    public PaperDatabase(File directory) {
-        this.pageTable = new PageTable(new File(directory + PAGES_DIR_NAME));
+    public PaperDatabase(File directory, Document document) {
+        this.pageTable = new PageTable(new File(directory + PAGES_DIR_NAME), document);
         this.questionTable = new QuestionTable(new File(directory + QUESTIONS_DIR_NAME));
     }
 
@@ -116,10 +114,13 @@ public class PaperDatabase {
 
                             // Save the question
                             data.add(saveImage(image, index));
+
                         } else if (mode == TableMode.PAGES){
                             int pageNumber = rf.read();
 
-                            // TODO: Use the document in page table to allow dynamic page creation
+                            pageTable.makeFromDocument();
+
+                            return getRows(start, end);
                         }
                     }
                     index = rf.read();
@@ -201,15 +202,15 @@ public class PaperDatabase {
             super(imageDir, TableMode.QUESTIONS);
         }
 
-        public boolean setRow(int[] data) {
+        public void setRow(int[] data) {
             if (data.length != getDataLength()) {
-                return false;
+                return;
             }
-            return super.setRow(
+            super.setRow(
                     Question.createQuestionImage(
-                        (Page[]) pageTable.getRows(data[1], data[3] + 1).toArray(new ImageFile[0]),
-                        data[2],
-                        data[4]
+                            pageTable.getRows(data[1], data[3] + 1).toArray(new Page[0]),
+                            data[2],
+                            data[4]
                     ),
                     data
             );

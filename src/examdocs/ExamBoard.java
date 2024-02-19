@@ -64,6 +64,7 @@ public class ExamBoard
         } catch (FileNotFoundException e) {
             // If the file doesn't exist, make it ready for papers to be added
             boolean ignored = FileHandler.makeFile(infoFile);
+            papers = new ArrayList<>();
 
         } catch (IOException e) {
             // TODO: More robust error handling
@@ -100,7 +101,6 @@ public class ExamBoard
                 PAPER_FILE_NAME,
                 PAPER_DIR_FORMAT.formatted(dirPath, name));
 
-        paper.saveAsImages();
         paper.makeQuestions();
 
         papers.add(paper);
@@ -118,7 +118,6 @@ public class ExamBoard
                 PAPER_FILE_NAME,
                 PAPER_DIR_FORMAT.formatted(dirPath, name)
         );
-        paper.saveAsImages();
 
         papers.add(paper);
 
@@ -130,6 +129,9 @@ public class ExamBoard
     }
 
     public ExamPaper getPaper(int index) {
+        if (index >= papers.size()) {
+            return null;
+        }
         return papers.get(index);
     }
 

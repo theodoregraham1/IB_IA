@@ -2,7 +2,6 @@ package examdocs;
 
 import commands.Command;
 import commands.Commands;
-import database.ImageFile;
 import database.PaperDatabase;
 import utils.FileHandler;
 
@@ -30,14 +29,14 @@ public class ExamPaper
      */
     public ExamPaper(String fileName, String dirPath) {
         this.document = new Document(fileName, dirPath);
-        this.database = new PaperDatabase(new File(dirPath));
+        this.database = new PaperDatabase(new File(dirPath), document);
     }
 
     public ExamPaper(ArrayList<Question> questions, String fileName, String dirPath) {
         FileHandler.clearDirectory(dirPath);
 
         this.document = new Document(fileName, dirPath);
-        this.database = new PaperDatabase(new File(dirPath + File.separator + fileName));
+        this.database = new PaperDatabase(new File(dirPath + File.separator + fileName), document);
 
         int index = 0;
         for (Question question: questions) {
@@ -62,9 +61,6 @@ public class ExamPaper
                 new Command("exit", new String[]{"exit"}),
                 new Command("pass", new String[]{"pass", "p", " "})
         });
-
-        // Save page images
-        this.saveAsImages();
 
         Scanner scanner = new Scanner(System.in);
 
@@ -140,17 +136,18 @@ public class ExamPaper
 
     @Override
     public Iterator<Page> iterator() {
-        return new Iterator<Page>() {
+        return new Iterator<>() {
             int count = 0;
+
             @Override
             public boolean hasNext() {
-                return database.pageTable.getRows(count, count+1).size() > 0;
+                return !database.pageTable.getRows(count, count + 1).isEmpty();
             }
 
             @Override
             public Page next() {
-                count ++;
-                return (Page) database.pageTable.getRows(count-1, count).get(0);
+                count++;
+                return (Page) database.pageTable.getRows(count - 1, count).get(0);
             }
         };
     }
