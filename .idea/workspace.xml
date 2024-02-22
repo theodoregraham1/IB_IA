@@ -6,12 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Continue working on accessing database">
       <change beforePath="$PROJECT_DIR$/.idea/libraries/pdfbox_app_3_0_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/pdfbox_app_3_0_0.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/Paper-2013-June-1/questions/data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Papers/GCSE/Paper-2013-June-1/questions/data.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/PaperDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/PaperDatabase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/examdocs/ExamBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/ExamBoard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/examdocs/ExamPaper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/ExamPaper.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +73,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/Theod/Computer Science/pdfbox-app-3.0.0.jar",
+    "last_opened_file_path": "N:/pdfbox-app-3.0.0.jar",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",

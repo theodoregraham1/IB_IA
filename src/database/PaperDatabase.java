@@ -85,9 +85,13 @@ public class PaperDatabase {
 
                 int index = rf.read();
 
+                System.out.println(index);
+
                 while (index < end && index != -1) {
 
                     File imageFile = ImageFile.getInstanceFile(imageDir, index, mode);
+
+                    System.out.println(index);
 
                     if (imageFile.exists()) {
                         // If the image exists, get the data from there
@@ -106,6 +110,12 @@ public class PaperDatabase {
 
                             int endPage = rf.read();
                             int endPercent = rf.read();
+
+                            System.out.println(startPage);
+                            System.out.println(startPercent);
+
+                            System.out.println(endPage);
+                            System.out.println(endPercent);
 
                             // Make the question
                             Page[] pages = pageTable.getRows(startPage, endPage).toArray(new Page[0]);
@@ -159,9 +169,9 @@ public class PaperDatabase {
             return ImageFile.getInstance(outputFile, mode, logger);
         }
 
-        public boolean setRow(BufferedImage image, int[] data) {
+        public void setRow(BufferedImage image, int[] data) {
             if (data.length != getDataLength()) {
-                return false;
+                return;
             }
 
             saveImage(image, data[0]);
@@ -181,10 +191,8 @@ public class PaperDatabase {
                 rf.write(bytes);
             } catch (IOException e) {
                 logger.log(Level.SEVERE, e.toString());
-                return false;
             }
 
-            return true;
         }
 
         /**
@@ -238,22 +246,22 @@ public class PaperDatabase {
             makeFromDocument();
         }
 
-        public boolean makeFromDocument() {
+        public void makeFromDocument() {
             // Assume document is not too large where images will overflow memory
 
             try (RandomAccessFile rf = new RandomAccessFile(dataFile, "r")) {
                 // Check if the document has already been saved
                 if (((long) document.length() * getDataLength()) == rf.length()) {
-                    return true;
+                    return;
                 }
                 rf.close();
 
                 // Destroy and recreate the data file
                 if (!dataFile.delete()) {
-                    return false;
+                    return;
                 }
                 if (!dataFile.createNewFile()) {
-                    return false;
+                    return;
                 }
             } catch (FileNotFoundException e) {
                 FileHandler.clearDirectory(dataFile.getParent());
@@ -269,7 +277,6 @@ public class PaperDatabase {
                 setRow(image, new int[]{index});
                 index ++;
             }
-            return true;
         }
 
         /**
