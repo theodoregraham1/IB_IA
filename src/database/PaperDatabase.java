@@ -28,8 +28,12 @@ public class PaperDatabase {
     public final QuestionTable questionTable;
 
     public PaperDatabase(File directory, Document document) {
-        this.pageTable = new PageTable(new File(directory + PAGES_DIR_NAME), document);
-        this.questionTable = new QuestionTable(new File(directory + QUESTIONS_DIR_NAME));
+        this.pageTable = new PageTable(new File(directory, PAGES_DIR_NAME), document);
+        this.questionTable = new QuestionTable(new File(directory, QUESTIONS_DIR_NAME));
+    }
+
+    public PaperDatabase(File directory, File document) {
+
     }
 
     public abstract class ImageTable {
@@ -78,20 +82,16 @@ public class PaperDatabase {
                     RandomAccessFile rf = new RandomAccessFile(dataFile, "r")
             ) {
                 if (end == -1) {
-                    end = imageDir.listFiles().length;
+                    end = imageDir.listFiles().length-1;
                 }
 
                 rf.seek((long) start * getDataLength());
 
                 int index = rf.read();
 
-                System.out.println(index);
-
                 while (index < end && index != -1) {
 
                     File imageFile = ImageFile.getInstanceFile(imageDir, index, mode);
-
-                    System.out.println(index);
 
                     if (imageFile.exists()) {
                         // If the image exists, get the data from there
@@ -111,12 +111,6 @@ public class PaperDatabase {
                             int endPage = rf.read();
                             int endPercent = rf.read();
 
-                            System.out.println(startPage);
-                            System.out.println(startPercent);
-
-                            System.out.println(endPage);
-                            System.out.println(endPercent);
-
                             // Make the question
                             Page[] pages = pageTable.getRows(startPage, endPage).toArray(new Page[0]);
 
@@ -128,7 +122,7 @@ public class PaperDatabase {
                         } else if (mode == TableMode.PAGES){
                             int pageNumber = rf.read();
 
-                            pageTable.makeFromDocument();
+                            // pageTable.makeFromDocument(); FIXME: This will cause file-locking problems so need another way to do it
 
                             return getRows(start, end);
                         }
@@ -216,7 +210,7 @@ public class PaperDatabase {
             }
             super.setRow(
                     Question.createQuestionImage(
-                            pageTable.getRows(data[1], data[3] + 1).toArray(new Page[0]),
+                            pageTable.getRows(data[1], data[3]).toArray(new Page[0]),
                             data[2],
                             data[4]
                     ),
@@ -251,7 +245,7 @@ public class PaperDatabase {
 
             try (RandomAccessFile rf = new RandomAccessFile(dataFile, "r")) {
                 // Check if the document has already been saved
-                if (((long) document.length() * getDataLength()) == rf.length()) {
+                if (((long) document.length() * getDataLength()) <= rf.length()) {
                     return;
                 }
                 rf.close();
@@ -288,5 +282,4 @@ public class PaperDatabase {
             return 1;
         }
     }
-
 }
