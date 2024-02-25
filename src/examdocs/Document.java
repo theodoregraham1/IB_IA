@@ -21,8 +21,7 @@ import java.util.logging.Logger;
 import utils.Constants;
 import utils.FileHandler;
 
-public class Document
-        implements Comparable<File> {
+public class Document {
     private static final Logger logger = Logger.getLogger(Document.class.getName());
 
     // Initialise logging level
@@ -173,15 +172,15 @@ public class Document
         return documentFile.getPath();
     }
 
+    public File getFile() {
+        return documentFile;
+    }
+
     public int length() {
         try (PDDocument document = getDocument()) {
             return document.getNumberOfPages();
         } catch (IOException e) {
             return 0;
         }
-    }
-    @Override
-    public int compareTo(File file) {
-        return file.compareTo(this.documentFile);
     }
 }

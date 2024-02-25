@@ -155,4 +155,12 @@ public class ExamPaper
             }
         };
     }
+
+    public File getDocumentFile() {
+        return document.getFile();
+    }
+
+    public boolean equals(ExamPaper paper) {
+        return getDocumentFile().equals(paper.getDocumentFile());
+    }
 }

@@ -4,11 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Update Document to be based off files, not string paths">
+    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Improve file system: make classes use File properly and encapsulate files better into lower level classes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/database/PaperDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/PaperDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/Paper-2013-June-1/pages/data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Papers/GCSE/Paper-2013-June-1/pages/data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/examdocs/Document.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/Document.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/examdocs/ExamBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/ExamBoard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/examdocs/ExamPaper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/ExamPaper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/Constants.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,7 +131,8 @@
       <workItem from="1707065937614" duration="7927000" />
       <workItem from="1708338243056" duration="3382000" />
       <workItem from="1708809624768" duration="3011000" />
-      <workItem from="1708858711827" duration="3097000" />
+      <workItem from="1708858711827" duration="3415000" />
+      <workItem from="1708862170968" duration="2960000" />
     </task>
     <task id="LOCAL-00001" summary="Work on making an ExamPaper class">
       <option name="closed" value="true" />
@@ -321,7 +325,23 @@
       <option name="project" value="LOCAL" />
       <updated>1708860192908</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Improve file system">
+      <option name="closed" value="true" />
+      <created>1708861846152</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1708861846152</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Improve file system: make classes use File properly and encapsulate files better into lower level classes">
+      <option name="closed" value="true" />
+      <created>1708861981743</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1708861981743</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -368,8 +388,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Add test paper files and add ExamPaper.getText" />
-    <MESSAGE value="Remove splitPDFHorizontally.java (as it is redundant) and add logging to getDocument()" />
     <MESSAGE value="Refactor methods in PDFInterface and ExamPaper" />
     <MESSAGE value="Remove loggers and replace with System.out" />
     <MESSAGE value="Remove unnecessary code (mainly imports)" />
@@ -393,7 +411,9 @@
     <MESSAGE value="Work on robustness" />
     <MESSAGE value="Work on encapsulating file handling functions better to avoid errors" />
     <MESSAGE value="Update Document to be based off files, not string paths" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update Document to be based off files, not string paths" />
+    <MESSAGE value="Improve file system" />
+    <MESSAGE value="Improve file system: make classes use File properly and encapsulate files better into lower level classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Improve file system: make classes use File properly and encapsulate files better into lower level classes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

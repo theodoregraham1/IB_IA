@@ -9,7 +9,6 @@ public class Constants {
     public final static String PAGE_FILE_FORMAT = "%s/page_%03d.png";
     public final static String QUESTION_FILE_FORMAT = "%s/question_%03d.png";
 
-    public final static String PAPER_DIR_FORMAT = "%s/%s/";
     public final static String PAPER_FILE_NAME = "paper.pdf";
     public final static String DATABASE_INFO_FILE_NAME = "data.bin";
 

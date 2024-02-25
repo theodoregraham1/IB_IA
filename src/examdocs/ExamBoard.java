@@ -1,16 +1,11 @@
 package examdocs;
 
-import static utils.Constants.*;
-
 import database.PaperDatabase;
 import utils.FileHandler;
 
-import static java.io.File.separatorChar;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -76,23 +71,38 @@ public class ExamBoard
     /**
      * Adds a new paper from scratch, assuming nothing has been saved before.
      * Then saves images and questions
+     *
      * @param document the pdf file to make the paper from
-     * @param name the name of the paper, in the format: YEAR-MONTH-NUMBER
+     * @param name     the name of the paper, in the format: YEAR-MONTH-NUMBER
      */
-    public boolean addPaper(File document, String name) {
+    public void addPaper(File document, String name) {
         // Make the files
-        PaperDatabase.makeDatabase(new File(directory, name), document);
-        ExamPaper paper = new ExamPaper(new File(document, name));
+        File paperFile = new File(directory, name);
+
+        PaperDatabase.makeDatabase(paperFile, document);
+        ExamPaper paper = new ExamPaper(paperFile);
 
         paper.makeQuestions();
 
-        papers.add(paper);
 
         // Check if the paper is already in the info file
         if (!FileHandler.contains(name, infoFile)) {
-            return FileHandler.addLine(name + "\n", infoFile);
+            FileHandler.addLine(name + "\n", infoFile);
+            papers.add(paper);
+
+        } else {
+            // Linear search to replace old version of paper
+            int i = 0;
+            boolean found = false;
+
+            while (i < papers.size() && !found) {
+                if (paper.equals(papers.get(i))) {
+                    papers.set(i, paper);
+                    found = true;
+                }
+                i++;
+            }
         }
-        return true;
     }
 
     public boolean addPaper(ArrayList<Question> questions, String name) {
@@ -126,20 +136,23 @@ public class ExamBoard
             @Override
             public boolean hasNext() {
                 // Check if there is another question in the current paper
-                if (getPaper(paperNum).getQuestion(questionIndex) != null) {
+                if (getPaper(paperNum).getQuestion(questionIndex+1) != null) {
+                    questionIndex++;
                     return true;
+
                 } else if (getPaper(paperNum+1) != null) {
                     // Check if the next paper exists and if it has any questions
                     paperNum++;
-                    return getPaper(paperNum).getQuestion(0) != null;
+                    questionIndex = 0;
+
+                    return getPaper(paperNum).getQuestion(questionIndex) != null;
                 }
                 return false;
             }
 
             @Override
             public Question next() {
-                questionIndex++;
-                return getPaper(paperNum).getQuestion(questionIndex - 1);
+                return getPaper(paperNum).getQuestion(questionIndex);
             }
         };
     }
