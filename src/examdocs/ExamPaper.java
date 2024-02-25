@@ -10,6 +10,8 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static utils.Constants.PAPER_FILE_NAME;
+
 public class ExamPaper
     implements Iterable<Page> {
     private static final Logger logger = Logger.getLogger(ExamPaper.class.getName());
@@ -24,19 +26,18 @@ public class ExamPaper
 
     /**
      * Creates a new exam paper and checks whether its images have been saved, but does not save them
-     * @param fileName the name of the file, relative to dirPath
-     * @param dirPath the path to the directory where the paper, its questions and its page images are stored. From the root directory
+     * @param databaseFile the directory where this paper has its database's root
      */
-    public ExamPaper(String fileName, String dirPath) {
-        this.document = new Document(fileName, dirPath);
-        this.database = new PaperDatabase(new File(dirPath), document);
+    public ExamPaper(File databaseFile) {
+        this.document = new Document(new File(databaseFile, PAPER_FILE_NAME));
+        this.database = new PaperDatabase(databaseFile, document);
     }
 
-    public ExamPaper(ArrayList<Question> questions, String fileName, String dirPath) {
-        FileHandler.clearDirectory(dirPath);
+    public ExamPaper(ArrayList<Question> questions, File databaseFile) {
+        FileHandler.clearDirectory(databaseFile);
 
-        this.document = new Document(fileName, dirPath);
-        this.database = new PaperDatabase(new File(dirPath + File.separator + fileName), document);
+        this.document = new Document(new File(databaseFile, PAPER_FILE_NAME));
+        this.database = new PaperDatabase(databaseFile, document);
 
         int index = 0;
         for (Question question: questions) {
@@ -55,6 +56,9 @@ public class ExamPaper
      * Based on user input
      */
     public void makeQuestions() {
+        // Get currently saved questions and start from there
+        int questionNumber = (int) database.questionTable.length();
+
         Commands commands = new Commands(new Command[] {
                 new Command("end", new String[]{"end", "e"}),
                 new Command("start", new String[]{"start", "s"}),
@@ -64,7 +68,7 @@ public class ExamPaper
 
         Scanner scanner = new Scanner(System.in);
 
-        int pageNumber = 0, startPercent = 0, startPage = 0, questionNumber = 0;
+        int pageNumber = 0, startPercent = 0, startPage = 0;
         boolean ended = false, inQuestion = false;
 
         while (!ended) {

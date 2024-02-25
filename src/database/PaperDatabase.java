@@ -34,34 +34,6 @@ public class PaperDatabase {
         this.questionTable = new QuestionTable(new File(directory, QUESTIONS_DIR_NAME));
     }
 
-    /**
-     * Makes a new database from a file outside of it
-     * @param directory
-     * @param newPaper
-     */
-    public PaperDatabase(File directory, File newPaper) {
-        // Save the paper
-        File paperFile = new File(directory, PAPER_FILE_NAME);
-
-        boolean replace = false;
-        if (paperFile.exists()) {
-            if (!newPaper.equals(paperFile)) {
-                // If the current file is not the same as the new one (based on abstract paths), replace it
-                replace = true;
-            }
-        } else {
-            replace = true;
-        }
-
-        if (replace) {
-            try {
-                Files.copy(newPaper.toPath(), paperFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
-                throw new IllegalArgumentException(e);
-            }
-        }
-    }
-
     public abstract class ImageTable {
         // Optimised mainly for memory usage (not speed)
 
@@ -97,6 +69,7 @@ public class PaperDatabase {
 
         /**
          * Retrieves the selected ImageFiles from the database
+         *
          * @param start the first piece of data to be retrieved
          * @param end   the last piece of data to be retrieved (exclusive)
          * @return a list of the requested files
@@ -108,7 +81,7 @@ public class PaperDatabase {
                     RandomAccessFile rf = new RandomAccessFile(dataFile, "r")
             ) {
                 if (end == -1) {
-                    end = imageDir.listFiles().length-1;
+                    end = imageDir.listFiles().length - 1;
                 }
 
                 rf.seek((long) start * getDataLength());
@@ -122,7 +95,7 @@ public class PaperDatabase {
                     if (imageFile.exists()) {
                         // If the image exists, get the data from there
                         ImageFile currentData = ImageFile.getInstance(imageFile, mode, logger);
-                        rf.skipBytes(getDataLength()-1);
+                        rf.skipBytes(getDataLength() - 1);
 
                         data.add(currentData);
 
@@ -145,7 +118,7 @@ public class PaperDatabase {
                             // Save the question
                             data.add(saveImage(image, index));
 
-                        } else if (mode == TableMode.PAGES){
+                        } else if (mode == TableMode.PAGES) {
                             int pageNumber = rf.read();
 
                             // pageTable.makeFromDocument(); FIXME: This will cause file-locking problems so need another way to do it
@@ -215,12 +188,21 @@ public class PaperDatabase {
 
         }
 
+        public long length() {
+            try (RandomAccessFile rf = new RandomAccessFile(dataFile, "r")) {
+                return rf.length() / getDataLength();
+
+            } catch (IOException e) {
+                return 0;
+            }
+        }
+
         /**
          * Returns the length of each piece of data in the RandomAccessFile
+         *
          * @return the number of bytes per ImageFile
          */
         protected abstract int getDataLength();
-
     }
 
     public class QuestionTable
@@ -306,6 +288,29 @@ public class PaperDatabase {
         @Override
         protected int getDataLength() {
             return 1;
+        }
+    }
+
+    public static void makeDatabase(File directory, File newPaper) {
+        // Save the paper
+        File paperFile = new File(directory, PAPER_FILE_NAME);
+
+        boolean replace = false;
+        if (paperFile.exists()) {
+            if (!newPaper.equals(paperFile)) {
+                // If the current file is not the same as the new one (based on abstract paths), replace it
+                replace = true;
+            }
+        } else {
+            replace = true;
+        }
+
+        if (replace) {
+            try {
+                Files.copy(newPaper.toPath(), paperFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                throw new IllegalArgumentException(e);
+            }
         }
     }
 }

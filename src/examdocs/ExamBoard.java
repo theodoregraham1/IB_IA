@@ -1,6 +1,8 @@
 package examdocs;
 
 import static utils.Constants.*;
+
+import database.PaperDatabase;
 import utils.FileHandler;
 
 import static java.io.File.separatorChar;
@@ -20,8 +22,9 @@ public class ExamBoard
     private static final Logger logger = Logger.getLogger(ExamBoard.class.getName());
     private static final String INFO_FILE_NAME = "board_information.txt";
 
-    private final String dirPath;
+    private final File directory;
     private final File infoFile;
+
     private final BoardLevel level;
     private ArrayList<ExamPaper> papers;
 
@@ -34,13 +37,13 @@ public class ExamBoard
     /**
      * Makes a new instance of Exam Board and pulls its papers from the text file
      * @param level the level of this exam board
-     * @param dirPath the path to the root folder of this exam board
+     * @param directory the path to the root folder of this exam board
      */
-    public ExamBoard(BoardLevel level, String dirPath) {
+    public ExamBoard(BoardLevel level, File directory) {
         this.level = level;
-        this.dirPath = dirPath;
+        this.directory = directory;
 
-        this.infoFile = new File(dirPath + separatorChar + INFO_FILE_NAME);
+        this.infoFile = new File(directory, INFO_FILE_NAME);
 
         makePapers();
     }
@@ -56,9 +59,7 @@ public class ExamBoard
 
             papers = new ArrayList<>();
             for(String line: lines) {
-                papers.add(new ExamPaper(
-                                PAPER_FILE_NAME,
-                                PAPER_DIR_FORMAT.formatted(dirPath, line)));
+                papers.add(new ExamPaper(new File(directory, line)));
             }
 
         } catch (FileNotFoundException e) {
@@ -79,27 +80,9 @@ public class ExamBoard
      * @param name the name of the paper, in the format: YEAR-MONTH-NUMBER
      */
     public boolean addPaper(File document, String name) {
-        String paperDirPath = PAPER_DIR_FORMAT.formatted(dirPath, name);
-
-        try {
-            // Make required directories
-            if (!FileHandler.clearDirectory(paperDirPath)) {
-                return false;
-            }
-
-            // Copy the old paper into the new file
-            File newPaperFile = new File(paperDirPath + PAPER_FILE_NAME);
-            Files.copy(document.toPath(), newPaperFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-        } catch (IOException e) {
-            // TODO: Better file handling here
-            logger.log(Level.SEVERE, "Unable to add paper due to IOException: " + e);
-            return false;
-        }
-
-        ExamPaper paper = new ExamPaper(
-                PAPER_FILE_NAME,
-                PAPER_DIR_FORMAT.formatted(dirPath, name));
+        // Make the files
+        PaperDatabase.makeDatabase(new File(directory, name), document);
+        ExamPaper paper = new ExamPaper(new File(document, name));
 
         paper.makeQuestions();
 
@@ -115,8 +98,7 @@ public class ExamBoard
     public boolean addPaper(ArrayList<Question> questions, String name) {
         ExamPaper paper = new ExamPaper(
                 questions,
-                PAPER_FILE_NAME,
-                PAPER_DIR_FORMAT.formatted(dirPath, name)
+                new File(directory, name)
         );
 
         papers.add(paper);
@@ -137,27 +119,27 @@ public class ExamBoard
 
     @Override
     public Iterator<Question> iterator() {
-        return new Iterator<Question>() {
+        return new Iterator<>() {
             int paperNum = 0;
             int questionIndex = 0;
 
             @Override
             public boolean hasNext() {
                 // Check if there is another question in the current paper
-                if (papers.get(paperNum).getQuestion(questionIndex) != null) {
+                if (getPaper(paperNum).getQuestion(questionIndex) != null) {
                     return true;
-                } else if (papers.get(paperNum+1) != null) {
+                } else if (getPaper(paperNum+1) != null) {
                     // Check if the next paper exists and if it has any questions
-                    paperNum ++;
-                    return papers.get(paperNum).getQuestion(0) != null;
+                    paperNum++;
+                    return getPaper(paperNum).getQuestion(0) != null;
                 }
                 return false;
             }
 
             @Override
             public Question next() {
-                questionIndex ++;
-                return papers.get(paperNum).getQuestion(questionIndex-1);
+                questionIndex++;
+                return getPaper(paperNum).getQuestion(questionIndex - 1);
             }
         };
     }
