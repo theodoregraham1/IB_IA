@@ -9,6 +9,8 @@ import utils.FileHandler;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,8 +34,32 @@ public class PaperDatabase {
         this.questionTable = new QuestionTable(new File(directory, QUESTIONS_DIR_NAME));
     }
 
-    public PaperDatabase(File directory, File document) {
+    /**
+     * Makes a new database from a file outside of it
+     * @param directory
+     * @param newPaper
+     */
+    public PaperDatabase(File directory, File newPaper) {
+        // Save the paper
+        File paperFile = new File(directory, PAPER_FILE_NAME);
 
+        boolean replace = false;
+        if (paperFile.exists()) {
+            if (!newPaper.equals(paperFile)) {
+                // If the current file is not the same as the new one (based on abstract paths), replace it
+                replace = true;
+            }
+        } else {
+            replace = true;
+        }
+
+        if (replace) {
+            try {
+                Files.copy(newPaper.toPath(), paperFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
     }
 
     public abstract class ImageTable {

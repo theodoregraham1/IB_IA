@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Work on robustness">
+    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Work on encapsulating file handling functions better to avoid errors">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/pdfbox_app_3_0_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/pdfbox_app_3_0_0.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/Paper-2013-June-1/questions/data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/Papers/GCSE/Paper-2013-June-1/questions/data.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/database/PaperDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/PaperDatabase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/examdocs/ExamPaper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/ExamPaper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/examdocs/Document.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/Document.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,7 +127,8 @@
       <workItem from="1700413305958" duration="2058000" />
       <workItem from="1707065937614" duration="7927000" />
       <workItem from="1708338243056" duration="3382000" />
-      <workItem from="1708809624768" duration="1634000" />
+      <workItem from="1708809624768" duration="3011000" />
+      <workItem from="1708858711827" duration="1446000" />
     </task>
     <task id="LOCAL-00001" summary="Work on making an ExamPaper class">
       <option name="closed" value="true" />
@@ -304,7 +305,15 @@
       <option name="project" value="LOCAL" />
       <updated>1708342164798</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Work on encapsulating file handling functions better to avoid errors">
+      <option name="closed" value="true" />
+      <created>1708812658613</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1708812658613</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -375,14 +384,15 @@
     <MESSAGE value="Remove one whitespace" />
     <MESSAGE value="Continue working on accessing database" />
     <MESSAGE value="Work on robustness" />
-    <option name="LAST_COMMIT_MESSAGE" value="Work on robustness" />
+    <MESSAGE value="Work on encapsulating file handling functions better to avoid errors" />
+    <option name="LAST_COMMIT_MESSAGE" value="Work on encapsulating file handling functions better to avoid errors" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/database/PaperDatabase.java</url>
-          <line>73</line>
+          <line>103</line>
           <properties class="database.PaperDatabase.ImageTable" method="getRows">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -391,18 +401,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/database/PaperDatabase.java</url>
-          <line>131</line>
+          <line>161</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/database/PaperDatabase.java</url>
-          <line>128</line>
+          <line>158</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/database/PaperDatabase.java</url>
-          <line>244</line>
-          <option name="timeStamp" value="7" />
+          <line>274</line>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

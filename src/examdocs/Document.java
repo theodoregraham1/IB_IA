@@ -21,8 +21,6 @@ import java.util.logging.Logger;
 import utils.Constants;
 import utils.FileHandler;
 
-import javax.imageio.ImageIO;
-
 public class Document
         implements Comparable<File> {
     private static final Logger logger = Logger.getLogger(Document.class.getName());
@@ -32,27 +30,29 @@ public class Document
         logger.setLevel(Level.FINEST);
     }
 
-    private final String fileName;
-    private final String dirPath;
-
+    private final File documentFile;
 
 
     /**
      * Creates new Document instance for a specific pdf file and checks that it is valid
-     * @param fileName name of the file not including parent directories
-     * @param dirPath route for parent directories
+     * @param documentFile the file where this document is stored
      */
-    public Document(String fileName, String dirPath) {
-        this.dirPath = dirPath;
-        this.fileName = fileName;
+    public Document(File documentFile) {
+        this.documentFile = documentFile;
+
+        if (!(documentFile.exists())) {
+            throw new IllegalArgumentException("File at path %s does not exist".formatted(documentFile));
+        }
 
         // Attempt to open and close document to make sure it works
-        try (PDDocument ignored = this.getDocument()) {}
+        try (PDDocument ignored = this.getDocument()) {
+            // This is just to test opening and closing, ie does it work as a document
+        }
         catch (FileNotFoundException e) {
-            FileHandler.makeFile(new File(dirPath + File.separatorChar + fileName));
+            FileHandler.makeFile(documentFile);
+
         } catch (IOException e) {
-            // TODO: More robust error handling
-            logger.log(Level.SEVERE, e.toString());
+            throw new IllegalArgumentException(e);
         }
     }
 
@@ -63,15 +63,10 @@ public class Document
      */
     private PDDocument getDocument()
             throws IOException {
-        String filePath = getFilePath();
-        File file = new File(filePath);
 
-        if (!(file.exists())) {
-            throw new FileNotFoundException("File at path %s does not exist".formatted(filePath));
-        }
-        PDDocument pdf = Loader.loadPDF(file);
+        PDDocument pdf = Loader.loadPDF(documentFile);
 
-        logger.log(Level.FINER, "PDF loaded with file path: %s".formatted(filePath));
+        logger.log(Level.FINER, "PDF loaded with file path: %s".formatted(documentFile.getPath()));
 
         return pdf;
     }
@@ -106,7 +101,6 @@ public class Document
      * @return array of the images
      */
     public BufferedImage[] splitToImages(int startPage, int endPage) {
-        String filePath = getFilePath();
 
         try (PDDocument document = getDocument()){
             PDFRenderer pdfRenderer = new PDFRenderer(document);
@@ -128,7 +122,7 @@ public class Document
             }
 
             logger.log(Level.FINER,
-                    "%d images from PDF (with file path %s) converted".formatted(numberOfPages, filePath));
+                    "%d images from PDF (with file path %s) converted".formatted(numberOfPages, getFilePath()));
 
             return images;
 
@@ -147,17 +141,15 @@ public class Document
         return splitToImages(0, -1);
     }
 
-    public boolean addPage(PDPage page) {
+    public void addPage(PDPage page) {
         try (PDDocument document = getDocument()) {
             document.addPage(page);
-            return true;
         } catch (IOException e) {
             logger.log(Level.SEVERE, e.toString());
         }
-        return false;
     }
 
-    public boolean addPage(ImageFile data) {
+    public void addPage(ImageFile data) {
         PDPage page = new PDPage(PDRectangle.A4);
         addPage(page);
 
@@ -167,12 +159,10 @@ public class Document
         ) {
             contentStream.drawImage(PDImageXObject.createFromFileByContent(data.getFile(), document), 0, 0);
             document.save(getFilePath());
-            return true;
 
         } catch (IOException e) {
             logger.log(Level.SEVERE, e.toString());
         }
-        return false;
     }
 
     /**
@@ -180,7 +170,7 @@ public class Document
      * @return a String of the filepath
      */
     public String getFilePath() {
-        return dirPath + fileName;
+        return documentFile.getPath();
     }
 
     public int length() {
@@ -192,6 +182,6 @@ public class Document
     }
     @Override
     public int compareTo(File file) {
-        return file.getPath().compareTo(this.getFilePath());
+        return file.compareTo(this.documentFile);
     }
 }
