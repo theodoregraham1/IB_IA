@@ -106,9 +106,12 @@ public class ExamBoard
     }
 
     public boolean addPaper(ArrayList<Question> questions, String name) {
+        File paperFile = new File(directory, name);
+        FileHandler.clearDirectory(paperFile);
+
         ExamPaper paper = new ExamPaper(
                 questions,
-                new File(directory, name)
+                paperFile
         );
 
         papers.add(paper);

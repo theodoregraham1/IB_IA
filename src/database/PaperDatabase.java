@@ -121,7 +121,7 @@ public class PaperDatabase {
                         } else if (mode == TableMode.PAGES) {
                             int pageNumber = rf.read();
 
-                            // pageTable.makeFromDocument(); FIXME: This will cause file-locking problems so need another way to do it
+                            pageTable.makeFromDocument(); //FIXME: This will cause file-locking problems so need another way to do it
 
                             return getRows(start, end);
                         }
@@ -253,7 +253,8 @@ public class PaperDatabase {
 
             try (RandomAccessFile rf = new RandomAccessFile(dataFile, "r")) {
                 // Check if the document has already been saved
-                if (((long) document.length() * getDataLength()) <= rf.length()) {
+                if (((long) document.length() * getDataLength()) <= rf.length()
+                        && dataFile.getParentFile().list().length-1 == document.length()) {
                     return;
                 }
                 rf.close();

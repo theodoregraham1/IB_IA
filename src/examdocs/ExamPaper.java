@@ -36,7 +36,7 @@ public class ExamPaper
     public ExamPaper(ArrayList<Question> questions, File databaseFile) {
         FileHandler.clearDirectory(databaseFile);
 
-        this.document = new Document(new File(databaseFile, PAPER_FILE_NAME));
+        this.document = new Document(new File(databaseFile, PAPER_FILE_NAME), true);
         this.database = new PaperDatabase(databaseFile, document);
 
         int index = 0;

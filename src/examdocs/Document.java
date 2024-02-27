@@ -15,11 +15,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import utils.Constants;
 import utils.FileHandler;
+
+import javax.swing.*;
 
 public class Document {
     private static final Logger logger = Logger.getLogger(Document.class.getName());
@@ -39,16 +42,25 @@ public class Document {
     public Document(File documentFile) {
         this.documentFile = documentFile;
 
-        if (!(documentFile.exists())) {
-            throw new IllegalArgumentException("File at path %s does not exist".formatted(documentFile));
-        }
-
         // Attempt to open and close document to make sure it works
         try (PDDocument ignored = this.getDocument()) {
             // This is just to test opening and closing, ie does it work as a document
-        }
-        catch (FileNotFoundException e) {
+
+        } catch (FileNotFoundException | NoSuchFileException e) {
             FileHandler.makeFile(documentFile);
+
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public Document(File documentFile, boolean brandNew) {
+        this.documentFile = documentFile;
+
+        try (PDDocument document = new PDDocument()) {
+            documentFile.createNewFile();
+            document.addPage(new PDPage(PDRectangle.A4));
+            document.save(documentFile);
 
         } catch (IOException e) {
             throw new IllegalArgumentException(e);
@@ -143,6 +155,8 @@ public class Document {
     public void addPage(PDPage page) {
         try (PDDocument document = getDocument()) {
             document.addPage(page);
+
+            document.save(documentFile);
         } catch (IOException e) {
             logger.log(Level.SEVERE, e.toString());
         }
@@ -157,10 +171,10 @@ public class Document {
                 PDPageContentStream contentStream = new PDPageContentStream(document, page)
         ) {
             contentStream.drawImage(PDImageXObject.createFromFileByContent(data.getFile(), document), 0, 0);
-            document.save(getFilePath());
+            document.save(documentFile);
 
         } catch (IOException e) {
-            logger.log(Level.SEVERE, e.toString());
+            throw new RuntimeException(e);
         }
     }
 
