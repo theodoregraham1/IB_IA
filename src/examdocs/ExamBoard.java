@@ -1,5 +1,6 @@
 package examdocs;
 
+import database.ImageFile;
 import database.PaperDatabase;
 import utils.FileHandler;
 
@@ -105,7 +106,7 @@ public class ExamBoard
         }
     }
 
-    public boolean addPaper(ArrayList<Question> questions, String name) {
+    public boolean addPaper(ArrayList<ImageFile> questions, String name) {
         File paperFile = new File(directory, name);
         FileHandler.clearDirectory(paperFile);
 

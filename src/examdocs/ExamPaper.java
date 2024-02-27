@@ -2,6 +2,7 @@ package examdocs;
 
 import commands.Command;
 import commands.Commands;
+import database.ImageFile;
 import database.PaperDatabase;
 import utils.FileHandler;
 
@@ -33,17 +34,17 @@ public class ExamPaper
         this.database = new PaperDatabase(databaseFile, document);
     }
 
-    public ExamPaper(ArrayList<Question> questions, File databaseFile) {
+    public ExamPaper(ArrayList<ImageFile> questions, File databaseFile) {
         FileHandler.clearDirectory(databaseFile);
 
         this.document = new Document(new File(databaseFile, PAPER_FILE_NAME), true);
         this.database = new PaperDatabase(databaseFile, document);
 
         int index = 0;
-        for (Question question: questions) {
+        for (ImageFile question: questions) {
             int startPage = document.length();
-            document.addPage(question);
 
+            document.addPage(question);
             database.questionTable.setRow(
                     question.getImage(),
                     new int[] {index, startPage, 0, document.length(), 0}); // TODO: Improve this to actually use the correct page

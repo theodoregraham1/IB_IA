@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import utils.Constants;
 import utils.FileHandler;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class Document {
@@ -59,7 +60,7 @@ public class Document {
 
         try (PDDocument document = new PDDocument()) {
             documentFile.createNewFile();
-            document.addPage(new PDPage(PDRectangle.A4));
+
             document.save(documentFile);
 
         } catch (IOException e) {
@@ -155,22 +156,34 @@ public class Document {
     public void addPage(PDPage page) {
         try (PDDocument document = getDocument()) {
             document.addPage(page);
-
             document.save(documentFile);
+
         } catch (IOException e) {
-            logger.log(Level.SEVERE, e.toString());
+            throw new RuntimeException(e);
         }
     }
 
+    // TODO: Change this back to questions only
     public void addPage(ImageFile data) {
         PDPage page = new PDPage(PDRectangle.A4);
-        addPage(page);
 
         try (
                 PDDocument document = getDocument();
-                PDPageContentStream contentStream = new PDPageContentStream(document, page)
         ) {
-            contentStream.drawImage(PDImageXObject.createFromFileByContent(data.getFile(), document), 0, 0);
+            // Add the blank page to the document
+            document.addPage(page);
+
+            // Make a data stream to write to
+            PDPageContentStream contentStream = new PDPageContentStream(document, page);
+
+            // Format the ImageFile into a PDImage
+            PDImageXObject imageX = PDImageXObject.createFromFileByContent(data.getFile(), document);
+
+            // Draw the image, properly scaled
+            PDRectangle mediaBox = page.getMediaBox();
+            contentStream.drawImage(imageX, 0, 0, mediaBox.getWidth(), mediaBox.getHeight());
+
+            contentStream.close();
             document.save(documentFile);
 
         } catch (IOException e) {

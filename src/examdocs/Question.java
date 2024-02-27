@@ -34,7 +34,6 @@ public class Question
      * @return a single Buffered Image made up of all the inputImages joined vertically
      */
     public static BufferedImage createQuestionImage(Page[] inputPages, int startPercent, int endPercent) {
-        // TODO: Think about moving this to more appropriate class (possibly Question)
 
         // Find the sizes for the full pages
         int width = inputPages[0].getImage().getWidth();
