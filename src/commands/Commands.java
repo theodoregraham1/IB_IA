@@ -5,7 +5,6 @@ import java.util.Scanner;
 public class Commands {
     private final Command[] commands;
 
-
     /**
      * Constructs a wrapper class for a list of commands
      * @param allowedCommands the commands in this list
