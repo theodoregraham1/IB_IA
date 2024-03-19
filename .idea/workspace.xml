@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="">
+    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Save files">
+      <change afterPath="$PROJECT_DIR$/src/GUI/Constants.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GUI/GraphicalInterface.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GUI/IndexPage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/examdocs/Document.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/Document.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/examdocs/ExamBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/ExamBoard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/examdocs/ExamPaper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/ExamPaper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/examdocs/Question.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/Question.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,6 +113,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Run GUI" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="GUI.GraphicalInterface" />
+      <module name="IB_IA" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Main" />
+      <item itemvalue="Application.Run GUI" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -420,16 +429,5 @@
     <MESSAGE value="Improve file system: make classes use File properly and encapsulate files better into lower level classes" />
     <MESSAGE value="Work on allowing new papers to be saved" />
     <option name="LAST_COMMIT_MESSAGE" value="Work on allowing new papers to be saved" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/database/PaperDatabase.java</url>
-          <line>123</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
