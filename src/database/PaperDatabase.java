@@ -308,6 +308,7 @@ public class PaperDatabase {
 
         if (replace) {
             try {
+                FileHandler.makeFile(paperFile);
                 Files.copy(newPaper.toPath(), paperFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 throw new IllegalArgumentException(e);
