@@ -40,4 +40,6 @@ public interface ImageFile {
             return null;
         }
     }
+
+    int getDataLength();
 }
