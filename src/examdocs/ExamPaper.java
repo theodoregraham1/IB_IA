@@ -133,7 +133,7 @@ public class ExamPaper
      */
     public Question getQuestion(int index) {
         try {
-            return (Question) database.questionTable.getRows(index, index + 1).get(0);
+            return database.questionTable.getRows(index, index + 1).get(0);
         } catch (IndexOutOfBoundsException e) {
             return null;
         }
@@ -152,7 +152,7 @@ public class ExamPaper
             @Override
             public Page next() {
                 count++;
-                return (Page) database.pageTable.getRows(count - 1, count).get(0);
+                return database.pageTable.getRows(count - 1, count).get(0);
             }
         };
     }

@@ -1,7 +1,5 @@
 package database;
 
-import examdocs.Page;
-import examdocs.Question;
 import utils.Constants;
 import utils.FileHandler;
 
@@ -11,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,22 +27,14 @@ public class Database {
     public abstract class ImageTable<T> {
         // Optimised mainly for memory usage (not speed)
 
-        protected final TableMode mode;
-
         protected final File dataFile;
         protected final File imageDir;
 
         /**
          * Creates a new table of images for the file
-         *
          * @param imageDir the directory where the images and the data file are stored
-         * @param mode     the type of data for the table to hold
          */
-        protected ImageTable(File imageDir, TableMode mode) {
-            this.mode = mode;
-
-            if (mode == null) throw new IllegalArgumentException("Mode must not be null");
-
+        protected ImageTable(File imageDir) {
             this.dataFile = new File(imageDir, DATABASE_INFO_FILE_NAME);
             this.imageDir = imageDir;
 
@@ -56,12 +47,10 @@ public class Database {
 
         /**
          * Retrieves the selected ImageFiles from the database
-         *
          * @param start the first piece of data to be retrieved
          * @param end   the last piece of data to be retrieved (exclusive)
          * @return a list of the requested files
          */
-        //TODO: Generalise this
         public ArrayList<T> getRows(int start, int end) {
             ArrayList<T> data = new ArrayList<>();
 
@@ -70,7 +59,7 @@ public class Database {
             ) {
                 if (end == -1) {
                     try {
-                        end = imageDir.listFiles().length - 1;
+                        end = Objects.requireNonNull(imageDir.listFiles()).length;
                     } catch (NullPointerException e) {
                         end = 0;
                     }
@@ -79,51 +68,24 @@ public class Database {
                 rf.seek((long) start * getDataLength());
 
                 int index = rf.read();
-
                 while (index < end && index != -1) {
 
-                    File imageFile = ImageFile.getInstanceFile(imageDir, index, mode);
+                    File imageFile = getInstanceFile(index);
 
-                    if (imageFile.exists()) {
+                    if (Objects.requireNonNull(imageFile).exists()) {
                         // If the image exists, get the data from there
-                        T currentData = imageFile
+                        T currentData = getObjectInstance(imageFile);
                         rf.skipBytes(getDataLength() - 1);
 
                         data.add(currentData);
-
                     } else {
-                        if (mode == TableMode.QUESTIONS) {
-                            // Get page information from the file and build the question from that
-
-                            // Get page information
-                            int startPage = rf.read();
-                            int startPercent = rf.read();
-
-                            int endPage = rf.read();
-                            int endPercent = rf.read();
-
-                            // Make the question
-                            Page[] pages = pageTable.getRows(startPage, endPage).toArray(new Page[0]);
-
-                            BufferedImage image = Question.createQuestionImage(pages, startPercent, endPercent);
-
-                            // Save the question
-                            data.add(saveImage(image, index));
-
-                        } else if (mode == TableMode.PAGES) {
-                            int pageNumber = rf.read();
-
-                            pageTable.makeFromDocument(); //FIXME: This will cause file-locking problems so need another way to do it
-
-                            return getRows(start, end);
-                        }
+                        data.add(generateObjectInstance(rf, index));
                     }
                     index = rf.read();
                 }
-            } catch (IOException e) {
+            } catch (IOException | NullPointerException e) {
                 return data;
             }
-
             return data;
         }
 
@@ -134,24 +96,23 @@ public class Database {
          * @param index the image's index
          * @return the created piece of data (with reference to the created file), null if there was an error
          */
-        protected ImageFile saveImage(BufferedImage image, int index) {
+        protected T saveImage(BufferedImage image, int index) {
             // Make the file to output to, named based on the mode
-            File outputFile = ImageFile.getInstanceFile(imageDir, index, mode);
-            assert outputFile != null;
+            File outputFile = getInstanceFile(index);
 
             try {
-                ImageIO.write(image,
+                ImageIO.write(
+                        image,
                         Constants.IMAGE_IO_FORMAT,
-                        outputFile);
+                        Objects.requireNonNull(outputFile));
 
                 logger.log(Level.INFO, "Saved image number %d to file location: %s".formatted(index, outputFile.getCanonicalPath()));
 
-            } catch (IOException e) {
+            } catch (IOException | NullPointerException e) {
                 logger.log(Level.SEVERE, e.toString());
                 return null;
             }
-
-            return ImageFile.getInstance(outputFile, mode, logger);
+            return getObjectInstance(outputFile);
         }
 
         public void setRow(BufferedImage image, int[] data) {
@@ -169,7 +130,7 @@ public class Database {
             }
 
             try (
-                    RandomAccessFile rf = new RandomAccessFile(dataFile, "rw");
+                    RandomAccessFile rf = new RandomAccessFile(dataFile, "rw")
             ) {
                 rf.seek((long) data[0] * getDataLength());
 
@@ -183,7 +144,6 @@ public class Database {
         public long length() {
             try (RandomAccessFile rf = new RandomAccessFile(dataFile, "r")) {
                 return rf.length() / getDataLength();
-
             } catch (IOException e) {
                 return 0;
             }
@@ -195,5 +155,11 @@ public class Database {
          * @return the number of bytes per ImageFile
          */
         protected abstract int getDataLength();
+
+        protected abstract T getObjectInstance(File file);
+
+        protected abstract File getInstanceFile(int index);
+
+        protected abstract T generateObjectInstance(RandomAccessFile rf, int index) throws IOException;
     }
 }

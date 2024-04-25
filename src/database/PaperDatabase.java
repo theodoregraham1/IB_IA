@@ -3,17 +3,13 @@ package database;
 import examdocs.Document;
 import examdocs.Page;
 import examdocs.Question;
-import utils.Constants;
 import utils.FileHandler;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Objects;
 
 import static utils.Constants.*;
 
@@ -28,18 +24,17 @@ public class PaperDatabase extends Database {
     }
 
     public class QuestionTable
-            extends ImageTable {
+            extends ImageTable<Question> {
 
         public QuestionTable(File imageDir) {
-            super(imageDir, TableMode.QUESTIONS);
+            super(imageDir);
         }
 
         public void setRow(int[] data) {
             if (data.length != getDataLength()) {
                 return;
             }
-            super.setRow(
-                    Question.createQuestionImage(
+            super.setRow(Question.createQuestionImage(
                             pageTable.getRows(data[1], data[3]).toArray(new Page[0]),
                             data[2],
                             data[4]
@@ -56,15 +51,44 @@ public class PaperDatabase extends Database {
         protected int getDataLength() {
             return 5;
         }
+
+        @Override
+        protected Question getObjectInstance(File file) {
+            return new Question(file, logger);
+        }
+
+        @Override
+        protected File getInstanceFile(int index) {
+            return new File(QUESTION_FILE_FORMAT.formatted(imageDir.getPath(), index));
+        }
+
+        @Override
+        protected Question generateObjectInstance(RandomAccessFile rf, int index) throws IOException {
+            // Get page information from the file and build the question from that
+
+            // Get page information
+            int startPage = rf.read();
+            int startPercent = rf.read();
+
+            int endPage = rf.read();
+            int endPercent = rf.read();
+
+            // Make the question
+            Page[] pages = pageTable.getRows(startPage, endPage).toArray(new Page[0]);
+
+            BufferedImage image = Question.createQuestionImage(pages, startPercent, endPercent);
+
+            return saveImage(image, index);
+        }
     }
 
     public class PageTable
-        extends ImageTable {
+        extends ImageTable<Page> {
 
-        private Document document;
+        private final Document document;
 
         public PageTable(File imageDir, Document document) {
-            super(imageDir, TableMode.PAGES);
+            super(imageDir);
 
             this.document = document;
             makeFromDocument();
@@ -76,7 +100,7 @@ public class PaperDatabase extends Database {
             try (RandomAccessFile rf = new RandomAccessFile(dataFile, "r")) {
                 // Check if the document has already been saved
                 if (((long) document.length() * getDataLength()) <= rf.length()
-                        && dataFile.getParentFile().list().length-1 == document.length()) {
+                        && Objects.requireNonNull(dataFile.getParentFile().list()).length-1 == document.length()) {
                     return;
                 }
                 rf.close();
@@ -94,6 +118,8 @@ public class PaperDatabase extends Database {
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            } catch (NullPointerException e) {
+                return;
             }
 
             // Write the images
@@ -110,7 +136,24 @@ public class PaperDatabase extends Database {
          */
         @Override
         protected int getDataLength() {
-            return 1;
+            return 2;
+        }
+
+        @Override
+        protected Page getObjectInstance(File file) {
+            return new Page(file, logger);
+        }
+
+        @Override
+        protected File getInstanceFile(int index) {
+            return new File(PAGE_FILE_FORMAT.formatted(imageDir.getPath(), index));
+        }
+
+        @Override
+        protected Page generateObjectInstance(RandomAccessFile rf, int index) throws IOException {
+            pageTable.makeFromDocument(); //FIXME: This will cause file-locking problems so need another way to do it
+
+            return pageTable.getRows(index, index+1).get(0);
         }
     }
 
