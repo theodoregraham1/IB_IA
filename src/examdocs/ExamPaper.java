@@ -57,6 +57,7 @@ public class ExamPaper
      * Based on user input
      */
     public void makeQuestions() {
+        // TODO: Use stack to allow undo-ing
         // Get currently saved questions and start from there
         int questionNumber = (int) database.questionTable.length();
 
