@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_INJECTED_CODE" value="false" />
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Undo previous attempts">
-      <change afterPath="$PROJECT_DIR$/src/GUI/CreatePaperPage.java" afterDir="false" />
+    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Work on first page">
+      <change afterPath="$PROJECT_DIR$/src/GUI/Constants.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GUI/CreatePaperPage2.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GUI/FrameTemplate.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GUI/GuiMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/pdfbox_app_3_0_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/pdfbox_app_3_0_0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/CreatePaperPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/CreatePaperPage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +55,7 @@
     </option>
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
@@ -67,9 +77,11 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW": "true",
+    "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.SHOW": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "gui",
-    "last_opened_file_path": "N:/pdfbox-app-3.0.0.jar",
+    "last_opened_file_path": "C:/Users/Theod/Computer Science",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -78,11 +90,19 @@
     "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "advanced.settings",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "project.propGUI",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="src" />
+      <recent name="/" />
+      <recent name="" />
+      <recent name="org" />
+      <recent name="GUI" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Theod\IdeaProjects\IB Projects\IB_IA\Papers" />
     </key>
@@ -102,7 +122,7 @@
       <command value="\n" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.Run GUI">
     <configuration name="Main" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="IB_IA" />
@@ -111,7 +131,7 @@
       </method>
     </configuration>
     <configuration name="Run GUI" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="GUI.GraphicalInterface" />
+      <option name="MAIN_CLASS_NAME" value="GUI.GuiMain" />
       <module name="IB_IA" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -138,6 +158,7 @@
       <workItem from="1708809624768" duration="3011000" />
       <workItem from="1708858711827" duration="3415000" />
       <workItem from="1708862170968" duration="2960000" />
+      <workItem from="1715790089724" duration="9232000" />
     </task>
     <task id="LOCAL-00001" summary="Work on making an ExamPaper class">
       <option name="closed" value="true" />
@@ -361,7 +382,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715788074017</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Work on first page">
+      <option name="closed" value="true" />
+      <created>1715788387717</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1715788387717</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -408,7 +437,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Remove unnecessary code (mainly imports)" />
     <MESSAGE value="Make it so images aren't resaved if they already exist" />
     <MESSAGE value="Put some code in to testing splitting an image by BufferedImage.subImage" />
     <MESSAGE value="Add a class for commands" />
@@ -433,6 +461,11 @@
     <MESSAGE value="Improve file system: make classes use File properly and encapsulate files better into lower level classes" />
     <MESSAGE value="Work on allowing new papers to be saved" />
     <MESSAGE value="Undo previous attempts" />
-    <option name="LAST_COMMIT_MESSAGE" value="Undo previous attempts" />
+    <MESSAGE value="Work on first page" />
+    <option name="LAST_COMMIT_MESSAGE" value="Work on first page" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
