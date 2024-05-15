@@ -142,7 +142,9 @@ public class Database {
         }
 
         public long length() {
-            try (RandomAccessFile rf = new RandomAccessFile(dataFile, "r")) {
+            try (
+                    RandomAccessFile rf = new RandomAccessFile(dataFile, "r")
+            ) {
                 return rf.length() / getDataLength();
             } catch (IOException e) {
                 return 0;
