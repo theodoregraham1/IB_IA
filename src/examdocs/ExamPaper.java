@@ -59,7 +59,7 @@ public class ExamPaper
     public void makeQuestions() {
         // TODO: Use stack to allow undo-ing
         // Get currently saved questions and start from there
-        int questionNumber = (int) database.questionTable.length();
+        int questionNumber = database.questionTable.length();
 
         Commands commands = new Commands(new Command[] {
                 new Command("end", new String[]{"end", "e"}),

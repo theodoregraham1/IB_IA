@@ -5,12 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Save files">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/pdfbox_app_3_0_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/pdfbox_app_3_0_0.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Papers/GCSE/board_information.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Papers/GCSE/board_information.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IB_IA.iml" beforeDir="false" afterPath="$PROJECT_DIR$/IB_IA.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI/CreatePaperPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/CreatePaperPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/CreatePaperPage2.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/CreatePaperPage.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/GuiMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/GuiMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/database/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/Database.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/examdocs/ExamPaper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/examdocs/ExamPaper.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,8 +73,8 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW": "false",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "N:/pdfbox-app-3.0.0.jar",
+    "git-widget-placeholder": "gui",
+    "last_opened_file_path": "C:/Users/Theod/Computer Science/pdfbox-app-3.0.0.jar",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -398,7 +397,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="HEAD" />
+                        <option value="gui" />
                       </list>
                     </value>
                   </entry>

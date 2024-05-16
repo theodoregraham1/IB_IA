@@ -12,7 +12,6 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-// TODO: Be able to join questions into a big paper
 public class ExamBoard
         implements Iterable<Question> {
     private static final Logger logger = Logger.getLogger(ExamBoard.class.getName());
@@ -106,7 +105,7 @@ public class ExamBoard
         }
     }
 
-    public boolean addPaper(ArrayList<ImageFile> questions, String name) {
+    public void addPaper(ArrayList<ImageFile> questions, String name) {
         File paperFile = new File(directory, name);
         FileHandler.clearDirectory(paperFile);
 
@@ -119,9 +118,8 @@ public class ExamBoard
 
         // Check if the paper is already in the info file
         if (!FileHandler.contains(name, infoFile)) {
-            return FileHandler.addLine(name + "\n", infoFile);
+            FileHandler.addLine(name + "\n", infoFile);
         }
-        return true;
     }
 
     public ExamPaper getPaper(int index) {

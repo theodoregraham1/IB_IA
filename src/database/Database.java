@@ -38,7 +38,6 @@ public class Database {
             this.dataFile = new File(imageDir, DATABASE_INFO_FILE_NAME);
             this.imageDir = imageDir;
 
-            if (!imageDir.mkdirs()) throw new IllegalArgumentException("File structure invalid");
             FileHandler.makeFile(imageDir);
             FileHandler.makeFile(dataFile);
 
@@ -141,11 +140,11 @@ public class Database {
 
         }
 
-        public long length() {
+        public int length() {
             try (
                     RandomAccessFile rf = new RandomAccessFile(dataFile, "r")
             ) {
-                return rf.length() / getDataLength();
+                return (int) rf.length() / getDataLength();
             } catch (IOException e) {
                 return 0;
             }
