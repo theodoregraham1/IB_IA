@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Save files">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/pdfbox_app_3_0_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/pdfbox_app_3_0_0.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/database/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/Database.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Papers/GCSE/board_information.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Papers/GCSE/board_information.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/CreatePaperPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/CreatePaperPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/CreatePaperPage2.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/CreatePaperPage.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/GuiMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/GuiMain.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +29,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="gui" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -68,9 +72,10 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW": "false",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/18graham_t/IdeaProjects/IB_IA",
+    "last_opened_file_path": "N:/pdfbox-app-3.0.0.jar",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -103,7 +108,7 @@
       <command value="\n" />
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.Run GUI">
     <configuration name="Main" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="IB_IA" />
@@ -112,7 +117,7 @@
       </method>
     </configuration>
     <configuration name="Run GUI" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="GUI.GraphicalInterface" />
+      <option name="MAIN_CLASS_NAME" value="GUI.GuiMain" />
       <module name="IB_IA" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -354,7 +359,14 @@
       <option name="project" value="LOCAL" />
       <updated>1709034227131</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Start disconnecting from form">
+      <created>1715845871870</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1715845871870</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -401,7 +413,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Remove loggers and replace with System.out" />
     <MESSAGE value="Remove unnecessary code (mainly imports)" />
     <MESSAGE value="Make it so images aren't resaved if they already exist" />
     <MESSAGE value="Put some code in to testing splitting an image by BufferedImage.subImage" />
@@ -426,6 +437,23 @@
     <MESSAGE value="Improve file system" />
     <MESSAGE value="Improve file system: make classes use File properly and encapsulate files better into lower level classes" />
     <MESSAGE value="Work on allowing new papers to be saved" />
-    <option name="LAST_COMMIT_MESSAGE" value="Work on allowing new papers to be saved" />
+    <MESSAGE value="Start disconnecting from form" />
+    <option name="LAST_COMMIT_MESSAGE" value="Start disconnecting from form" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/GUI/GuiMain.java</url>
+          <line>9</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/examdocs/ExamBoard.java</url>
+          <line>55</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
