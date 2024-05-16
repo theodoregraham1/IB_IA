@@ -22,8 +22,6 @@ import java.util.logging.Logger;
 import utils.Constants;
 import utils.FileHandler;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
 
 public class Document {
     private static final Logger logger = Logger.getLogger(Document.class.getName());
@@ -59,11 +57,12 @@ public class Document {
         this.documentFile = documentFile;
 
         try (PDDocument document = new PDDocument()) {
-            documentFile.createNewFile();
+            if (brandNew) {
+                assert documentFile.createNewFile();
 
-            document.save(documentFile);
-
-        } catch (IOException e) {
+                document.save(documentFile);
+            }
+        } catch (IOException | AssertionError e) {
             throw new IllegalArgumentException(e);
         }
     }
