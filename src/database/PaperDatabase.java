@@ -35,7 +35,7 @@ public class PaperDatabase extends Database {
                 return;
             }
             super.setRow(Question.createQuestionImage(
-                            pageTable.getRows(data[1], data[3]).toArray(new Page[0]),
+                            pageTable.getRows(data[1], data[3]).toArray(new Page[data[3]-data[1]]),
                             data[2],
                             data[4]
                     ),
@@ -136,7 +136,7 @@ public class PaperDatabase extends Database {
          */
         @Override
         protected int getDataLength() {
-            return 2;
+            return 1;
         }
 
         @Override

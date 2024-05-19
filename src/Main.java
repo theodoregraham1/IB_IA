@@ -9,12 +9,6 @@ public class Main {
     public static void main(String[] args) {
 
         ExamBoard board = new ExamBoard(BoardLevel.GCSE, new File("./Papers/GCSE"));
-
-        ArrayList<ImageFile> questions = new ArrayList<>();
-        for (Page q: board.getPaper(0)) {
-            System.out.println(q.getFile());
-            questions.add(q);
-        }
-        board.addPaper(questions, "myPaper1");
+        board.getPaper(0).makeQuestions();
     }
 }

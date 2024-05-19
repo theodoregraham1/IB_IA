@@ -4,6 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import examdocs.ExamBoard;
+import examdocs.Question;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,6 +40,10 @@ public class CreatePaperPage extends JFrame implements ActionListener {
 
         final DefaultListModel<String> defaultListModel = new DefaultListModel<>();
         defaultListModel.addElement("hello");
+        for (Question question : examBoard) {
+            defaultListModel.addElement(question.toString());
+        }
+
         questionsList.setModel(defaultListModel);
 
         setVisible(true);

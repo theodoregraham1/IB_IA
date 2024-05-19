@@ -35,13 +35,14 @@ public class Database {
          * @param imageDir the directory where the images and the data file are stored
          */
         protected ImageTable(File imageDir) {
+            if (!imageDir.isDirectory()) {
+                if (!imageDir.mkdirs()) throw new IllegalArgumentException("Image directory must be a directory");
+            }
+
             this.dataFile = new File(imageDir, DATABASE_INFO_FILE_NAME);
             this.imageDir = imageDir;
 
-            FileHandler.makeFile(imageDir);
             FileHandler.makeFile(dataFile);
-
-            if (!imageDir.isDirectory()) throw new IllegalArgumentException("Image directory must be a directory");
         }
 
         /**
