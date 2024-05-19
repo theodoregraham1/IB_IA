@@ -1,5 +1,6 @@
 package examdocs;
 
+import utils.Constants;
 import database.ImageFile;
 
 import javax.imageio.ImageIO;
@@ -98,6 +99,10 @@ public class Question
     @Override
     public String toString() {
         Path path = imageFile.toPath();
-        return "";
+        int nameCount = path.getNameCount();
+        String number = path.getName(nameCount-1).toString()
+                .replace("question_", "").replace("."+Constants.IMAGE_IO_FORMAT, "");
+        String paper = path.getName(nameCount-3).toString();
+        return paper+" "+number;
     }
 }

@@ -7,11 +7,14 @@ import examdocs.ExamBoard;
 import examdocs.Question;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
-public class CreatePaperPage extends JFrame implements ActionListener {
+public class CreatePaperPage extends JFrame implements ActionListener, ListSelectionListener {
 
     private final ExamBoard examBoard;
 
@@ -24,7 +27,7 @@ public class CreatePaperPage extends JFrame implements ActionListener {
     private JButton exportPaperButton;
     private JLabel allQuestionsLabel;
     private JButton sortQuestions;
-    private JList<String> questionsList;
+    private JList<Question> questionsList;
     private JPanel mainPanel;
     private JPanel secondaryPanel;
     private JPanel sideBottomPanel;
@@ -33,26 +36,49 @@ public class CreatePaperPage extends JFrame implements ActionListener {
     public CreatePaperPage(ExamBoard examBoard) {
         this.examBoard = examBoard;
 
+        // Set JFrame properties
         setSize(1200, 600);
         setContentPane(mainPanel);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        paperImagePane.setWheelScrollingEnabled(true);
+
+        // Add action listeners
         addQuestionBtn.addActionListener(this);
+        exportPaperButton.addActionListener(this);
+        sortQuestions.addActionListener(this);
+        questionsList.addListSelectionListener(this);
 
-        final DefaultListModel<String> defaultListModel = new DefaultListModel<>();
-        defaultListModel.addElement("hello");
+        final DefaultListModel<Question> defaultListModel = new DefaultListModel<>();
         for (Question question : examBoard) {
-            defaultListModel.addElement(question.toString());
+            defaultListModel.addElement(question);
         }
-
         questionsList.setModel(defaultListModel);
 
         setVisible(true);
     }
 
+    public void viewQuestion(Question question) {
+        paperImagePane.removeAll();
+        questionTitle.setText("Question: " + question.toString());
+
+        BufferedImage image = question.getImage();
+
+        paperImagePane.setViewportView(new ImageComponent(image));
+
+        /*
+            float scaleFactor = (float) (paperImagePane.getWidth() - 20) / (image.getWidth());
+
+            paperImagePane.getGraphics().drawImage(
+                    image, 0, 0, paperImagePane.getWidth() - 20, (int) (scaleFactor * image.getHeight()), null
+            );
+         */
+    }
+
     @Override
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == addQuestionBtn) {
-
+            Question question = questionsList.getSelectedValue();
         } else if (event.getSource() == exportPaperButton) {
 
         } else if (event.getSource() == sortQuestions) {
@@ -60,6 +86,11 @@ public class CreatePaperPage extends JFrame implements ActionListener {
         } else {
             System.out.println(event.getActionCommand());
         }
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        this.viewQuestion(questionsList.getSelectedValue());
     }
 
     {
@@ -106,6 +137,8 @@ public class CreatePaperPage extends JFrame implements ActionListener {
         questionsList.setModel(defaultListModel1);
         sideBottomPanel.add(questionsList, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
         paperImagePane = new JScrollPane();
+        paperImagePane.setHorizontalScrollBarPolicy(31);
+        paperImagePane.setVerticalScrollBarPolicy(22);
         secondaryPanel.add(paperImagePane, new GridConstraints(1, 0, 1, 6, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         questionTitle = new JLabel();
         questionTitle.setText("Question: lorem ipsum");
@@ -120,12 +153,12 @@ public class CreatePaperPage extends JFrame implements ActionListener {
         secondaryPanel.add(spacer1, new GridConstraints(0, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final Spacer spacer2 = new Spacer();
         secondaryPanel.add(spacer2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        pageLabel = new JLabel();
-        pageLabel.setText("Create Paper");
-        secondaryPanel.add(pageLabel, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         exportPaperButton = new JButton();
         exportPaperButton.setText("Export paper");
         secondaryPanel.add(exportPaperButton, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        pageLabel = new JLabel();
+        pageLabel.setText("Create Paper");
+        secondaryPanel.add(pageLabel, new GridConstraints(0, 2, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
