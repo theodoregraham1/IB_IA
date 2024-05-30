@@ -59,20 +59,11 @@ public class CreatePaperPage extends JFrame implements ActionListener, ListSelec
     }
 
     public void viewQuestion(Question question) {
-        paperImagePane.removeAll();
         questionTitle.setText("Question: " + question.toString());
 
         BufferedImage image = question.getImage();
 
-        paperImagePane.setViewportView(new ImageScroller(image));
-
-        /*
-            float scaleFactor = (float) (paperImagePane.getWidth() - 20) / (image.getWidth());
-
-            paperImagePane.getGraphics().drawImage(
-                    image, 0, 0, paperImagePane.getWidth() - 20, (int) (scaleFactor * image.getHeight()), this
-            );
-         */
+        paperImagePane.setViewportView(new ImageScroller(new ImageIcon(image), 1, paperImagePane.getWidth()));
     }
 
     @Override
