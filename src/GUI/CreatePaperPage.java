@@ -17,6 +17,7 @@ import java.awt.image.BufferedImage;
 public class CreatePaperPage extends JFrame implements ActionListener, ListSelectionListener {
 
     private final ExamBoard examBoard;
+    private Question selectedQuestion;
 
     private JComboBox anchorSelection;
     private JScrollPane paperImagePane;
@@ -81,7 +82,8 @@ public class CreatePaperPage extends JFrame implements ActionListener, ListSelec
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        this.viewQuestion(questionsList.getSelectedValue());
+        selectedQuestion = questionsList.getSelectedValue();
+        this.viewQuestion(selectedQuestion);
     }
 
     {
@@ -158,5 +160,4 @@ public class CreatePaperPage extends JFrame implements ActionListener, ListSelec
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
-
 }

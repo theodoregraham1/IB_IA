@@ -8,13 +8,12 @@ import java.awt.event.MouseMotionListener;
 // Code partially sourced from https://docs.oracle.com/javase/tutorial/uiswing/examples/components/ScrollDemoProject/src/components/ScrollablePicture.java
 
 public class ImageScroller extends JLabel
-        implements Scrollable, MouseMotionListener {
+        implements Scrollable {
     private int maxUnitIncrement = 1;
     private boolean missingPicture = false;
 
     public ImageScroller(ImageIcon i, int m, int width) {
         super(i);
-        super.setPreferredSize(new Dimension(width, (int) getPreferredSize().getHeight()));
 
         if (i == null) {
             missingPicture = true;
@@ -25,24 +24,13 @@ public class ImageScroller extends JLabel
         }
         maxUnitIncrement = m;
 
-        //Let the user scroll by dragging to outside the window.
-        setAutoscrolls(true); //enable synthetic drag events
-        addMouseMotionListener(this); //handle mouse drags
+        double scaleFactor = width / super.getPreferredSize().getHeight();
+        super.setSize(new Dimension(width, (int) (scaleFactor*getPreferredSize().getHeight())));
     }
 
     @Override
     public void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-    }
-
-    //Methods required by the MouseMotionListener interface:
-    @Override
-    public void mouseMoved(MouseEvent e) { }
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        //The user is dragging us, so scroll!
-        Rectangle r = new Rectangle(e.getX(), e.getY(), 1, 1);
-        scrollRectToVisible(r);
     }
 
     @Override
