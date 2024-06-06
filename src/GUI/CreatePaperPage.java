@@ -63,8 +63,8 @@ public class CreatePaperPage extends JFrame implements ActionListener, ListSelec
         questionTitle.setText("Question: " + question.toString());
 
         BufferedImage image = question.getImage();
-
-        paperImagePane.setViewportView(new ImageScroller(new ImageIcon(image), 1, paperImagePane.getWidth()));
+        System.out.println(paperImagePane.getWidth());
+        paperImagePane.setViewportView(new ImageScroller(image, 1, paperImagePane.getWidth()));
     }
 
     @Override

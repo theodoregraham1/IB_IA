@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 
 // Code partially sourced from https://docs.oracle.com/javase/tutorial/uiswing/examples/components/ScrollDemoProject/src/components/ScrollablePicture.java
 
@@ -12,8 +13,8 @@ public class ImageScroller extends JLabel
     private int maxUnitIncrement = 1;
     private boolean missingPicture = false;
 
-    public ImageScroller(ImageIcon i, int m, int width) {
-        super(i);
+    public ImageScroller(BufferedImage i, int m, int width) {
+        super(new ImageIcon(i));
 
         if (i == null) {
             missingPicture = true;
@@ -24,8 +25,12 @@ public class ImageScroller extends JLabel
         }
         maxUnitIncrement = m;
 
-        double scaleFactor = width / super.getPreferredSize().getHeight();
-        super.setSize(new Dimension(width, (int) (scaleFactor*getPreferredSize().getHeight())));
+        double scaleFactor = (double) width / i.getWidth();
+        Dimension size = new Dimension(width, (int) (scaleFactor*i.getHeight()));
+        super.setSize(size);
+        super.setPreferredSize(size);
+        System.out.println(scaleFactor);
+        System.out.println(super.getSize());
     }
 
     @Override
