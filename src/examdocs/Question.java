@@ -79,6 +79,10 @@ public class Question
         return combinedImage;
     }
 
+    public int getMarks() {
+        return marks;
+    }
+
     @Override
     public File getFile() {
         return this.imageFile;

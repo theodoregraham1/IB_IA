@@ -105,7 +105,7 @@ public class ExamBoard
         }
     }
 
-    public void addPaper(ArrayList<ImageFile> questions, String name) {
+    public void addPaper(ArrayList<Question> questions, String name) {
         File paperFile = new File(directory, name);
         FileHandler.clearDirectory(paperFile);
 

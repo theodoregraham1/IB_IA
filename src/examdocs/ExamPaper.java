@@ -34,20 +34,21 @@ public class ExamPaper
         this.database = new PaperDatabase(databaseFile, document);
     }
 
-    public ExamPaper(ArrayList<ImageFile> questions, File databaseFile) {
+    public ExamPaper(ArrayList<Question> questions, File databaseFile) {
+        // FIXME
         FileHandler.clearDirectory(databaseFile);
 
         this.document = new Document(new File(databaseFile, PAPER_FILE_NAME), true);
         this.database = new PaperDatabase(databaseFile, document);
 
         int index = 0;
-        for (ImageFile question: questions) {
+        for (Question question: questions) {
             int startPage = document.length();
 
             document.addPage(question);
             database.questionTable.setRow(
                     question.getImage(),
-                    new int[] {index, startPage, 0, document.length(), 0}); // TODO: Improve this to actually use the correct page
+                    new int[] {index, startPage+index, 0, document.length(), 0, question.getMarks()}); // TODO: Improve this to actually use the correct page
             index ++;
         }
     }

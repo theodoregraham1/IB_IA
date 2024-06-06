@@ -3,7 +3,9 @@ package GUI;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import database.ImageFile;
 import examdocs.ExamBoard;
+import examdocs.ExamPaper;
 import examdocs.Question;
 
 import javax.swing.*;
@@ -18,7 +20,7 @@ import java.util.ArrayList;
 public class CreatePaperPage extends JFrame implements ActionListener, ListSelectionListener {
 
     private final ExamBoard examBoard;
-    private ArrayList<Question> selectedQuestions;
+    private final ArrayList<Question> selectedQuestions = new ArrayList<>();
     private int marksNum = 0;
 
     private JComboBox anchorSelection;
@@ -70,19 +72,31 @@ public class CreatePaperPage extends JFrame implements ActionListener, ListSelec
     }
 
     public void updateMarks() {
-        int total = 0;
+        totalMarks.setText("Number of marks: %02d".formatted(marksNum));
     }
 
     @Override
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == addQuestionBtn) {
-            selectedQuestions.add(questionsList.getSelectedValue());
+            Question selectedQuestion = questionsList.getSelectedValue();
 
+            if (selectedQuestion == null) return;
 
+            if (selectedQuestions.contains(selectedQuestion)) {
+                selectedQuestions.remove(selectedQuestion);
+                marksNum -= selectedQuestion.getMarks();
+            } else {
+                selectedQuestions.add(selectedQuestion);
+                marksNum += selectedQuestion.getMarks();
+            }
+            updateMarks();
+
+            questionsList.clearSelection();
         } else if (event.getSource() == exportPaperButton) {
+            examBoard.addPaper(selectedQuestions, "PLACEHOLDER"); // TODO
 
         } else if (event.getSource() == sortQuestions) {
-
+            // TODO
         } else {
             System.out.println(event.getActionCommand());
         }
@@ -90,7 +104,20 @@ public class CreatePaperPage extends JFrame implements ActionListener, ListSelec
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        this.viewQuestion(questionsList.getSelectedValue());
+        Question selectedQuestion = questionsList.getSelectedValue();
+
+        if (selectedQuestion == null) {
+            paperImagePane.setViewportView(null);
+            questionTitle.setText("Questions: ");
+        } else {
+            this.viewQuestion(selectedQuestion);
+
+            if (selectedQuestions.contains(selectedQuestion)) {
+                addQuestionBtn.setText("Remove question");
+            } else {
+                addQuestionBtn.setText("Add question");
+            }
+        }
     }
 
     {
@@ -141,21 +168,21 @@ public class CreatePaperPage extends JFrame implements ActionListener, ListSelec
         paperImagePane.setVerticalScrollBarPolicy(22);
         secondaryPanel.add(paperImagePane, new GridConstraints(1, 0, 1, 6, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         questionTitle = new JLabel();
-        questionTitle.setText("Question: lorem ipsum");
+        questionTitle.setText("Question: ");
         secondaryPanel.add(questionTitle, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         addQuestionBtn = new JButton();
         addQuestionBtn.setText("Add question");
-        secondaryPanel.add(addQuestionBtn, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        secondaryPanel.add(addQuestionBtn, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         totalMarks = new JLabel();
         totalMarks.setText("Number of marks: 00");
-        secondaryPanel.add(totalMarks, new GridConstraints(2, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        secondaryPanel.add(totalMarks, new GridConstraints(2, 4, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
         secondaryPanel.add(spacer1, new GridConstraints(0, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final Spacer spacer2 = new Spacer();
         secondaryPanel.add(spacer2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         exportPaperButton = new JButton();
         exportPaperButton.setText("Export paper");
-        secondaryPanel.add(exportPaperButton, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        secondaryPanel.add(exportPaperButton, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         pageLabel = new JLabel();
         pageLabel.setText("Create Paper");
         secondaryPanel.add(pageLabel, new GridConstraints(0, 2, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
