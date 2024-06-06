@@ -13,11 +13,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class CreatePaperPage extends JFrame implements ActionListener, ListSelectionListener {
 
     private final ExamBoard examBoard;
-    private Question selectedQuestion;
+    private ArrayList<Question> selectedQuestions;
+    private int marksNum = 0;
 
     private JComboBox anchorSelection;
     private JScrollPane paperImagePane;
@@ -38,6 +40,7 @@ public class CreatePaperPage extends JFrame implements ActionListener, ListSelec
         this.examBoard = examBoard;
 
         // Set JFrame properties
+        setTitle("Exams Manager - Create a new paper");
         setSize(1200, 600);
         setContentPane(mainPanel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,11 +53,11 @@ public class CreatePaperPage extends JFrame implements ActionListener, ListSelec
         sortQuestions.addActionListener(this);
         questionsList.addListSelectionListener(this);
 
-        final DefaultListModel<Question> defaultListModel = new DefaultListModel<>();
+        final DefaultListModel<Question> questionsModel = new DefaultListModel<>();
         for (Question question : examBoard) {
-            defaultListModel.addElement(question);
+            questionsModel.addElement(question);
         }
-        questionsList.setModel(defaultListModel);
+        questionsList.setModel(questionsModel);
 
         setVisible(true);
     }
@@ -63,14 +66,19 @@ public class CreatePaperPage extends JFrame implements ActionListener, ListSelec
         questionTitle.setText("Question: " + question.toString());
 
         BufferedImage image = question.getImage();
-        System.out.println(paperImagePane.getWidth());
-        paperImagePane.setViewportView(new ImageScroller(image, 1, paperImagePane.getWidth()));
+        paperImagePane.setViewportView(new ImageScroller(image, 5, paperImagePane.getWidth()));
+    }
+
+    public void updateMarks() {
+        int total = 0;
     }
 
     @Override
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == addQuestionBtn) {
-            Question question = questionsList.getSelectedValue();
+            selectedQuestions.add(questionsList.getSelectedValue());
+
+
         } else if (event.getSource() == exportPaperButton) {
 
         } else if (event.getSource() == sortQuestions) {
@@ -82,8 +90,7 @@ public class CreatePaperPage extends JFrame implements ActionListener, ListSelec
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        selectedQuestion = questionsList.getSelectedValue();
-        this.viewQuestion(selectedQuestion);
+        this.viewQuestion(questionsList.getSelectedValue());
     }
 
     {
@@ -160,4 +167,5 @@ public class CreatePaperPage extends JFrame implements ActionListener, ListSelec
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
+
 }

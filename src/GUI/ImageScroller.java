@@ -2,8 +2,6 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
 // Code partially sourced from https://docs.oracle.com/javase/tutorial/uiswing/examples/components/ScrollDemoProject/src/components/ScrollablePicture.java
@@ -14,7 +12,12 @@ public class ImageScroller extends JLabel
     private boolean missingPicture = false;
 
     public ImageScroller(BufferedImage i, int m, int width) {
-        super(new ImageIcon(i));
+        this(i, width);
+        maxUnitIncrement = m;
+    }
+
+    public ImageScroller(BufferedImage i, int width) {
+        super();
 
         if (i == null) {
             missingPicture = true;
@@ -22,15 +25,13 @@ public class ImageScroller extends JLabel
             setHorizontalAlignment(CENTER);
             setOpaque(true);
             setBackground(Color.white);
-        }
-        maxUnitIncrement = m;
+        } else {
+            double scaleFactor = (double) width / i.getWidth();
+            Dimension size = new Dimension(width, (int) (scaleFactor * i.getHeight()));
 
-        double scaleFactor = (double) width / i.getWidth();
-        Dimension size = new Dimension(width, (int) (scaleFactor*i.getHeight()));
-        super.setSize(size);
-        super.setPreferredSize(size);
-        System.out.println(scaleFactor);
-        System.out.println(super.getSize());
+            super.setIcon(new ImageIcon(i.getScaledInstance(size.width, size.height, Image.SCALE_DEFAULT)));
+            super.setSize(size);
+        }
     }
 
     @Override
@@ -57,7 +58,7 @@ public class ImageScroller extends JLabel
                                           int orientation,
                                           int direction) {
         //Get the current position.
-        int currentPosition = 0;
+        int currentPosition;
         if (orientation == SwingConstants.HORIZONTAL) {
             currentPosition = visibleRect.x;
         } else {

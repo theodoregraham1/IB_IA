@@ -70,7 +70,7 @@ public class Database {
                 int index = rf.read();
                 while (index < end && index != -1) {
 
-                    File imageFile = getInstanceFile(index);
+                    File imageFile = getInstanceFile(index, -1);
 
                     if (Objects.requireNonNull(imageFile).exists()) {
                         // If the image exists, get the data from there
@@ -96,15 +96,16 @@ public class Database {
          * @param index the image's index
          * @return the created piece of data (with reference to the created file), null if there was an error
          */
-        protected T saveImage(BufferedImage image, int index) {
+        protected T saveImage(BufferedImage image, int index, int extraData) {
             // Make the file to output to, named based on the mode
-            File outputFile = getInstanceFile(index);
+            File outputFile = getInstanceFile(index, extraData);
 
             try {
                 ImageIO.write(
                         image,
                         Constants.IMAGE_IO_FORMAT,
-                        Objects.requireNonNull(outputFile));
+                        Objects.requireNonNull(outputFile)
+                );
 
                 logger.log(Level.INFO, "Saved image number %d to file location: %s".formatted(index, outputFile.getCanonicalPath()));
 
@@ -120,7 +121,7 @@ public class Database {
                 return;
             }
 
-            saveImage(image, data[0]);
+            saveImage(image, data[0], data[data.length-1]);
 
             // Convert data to bytes for writing
             byte[] bytes = new byte[data.length];
@@ -160,7 +161,7 @@ public class Database {
 
         protected abstract T getObjectInstance(File file);
 
-        protected abstract File getInstanceFile(int index);
+        protected abstract File getInstanceFile(int index, int extraData);
 
         protected abstract T generateObjectInstance(RandomAccessFile rf, int index) throws IOException;
     }

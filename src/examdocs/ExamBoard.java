@@ -133,7 +133,7 @@ public class ExamBoard
     public Iterator<Question> iterator() {
         return new Iterator<>() {
             int paperNum = 0;
-            int questionIndex = 0;
+            int questionIndex = -1;
 
             @Override
             public boolean hasNext() {

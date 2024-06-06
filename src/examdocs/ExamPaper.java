@@ -102,13 +102,17 @@ public class ExamPaper
                     startPage = pageNumber;
 
                 } else {
+                    System.out.print("Marks for question: ");
+                    int marks = Integer.parseInt(scanner.next());
+
                     // Save the current question
                     database.questionTable.setRow(new int[] {
                             questionNumber,
                             startPage,
                             startPercent,
                             pageNumber+1,
-                            linePercent
+                            linePercent,
+                            marks
                     });
 
                     questionNumber ++;

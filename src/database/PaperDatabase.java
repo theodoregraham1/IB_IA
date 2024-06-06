@@ -49,17 +49,29 @@ public class PaperDatabase extends Database {
          */
         @Override
         protected int getDataLength() {
-            return 5;
+            return 6;
         }
 
         @Override
         protected Question getObjectInstance(File file) {
-            return new Question(file, logger);
+            return new Question(file, this.getMarksFromName(file.getName()), logger);
+        }
+
+        private int getMarksFromName(String name) {
+            return Integer.parseInt(name.substring(name.length() - 7, name.length() - 4));
         }
 
         @Override
-        protected File getInstanceFile(int index) {
-            return new File(QUESTION_FILE_FORMAT.formatted(imageDir.getPath(), index));
+        protected File getInstanceFile(int index, int extraData) {
+            if (extraData != -1) {
+                return new File(QUESTION_FILE_FORMAT.formatted(imageDir.getPath(), index, extraData));
+            }
+
+            String nameToCheckAgainst = CONSTRAINED_QUESTION_FORMAT.formatted(index);
+            File[] allFiles = imageDir.listFiles(pathname -> pathname.getName().contains(nameToCheckAgainst));
+
+            if (allFiles == null || allFiles.length == 0) return null;
+            else return allFiles[0];
         }
 
         @Override
@@ -73,12 +85,14 @@ public class PaperDatabase extends Database {
             int endPage = rf.read();
             int endPercent = rf.read();
 
+            int marks = rf.read();
+
             // Make the question
             Page[] pages = pageTable.getRows(startPage, endPage).toArray(new Page[0]);
 
             BufferedImage image = Question.createQuestionImage(pages, startPercent, endPercent);
 
-            return saveImage(image, index);
+            return saveImage(image, index, marks);
         }
     }
 
@@ -145,13 +159,13 @@ public class PaperDatabase extends Database {
         }
 
         @Override
-        protected File getInstanceFile(int index) {
+        protected File getInstanceFile(int index, int ignored) {
             return new File(PAGE_FILE_FORMAT.formatted(imageDir.getPath(), index));
         }
 
         @Override
         protected Page generateObjectInstance(RandomAccessFile rf, int index) throws IOException {
-            pageTable.makeFromDocument(); //FIXME: This will cause file-locking problems so need another way to do it
+            pageTable.makeFromDocument();
 
             return pageTable.getRows(index, index+1).get(0);
         }

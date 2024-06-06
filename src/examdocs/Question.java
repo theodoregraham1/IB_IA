@@ -17,15 +17,17 @@ public class Question
 
     protected Logger logger;
     protected File imageFile;
+    protected int marks;
 
     /**
      * Constructs a new question from its file location
      * @param imageFile the File where the image for this question is stored
      * @param logger the Logger of the owner of this question
      */
-    public Question(File imageFile, Logger logger) {
+    public Question(File imageFile, int marks, Logger logger) {
         this.imageFile = imageFile;
         this.logger = logger;
+        this.marks = marks;
     }
 
     /**
@@ -101,7 +103,8 @@ public class Question
         Path path = imageFile.toPath();
         int nameCount = path.getNameCount();
         String number = path.getName(nameCount-1).toString()
-                .replace("question_", "").replace("."+Constants.IMAGE_IO_FORMAT, "");
+                .replace("question_", "").replace("."+Constants.IMAGE_IO_FORMAT, "")
+                .substring(0, 3);
         String paper = path.getName(nameCount-3).toString();
         return paper+" "+number;
     }
