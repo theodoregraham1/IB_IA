@@ -87,7 +87,7 @@ public class ExamBoard
 
         // Check if the paper is already in the info file
         if (!FileHandler.contains(name, infoFile)) {
-            FileHandler.addLine(name + "\n", infoFile);
+            FileHandler.addLine("\n"+name, infoFile);
             papers.add(paper);
 
         } else {
