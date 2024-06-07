@@ -17,7 +17,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class CreatePaperPage extends JFrame implements ActionListener, ListSelectionListener {
+public class CreatePaperPage extends JFrame
+        implements ActionListener, ListSelectionListener {
 
     private final ExamBoard examBoard;
     private final ArrayList<Question> selectedQuestions = new ArrayList<>();
@@ -42,7 +43,7 @@ public class CreatePaperPage extends JFrame implements ActionListener, ListSelec
         this.examBoard = examBoard;
 
         // Set JFrame properties
-        setTitle("Exams Manager - Create a new paper");
+        setTitle("Exams Manager - Create paper");
         setSize(1200, 600);
         setContentPane(mainPanel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
