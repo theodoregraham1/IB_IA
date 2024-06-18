@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Do bugfixing of the database &#10;(I hate inheritance :( )">
+    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Continue working on image sizing">
+      <change afterPath="$PROJECT_DIR$/src/GUI/LinedImageScroller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/ImageHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/CreatePaperPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/CreatePaperPage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI/ImageScroller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/ImageScroller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/SplitPaperPage.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/SplitPaperPage.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/SplitPaperPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/SplitPaperPage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,31 +63,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW&quot;: &quot;false&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;gui&quot;,
-    &quot;last_opened_file_path&quot;: &quot;N:/pdfbox-app-3.0.0.jar&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "gui",
+    "last_opened_file_path": "N:/pdfbox-app-3.0.0.jar",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "advanced.settings",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Theod\IdeaProjects\IB Projects\IB_IA\Papers" />
@@ -371,7 +374,21 @@
       <option name="project" value="LOCAL" />
       <updated>1716145053876</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="Continue working on image sizing">
+      <created>1717506939037</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1717506939037</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Continue working on image sizing">
+      <created>1717662270841</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1717662270841</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -418,7 +435,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Make it so images aren't resaved if they already exist" />
     <MESSAGE value="Put some code in to testing splitting an image by BufferedImage.subImage" />
     <MESSAGE value="Add a class for commands" />
     <MESSAGE value="Work on allowing selection of questions" />
@@ -443,7 +459,8 @@
     <MESSAGE value="Work on allowing new papers to be saved" />
     <MESSAGE value="Start disconnecting from form" />
     <MESSAGE value="Do bugfixing of the database &#10;(I hate inheritance :( )" />
-    <option name="LAST_COMMIT_MESSAGE" value="Do bugfixing of the database &#10;(I hate inheritance :( )" />
+    <MESSAGE value="Continue working on image sizing" />
+    <option name="LAST_COMMIT_MESSAGE" value="Continue working on image sizing" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -455,7 +472,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/database/PaperDatabase.java</url>
-          <line>93</line>
+          <line>107</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>

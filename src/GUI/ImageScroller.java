@@ -1,5 +1,7 @@
 package GUI;
 
+import utils.ImageHandler;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -10,6 +12,7 @@ public class ImageScroller extends JLabel
         implements Scrollable {
     private int maxUnitIncrement = 1;
     private boolean missingPicture = false;
+    protected final Image masterImage;
 
     public ImageScroller(BufferedImage i, int m, int width) {
         this(i, width);
@@ -21,6 +24,8 @@ public class ImageScroller extends JLabel
 
         if (i == null) {
             missingPicture = true;
+            masterImage = null;
+
             setText("No picture found.");
             setHorizontalAlignment(CENTER);
             setOpaque(true);
@@ -28,8 +33,9 @@ public class ImageScroller extends JLabel
         } else {
             double scaleFactor = (double) width / i.getWidth();
             Dimension size = new Dimension(width, (int) (scaleFactor * i.getHeight()));
+            masterImage = i.getScaledInstance(size.width, size.height, Image.SCALE_DEFAULT);
 
-            super.setIcon(new ImageIcon(i.getScaledInstance(size.width, size.height, Image.SCALE_DEFAULT)));
+            super.setIcon(new ImageIcon(masterImage));
             super.setSize(size);
         }
     }

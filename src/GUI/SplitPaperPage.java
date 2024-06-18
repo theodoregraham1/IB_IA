@@ -15,10 +15,10 @@ import java.io.File;
 
 public class SplitPaperPage extends JFrame
         implements ActionListener, ChangeListener {
-    private Document document;
+    private final Document document;
 
     private JPanel mainPanel;
-    private JComboBox anchorSelection;
+    private JComboBox<String> anchorSelection;
     private JButton saveQuestionButton;
     private JScrollPane paperImagePane;
     private JLabel pageLabel;
@@ -26,6 +26,10 @@ public class SplitPaperPage extends JFrame
     private JSlider percentageSlider;
     private JButton confirmPercentageButton;
     private JLabel percentageSliderLabel;
+    private JLabel percentageDisplay;
+    private JButton previousPageButton;
+    private JButton nextPageButton;
+    private JLabel currentPageLabel;
 
     public SplitPaperPage(File paper) {
         document = new Document(paper);
@@ -37,6 +41,13 @@ public class SplitPaperPage extends JFrame
         setContentPane(mainPanel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        saveQuestionButton.addActionListener(this);
+        confirmPercentageButton.addActionListener(this);
+        previousPageButton.addActionListener(this);
+        nextPageButton.addActionListener(this);
+
+        percentageSlider.addChangeListener(this);
+
         paperImagePane.setWheelScrollingEnabled(true);
 
         setVisible(true);
@@ -44,12 +55,12 @@ public class SplitPaperPage extends JFrame
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        
     }
 
     @Override
     public void stateChanged(ChangeEvent e) {
-
+        percentageDisplay.setText("Current percentage: " + percentageSlider.getValue());
     }
 
     /**
@@ -62,9 +73,9 @@ public class SplitPaperPage extends JFrame
     private void $$$setupUI$$$() {
         createUIComponents();
         mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayoutManager(4, 4, new Insets(0, 0, 0, 0), -1, -1));
+        mainPanel.setLayout(new GridLayoutManager(3, 4, new Insets(0, 0, 0, 0), -1, -1));
         paperImagePane = new JScrollPane();
-        mainPanel.add(paperImagePane, new GridConstraints(1, 0, 2, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        mainPanel.add(paperImagePane, new GridConstraints(1, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         anchorSelection = new JComboBox();
         final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
         defaultComboBoxModel1.addElement("Questions");
@@ -79,22 +90,36 @@ public class SplitPaperPage extends JFrame
         mainPanel.add(spacer1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, new Dimension(152, 11), null, 0, false));
         saveQuestionButton = new JButton();
         saveQuestionButton.setText("Save Question");
-        mainPanel.add(saveQuestionButton, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        mainPanel.add(saveQuestionButton, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         totalMarks = new JLabel();
         totalMarks.setText("Number of marks: 00");
-        mainPanel.add(totalMarks, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(151, 16), null, 0, false));
+        mainPanel.add(totalMarks, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(151, 16), null, 0, false));
         final JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
-        mainPanel.add(panel1, new GridConstraints(1, 3, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel1.setLayout(new GridLayoutManager(4, 2, new Insets(0, 0, 0, 0), -1, -1));
+        mainPanel.add(panel1, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        percentageDisplay = new JLabel();
+        percentageDisplay.setText("Current percentage: 0");
+        panel1.add(percentageDisplay, new GridConstraints(3, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(95, 16), null, 0, false));
+        nextPageButton = new JButton();
+        nextPageButton.setText("Next Page");
+        panel1.add(nextPageButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        percentageSlider.setInverted(true);
+        percentageSlider.setMajorTickSpacing(25);
         percentageSlider.putClientProperty("JSlider.isFilled", Boolean.FALSE);
         percentageSlider.putClientProperty("Slider.paintThumbArrowShape", Boolean.FALSE);
-        panel1.add(percentageSlider, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        confirmPercentageButton = new JButton();
-        confirmPercentageButton.setText("Confirm percentage");
-        mainPanel.add(confirmPercentageButton, new GridConstraints(3, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel1.add(percentageSlider, new GridConstraints(2, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         percentageSliderLabel = new JLabel();
         percentageSliderLabel.setText("Set split percentage");
-        mainPanel.add(percentageSliderLabel, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(28, 32), null, 0, false));
+        panel1.add(percentageSliderLabel, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(95, 32), null, 0, false));
+        previousPageButton = new JButton();
+        previousPageButton.setText("Previous Page");
+        panel1.add(previousPageButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        confirmPercentageButton = new JButton();
+        confirmPercentageButton.setText("Confirm percentage");
+        mainPanel.add(confirmPercentageButton, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label1 = new JLabel();
+        label1.setText("Current Page: 0");
+        mainPanel.add(label1, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(81, 30), null, 0, false));
     }
 
     /**
@@ -105,6 +130,8 @@ public class SplitPaperPage extends JFrame
     }
 
     private void createUIComponents() {
-        percentageSlider = new JSlider(JSlider.VERTICAL, 0, 10, 0);
+        percentageSlider = new JSlider(JSlider.VERTICAL, 0, 100, 0);
+        percentageSlider.setLabelTable(percentageSlider.createStandardLabels(25));
+        percentageSlider.setPaintLabels(true);
     }
 }
