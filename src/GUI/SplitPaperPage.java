@@ -11,11 +11,14 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class SplitPaperPage extends JFrame
         implements ActionListener, ChangeListener {
     private final Document document;
+    private int currentLinePercentage = 0;
+    private LinedImageScroller pageComponent;
 
     private JPanel mainPanel;
     private JComboBox<String> anchorSelection;
@@ -50,17 +53,28 @@ public class SplitPaperPage extends JFrame
 
         paperImagePane.setWheelScrollingEnabled(true);
 
+        setPageImage(1, ); // TODO
         setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
+        if (e.getSource() == confirmPercentageButton) {
+
+        }
     }
 
     @Override
     public void stateChanged(ChangeEvent e) {
         percentageDisplay.setText("Current percentage: " + percentageSlider.getValue());
+        pageComponent.editHorizontalLine(currentLinePercentage, percentageSlider.getValue());
+    }
+
+    private void setPageImage(int pageNumber, BufferedImage image) {
+        currentPageLabel.setText("Question: " + pageNumber);
+
+        pageComponent = new LinedImageScroller(image, 5, paperImagePane.getWidth());
+        paperImagePane.setViewportView(pageComponent);
     }
 
     /**
@@ -117,9 +131,9 @@ public class SplitPaperPage extends JFrame
         confirmPercentageButton = new JButton();
         confirmPercentageButton.setText("Confirm percentage");
         mainPanel.add(confirmPercentageButton, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label1 = new JLabel();
-        label1.setText("Current Page: 0");
-        mainPanel.add(label1, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(81, 30), null, 0, false));
+        currentPageLabel = new JLabel();
+        currentPageLabel.setText("Current Page: 0");
+        mainPanel.add(currentPageLabel, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(81, 30), null, 0, false));
     }
 
     /**
