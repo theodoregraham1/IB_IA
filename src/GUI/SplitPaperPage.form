@@ -60,7 +60,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="Number of marks: 00"/>
+          <text value="Number of marks: 0"/>
         </properties>
       </component>
       <grid id="41ea5" layout-manager="GridLayoutManager" row-count="4" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">

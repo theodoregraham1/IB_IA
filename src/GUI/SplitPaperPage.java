@@ -3,8 +3,8 @@ package GUI;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import examdocs.Document;
 import examdocs.ExamPaper;
+import utils.InputValidation;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -13,14 +13,23 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
+
 // TODO: Throw splits on a stack and have a back button
+// TODO: Allow user to cut off footers and headers in multi-page questions (stretch)
+// TODO: Hold splits in here (use stack) so that back button doesn't lose them
 
 public class SplitPaperPage extends JFrame
         implements ActionListener, ChangeListener {
     private final ExamPaper paper;
     private int currentLinePercentage = 0;
     private LinedImageScroller pageComponent;
+    private int questionNumber = 1;
+
+    private int currentPage = 0;
+    private int startPage;
+    private int startPercentage;
+
+    private boolean inQuestion = false;
 
     private JPanel mainPanel;
     private JComboBox<String> anchorSelection;
@@ -57,32 +66,81 @@ public class SplitPaperPage extends JFrame
 
         setVisible(true);
 
-        int startPage = 1;
-        setPageImage(startPage, paper.getPage(startPage).getImage());
-
-        pageComponent.addHorizontalLine(percentageSlider.getValue(), Color.RED);
+        setPageImage(currentPage);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == confirmPercentageButton) {
-            // TODO
+            if (inQuestion) {
+                saveQuestion();
+                inQuestion = false;
+            } else {
+                startPercentage = currentLinePercentage;
+                startPage = currentPage;
+
+                percentageSlider.setMinimum(startPercentage + 1);
+                pageComponent.addHorizontalLine(startPercentage, Color.GREEN);
+
+                inQuestion = true;
+            }
+        } else if (e.getSource() == previousPageButton && currentPage > 0) {
+            currentPage -= 1;
+            setPageImage(currentPage);
+        } else if (e.getSource() == nextPageButton && currentPage < paper.length()) {
+            currentPage += 1;
+            setPageImage(currentPage);
         }
+    }
+
+    public void saveQuestion() {
+        String markString = "a";
+        while (!InputValidation.isNumeric(markString)) {
+            markString = JOptionPane.showInputDialog(this, "Marks for question:");
+        }
+        int mark = Integer.parseInt(markString);
+
+        paper.saveQuestion(
+                questionNumber,
+                startPage,
+                startPercentage,
+                currentPage,
+                currentLinePercentage,
+                mark
+        );
+
+        pageComponent.editHorizontalLine(startPercentage, Color.GREEN, Color.BLACK);
+        pageComponent.editHorizontalLine(currentLinePercentage, Color.RED, Color.BLACK);
+
+        percentageSlider.setMinimum(currentLinePercentage);
+        pageComponent.addHorizontalLine(currentLinePercentage, Color.RED);
+
+        questionNumber++;
+        startPage = currentPage;
+        startPercentage = -1;
     }
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        percentageDisplay.setText("Current percentage: " + percentageSlider.getValue());
-        pageComponent.editHorizontalLine(currentLinePercentage, percentageSlider.getValue());
+        int newLinePercentage = percentageSlider.getValue();
 
-        currentLinePercentage = percentageSlider.getValue();
+
+        if (newLinePercentage != startPercentage) {
+            percentageDisplay.setText("Current percentage: " + newLinePercentage);
+
+            pageComponent.editHorizontalLine(currentLinePercentage, newLinePercentage, Color.RED);
+
+            currentLinePercentage = newLinePercentage;
+        }
     }
 
-    private void setPageImage(int pageNumber, BufferedImage image) {
-        currentPageLabel.setText("Question: " + pageNumber);
+    private void setPageImage(int pageNumber) {
+        currentPageLabel.setText("Page: " + pageNumber);
+        BufferedImage image = paper.getPage(pageNumber).getImage();
 
-        pageComponent = new LinedImageScroller(image, 5, paperImagePane.getWidth());
+        pageComponent = new LinedImageScroller(image, 10, paperImagePane.getWidth());
         paperImagePane.setViewportView(pageComponent);
+        pageComponent.addHorizontalLine(percentageSlider.getValue(), Color.RED);
     }
 
     /**

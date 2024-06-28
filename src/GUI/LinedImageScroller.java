@@ -16,15 +16,49 @@ public class LinedImageScroller extends ImageScroller {
     }
 
     public void addHorizontalLine(int percentage, Color color) {
-        lines.put(percentage, color);
+        if (lines.containsKey(percentage)) {
+            lines.put(percentage+1, color);
+        } else {
+            lines.put(percentage, color);
+        }
 
         drawLines();
     }
 
-    public void editHorizontalLine(int currentPercentage, int newPercentage) {
-        Color color = lines.remove(currentPercentage);
-        lines.put(newPercentage, color);
-        System.out.println(lines);
+    public void editHorizontalLine(int currentPercentage, int newPercentage, Color color) {
+        Color oldColor = lines.remove(currentPercentage);
+
+        if (!oldColor.equals(color)) {
+            lines.put(currentPercentage, oldColor);
+            return;
+        }
+
+        if (lines.containsKey(newPercentage)) {
+            lines.put(newPercentage+1, color);
+        } else {
+            lines.put(newPercentage, color);
+        }
+
+        drawLines();
+    }
+
+    public void editHorizontalLine(int percentage, Color oldColor, Color newColor) {
+        Color currentColor = lines.remove(percentage);
+
+        if (oldColor.equals(currentColor)) {
+            lines.put(percentage, newColor);
+        } else {
+            lines.put(percentage, currentColor);
+        }
+
+        drawLines();
+    }
+
+    public void removeHorizontalLine(int percentage, Color color) {
+        Color oldColor = lines.remove(percentage);
+        if (!oldColor.equals(color)) {
+            lines.put(percentage, color);
+        }
         drawLines();
     }
 

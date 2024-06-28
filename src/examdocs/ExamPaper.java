@@ -132,6 +132,16 @@ public class ExamPaper
         }
     }
 
+    public void saveQuestion(int questionNumber, int startPage, int startPercent, int endPage, int endPercent, int mark) {
+        database.questionTable.setRow(new int[] {
+                questionNumber,
+                startPage,
+                startPercent,
+                endPage,
+                endPercent,
+                mark
+        });
+    }
     /**
      * Get specific question from the paper
      * @param index the number for the question
@@ -151,6 +161,10 @@ public class ExamPaper
         } catch (IndexOutOfBoundsException e) {
             return null;
         }
+    }
+
+    public int length() {
+        return database.pageTable.length();
     }
 
     @Override
