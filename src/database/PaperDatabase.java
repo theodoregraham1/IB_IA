@@ -187,6 +187,7 @@ public class PaperDatabase extends Database {
 
         if (replace) {
             try {
+                paperFile.mkdirs();
                 Files.copy(newPaper.toPath(), paperFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 throw new IllegalArgumentException(e);

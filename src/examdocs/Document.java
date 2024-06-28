@@ -11,6 +11,7 @@ import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.text.PDFTextStripper;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;

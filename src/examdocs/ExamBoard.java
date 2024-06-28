@@ -75,15 +75,12 @@ public class ExamBoard
      * @param document the pdf file to make the paper from
      * @param name     the name of the paper, in the format: YEAR-MONTH-NUMBER
      */
-    public void addPaper(File document, String name) {
+    public ExamPaper addPaper(File document, String name) {
         // Make the files
         File paperFile = new File(directory, name);
 
         PaperDatabase.makeDatabase(paperFile, document);
         ExamPaper paper = new ExamPaper(paperFile);
-
-        paper.makeQuestions();
-
 
         // Check if the paper is already in the info file
         if (!FileHandler.contains(name, infoFile)) {
@@ -103,9 +100,10 @@ public class ExamBoard
                 i++;
             }
         }
+        return paper;
     }
 
-    public void addPaper(ArrayList<Question> questions, String name) {
+    public ExamPaper addPaper(ArrayList<Question> questions, String name) {
         File paperFile = new File(directory, name);
         FileHandler.clearDirectory(paperFile);
 
@@ -120,6 +118,7 @@ public class ExamBoard
         if (!FileHandler.contains(name, infoFile)) {
             FileHandler.addLine(name + "\n", infoFile);
         }
+        return paper;
     }
 
     public ExamPaper getPaper(int index) {

@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LinedImageScroller extends ImageScroller {
-    Map<Integer, Color> lines = new HashMap<>();
+    private Map<Integer, Color> lines = new HashMap<>();
 
     public LinedImageScroller(BufferedImage i, int m, int width) {
         super(i, m, width);
@@ -24,7 +24,7 @@ public class LinedImageScroller extends ImageScroller {
     public void editHorizontalLine(int currentPercentage, int newPercentage) {
         Color color = lines.remove(currentPercentage);
         lines.put(newPercentage, color);
-
+        System.out.println(lines);
         drawLines();
     }
 
@@ -33,8 +33,10 @@ public class LinedImageScroller extends ImageScroller {
         Graphics iconGraphics = newIcon.getGraphics();
 
         for (Map.Entry<Integer, Color> line: lines.entrySet()) {
+            int height = line.getKey() * newIcon.getHeight() / 100;
+
             iconGraphics.setColor(line.getValue());
-            iconGraphics.drawLine(0, line.getKey(), 100, line.getKey());
+            iconGraphics.drawLine(0, height, newIcon.getWidth(), height);
         }
 
         super.setIcon(new ImageIcon(newIcon));

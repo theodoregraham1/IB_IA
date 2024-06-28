@@ -4,6 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import examdocs.Document;
+import examdocs.ExamPaper;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -13,10 +14,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+// TODO: Throw splits on a stack and have a back button
 
 public class SplitPaperPage extends JFrame
         implements ActionListener, ChangeListener {
-    private final Document document;
+    private final ExamPaper paper;
     private int currentLinePercentage = 0;
     private LinedImageScroller pageComponent;
 
@@ -34,8 +36,8 @@ public class SplitPaperPage extends JFrame
     private JButton nextPageButton;
     private JLabel currentPageLabel;
 
-    public SplitPaperPage(File paper) {
-        document = new Document(paper);
+    public SplitPaperPage(ExamPaper paper) {
+        this.paper = paper;
 
         // Set JFrame properties
         $$$setupUI$$$();
@@ -53,14 +55,18 @@ public class SplitPaperPage extends JFrame
 
         paperImagePane.setWheelScrollingEnabled(true);
 
-        setPageImage(1, ); // TODO
         setVisible(true);
+
+        int startPage = 1;
+        setPageImage(startPage, paper.getPage(startPage).getImage());
+
+        pageComponent.addHorizontalLine(percentageSlider.getValue(), Color.RED);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == confirmPercentageButton) {
-
+            // TODO
         }
     }
 
@@ -68,6 +74,8 @@ public class SplitPaperPage extends JFrame
     public void stateChanged(ChangeEvent e) {
         percentageDisplay.setText("Current percentage: " + percentageSlider.getValue());
         pageComponent.editHorizontalLine(currentLinePercentage, percentageSlider.getValue());
+
+        currentLinePercentage = percentageSlider.getValue();
     }
 
     private void setPageImage(int pageNumber, BufferedImage image) {

@@ -145,6 +145,14 @@ public class ExamPaper
         }
     }
 
+    public Page getPage(int index) {
+        try {
+            return database.pageTable.getRows(index, index + 1).get(0);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
+    }
+
     @Override
     public Iterator<Page> iterator() {
         return new Iterator<>() {
