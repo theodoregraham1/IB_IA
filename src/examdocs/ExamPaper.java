@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static utils.Constants.PAPER_FILE_NAME;
+// TODO: Make a 'reset' method
 
 public class ExamPaper
     implements Iterable<Page> {
