@@ -5,6 +5,7 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import examdocs.ExamPaper;
 import utils.InputValidation;
+import utils.MultiValueMap;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -13,15 +14,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 // TODO: Throw splits on a stack and have a back button
 // TODO: Allow user to cut off footers and headers in multi-page questions (stretch)
-// TODO: Hold splits in here (use stack) so that back button doesn't lose them
+// TODO: Hold splits in here (use stack) so that page button doesn't lose them
+// TODO: Allow cutting off the vertical sides (stretch)
+// TODO:
 
 public class SplitPaperPage extends JFrame
         implements ActionListener, ChangeListener {
     private final ExamPaper paper;
     // private final Stack<>
+    private final HashMap<Integer, MultiValueMap<Integer, Color>> allLines;
 
     private int currentPage = 0;
     private int startPage;
@@ -52,6 +58,7 @@ public class SplitPaperPage extends JFrame
 
     public SplitPaperPage(ExamPaper paper) {
         this.paper = paper;
+        this.allLines = new HashMap<>(paper.length());
 
         // Set JFrame properties
         $$$setupUI$$$();
@@ -93,8 +100,7 @@ public class SplitPaperPage extends JFrame
             currentPage -= 1;
             setPageImage(currentPage);
         } else if (e.getSource() == nextPageButton && currentPage < paper.length()) {
-            currentPage += 1;
-            setPageImage(currentPage);
+
         } else if (e.getSource() == savePaperButton) {
 
         }
@@ -143,11 +149,23 @@ public class SplitPaperPage extends JFrame
 
     private void setPageImage(int pageNumber) {
         currentPageLabel.setText("Page: " + pageNumber);
+
         BufferedImage image = paper.getPage(pageNumber).getImage();
 
-        pageComponent = new LinedImageScroller(image, 10, paperImagePane.getWidth());
+        if (allLines.containsKey(pageNumber)) {
+            pageComponent = new LinedImageScroller(image, 10, paperImagePane.getWidth(), allLines.get(pageNumber));
+        } else {
+            pageComponent = new LinedImageScroller(image, 10, paperImagePane.getWidth());
+        }
+
         paperImagePane.setViewportView(pageComponent);
         pageComponent.addHorizontalLine(percentageSlider.getValue(), Color.RED);
+    }
+
+    private void nextPage() {
+        currentPage += 1;
+
+        setPageImage(currentPage);
     }
 
     /**

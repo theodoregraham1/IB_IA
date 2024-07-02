@@ -1,6 +1,7 @@
 package GUI;
 
 import utils.ImageHandler;
+import utils.MultiValueMap;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,56 +10,41 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LinedImageScroller extends ImageScroller {
-    private Map<Integer, Color> lines = new HashMap<>();
+    private final MultiValueMap<Integer, Color> lines;
 
     public LinedImageScroller(BufferedImage i, int m, int width) {
         super(i, m, width);
+
+        lines = new MultiValueMap<>();
+    }
+    public LinedImageScroller(BufferedImage i, int m, int width, MultiValueMap<Integer, Color> lines) {
+        super(i, m, width);
+
+        this.lines = lines;
+        drawLines();
     }
 
     public void addHorizontalLine(int percentage, Color color) {
-        if (lines.containsKey(percentage)) {
-            lines.put(percentage+1, color);
-        } else {
-            lines.put(percentage, color);
-        }
+        lines.put(percentage, color);
 
         drawLines();
     }
 
     public void editHorizontalLine(int currentPercentage, int newPercentage, Color color) {
-        Color oldColor = lines.remove(currentPercentage);
+        boolean ignored = lines.remove(currentPercentage, color);
 
-        if (!oldColor.equals(color)) {
-            lines.put(currentPercentage, oldColor);
-            return;
-        }
-
-        if (lines.containsKey(newPercentage)) {
-            lines.put(newPercentage+1, color);
-        } else {
-            lines.put(newPercentage, color);
-        }
-
-        drawLines();
+        addHorizontalLine(newPercentage, color);
     }
 
     public void editHorizontalLine(int percentage, Color oldColor, Color newColor) {
-        Color currentColor = lines.remove(percentage);
+        boolean ignored = lines.remove(percentage, oldColor);
 
-        if (oldColor.equals(currentColor)) {
-            lines.put(percentage, newColor);
-        } else {
-            lines.put(percentage, currentColor);
-        }
-
-        drawLines();
+        addHorizontalLine(percentage, newColor);
     }
 
     public void removeHorizontalLine(int percentage, Color color) {
-        Color oldColor = lines.remove(percentage);
-        if (!oldColor.equals(color)) {
-            lines.put(percentage, color);
-        }
+        boolean ignored = lines.remove(percentage, color);
+
         drawLines();
     }
 
