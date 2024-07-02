@@ -6,7 +6,6 @@ import utils.MultiValueMap;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.Map;
 
 public class LinedImageScroller extends ImageScroller {

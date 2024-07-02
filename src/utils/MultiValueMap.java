@@ -54,7 +54,11 @@ public class MultiValueMap<K, V>
 
     @Override
     public boolean remove(Object key, Object value) {
-        return map.get(key).remove(value);
+        ArrayList<V> values = map.get(key);
+
+        if (values == null) return false;
+
+        return values.remove(value);
     }
 
     @Override

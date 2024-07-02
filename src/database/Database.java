@@ -152,6 +152,15 @@ public class Database {
             }
         }
 
+        public void clear() {
+            assert FileHandler.clearDirectory(imageDir);
+            try {
+                assert dataFile.createNewFile();
+            } catch (IOException ignored) {
+
+            }
+        }
+
         /**
          * Returns the length of each piece of data in the RandomAccessFile
          *

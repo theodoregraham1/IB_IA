@@ -107,16 +107,13 @@ public class ExamBoard
         File paperFile = new File(directory, name);
         FileHandler.clearDirectory(paperFile);
 
-        ExamPaper paper = new ExamPaper(
-                questions,
-                paperFile
-        );
+        ExamPaper paper = new ExamPaper(questions, paperFile);
 
         papers.add(paper);
 
         // Check if the paper is already in the info file
         if (!FileHandler.contains(name, infoFile)) {
-            FileHandler.addLine(name + "\n", infoFile);
+            FileHandler.addLine("\n" + name, infoFile);
         }
         return paper;
     }
@@ -126,6 +123,13 @@ public class ExamBoard
             return null;
         }
         return papers.get(index);
+    }
+
+    public void removePaper(String name) {
+        if (!FileHandler.removeLine(name, infoFile)) {
+            return;
+        }
+        FileHandler.clearDirectory(new File(directory, name));
     }
 
     @Override
@@ -157,4 +161,7 @@ public class ExamBoard
             }
         };
     }
+
+    // TODO: Make a 'reset' method
+
 }

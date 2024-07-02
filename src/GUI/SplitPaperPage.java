@@ -14,20 +14,22 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 // TODO: Throw splits on a stack and have a back button
 // TODO: Allow user to cut off footers and headers in multi-page questions (stretch)
 // TODO: Hold splits in here (use stack) so that page button doesn't lose them
 // TODO: Allow cutting off the vertical sides (stretch)
-// TODO:
+// TODO: Allow loading of lines from a current ExamPaper
 
 public class SplitPaperPage extends JFrame
         implements ActionListener, ChangeListener {
     private final ExamPaper paper;
     // private final Stack<>
     private final HashMap<Integer, MultiValueMap<Integer, Color>> allLines;
+    private final ArrayList<int[]> questions;
 
     private int currentPage = 0;
     private int startPage;
@@ -59,6 +61,7 @@ public class SplitPaperPage extends JFrame
     public SplitPaperPage(ExamPaper paper) {
         this.paper = paper;
         this.allLines = new HashMap<>(paper.length());
+        this.questions = new ArrayList<>();
 
         // Set JFrame properties
         $$$setupUI$$$();
@@ -92,17 +95,16 @@ public class SplitPaperPage extends JFrame
                 startPage = currentPage;
 
                 percentageSlider.setMinimum(startPercentage + 1);
-                pageComponent.addHorizontalLine(startPercentage, Color.GREEN);
+                addLine(currentPage, startPercentage, Color.GREEN);
 
                 inQuestion = true;
             }
         } else if (e.getSource() == previousPageButton && currentPage > 0) {
-            currentPage -= 1;
-            setPageImage(currentPage);
+            alterPage(-1);
         } else if (e.getSource() == nextPageButton && currentPage < paper.length()) {
             alterPage(1);
         } else if (e.getSource() == savePaperButton) {
-            alterPage(-1);
+
         }
     }
 
@@ -113,14 +115,14 @@ public class SplitPaperPage extends JFrame
         }
         int mark = Integer.parseInt(markString);
 
-        paper.saveQuestion(
-                questionNumber,
-                startPage,
-                startPercentage,
-                currentPage,
-                currentLinePercentage,
-                mark
-        );
+        questions.add(new int[]{
+                        questionNumber,
+                        startPage,
+                        startPercentage,
+                        currentPage,
+                        currentLinePercentage,
+                        mark
+                });
 
         pageComponent.editHorizontalLine(startPercentage, Color.GREEN, Color.BLACK);
         pageComponent.editHorizontalLine(currentLinePercentage, Color.RED, Color.BLACK);
@@ -131,6 +133,17 @@ public class SplitPaperPage extends JFrame
         questionNumber++;
         startPage = currentPage;
         startPercentage = -1;
+    }
+
+    public void saveToPaper(int[] data) {
+        paper.saveQuestion(
+                data[0],
+                data[1],
+                data[2],
+                data[3],
+                data[4],
+                data[5]
+        );
     }
 
     @Override
@@ -159,14 +172,30 @@ public class SplitPaperPage extends JFrame
         }
 
         paperImagePane.setViewportView(pageComponent);
-        pageComponent.addHorizontalLine(percentageSlider.getValue(), Color.RED);
+        addLine(currentPage, percentageSlider.getValue(), Color.RED)
+    }
+
+    private void addLine(int page, int percentage, Color color) {
+        if (page == currentPage) {
+            pageComponent.addHorizontalLine(percentage, color);
+        }
+        allLines.get(page).put(percentage, color);
     }
 
     private void alterPage(int movement) {
-        //TODO
         currentPage += movement;
 
         setPageImage(currentPage);
+
+        // Get minimum line in this page
+        int minimum = 0;
+        for (Integer i: allLines.keySet()) {
+            if (minimum > i) {
+                minimum = i;
+            }
+        }
+        percentageSlider.setMinimum(minimum);
+        // TODO: Change to max
     }
 
     /**
@@ -243,7 +272,7 @@ public class SplitPaperPage extends JFrame
 
     private void createUIComponents() {
         percentageSlider = new JSlider(JSlider.VERTICAL, 0, 100, 0);
-        percentageSlider.setLabelTable(percentageSlider.createStandardLabels(25));
+        percentageSlider.setLabelTable(percentageSlider.createStandardLabels(25, 0));
         percentageSlider.setPaintLabels(true);
     }
 }

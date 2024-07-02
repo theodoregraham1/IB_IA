@@ -2,6 +2,7 @@ package utils;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -107,6 +108,27 @@ public class FileHandler {
         return false;
     }
 
+    public static boolean writeLines(String[] newLines, File file, boolean append) {
+        try (
+                FileWriter writer = new FileWriter(file, append)
+        ) {
+            for (String newLine: newLines) {
+                writer.write(newLine);
+            }
+            return true;
+        } catch (FileNotFoundException e) {
+            // If the file does not yet exist, make it and then add the line
+            boolean success = makeFile(file);
+
+            if (success) {
+                return writeLines(newLines, file, append);
+            }
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, e.toString());
+        }
+        return false;
+    }
+
     /**
      * Attempts to create a new file
      * @param file where the new file should be created
@@ -134,6 +156,34 @@ public class FileHandler {
             if (s.contains(text)) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    public static boolean removeLine(String text, File file) {
+        try {
+            String[] currentLines = readLines(file);
+            ArrayList<String> newLines = new ArrayList<>();
+
+            for (String s: currentLines) {
+                if (!s.equals(text)) {
+                    newLines.add(s);
+                }
+            }
+
+            if (newLines.size() == currentLines.length) {
+                return false;
+            }
+
+            assert file.delete();
+            assert file.createNewFile();
+            writeLines(newLines.toArray(new String[0]), file, false);
+
+            return true;
+        } catch (FileNotFoundException e) {
+            return false;
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, e.toString());
         }
         return false;
     }

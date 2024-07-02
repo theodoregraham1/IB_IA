@@ -12,7 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static utils.Constants.PAPER_FILE_NAME;
-// TODO: Make a 'reset' method
 
 public class ExamPaper
     implements Iterable<Page> {
@@ -58,8 +57,8 @@ public class ExamPaper
      * Saves all the questions in files and updates the instance's questions to match.
      * Based on user input
      */
+    @Deprecated
     public void makeQuestions() {
-        // TODO: Use stack to allow undo-ing
         // Get currently saved questions and start from there
         int questionNumber = database.questionTable.length();
 
@@ -143,6 +142,7 @@ public class ExamPaper
                 mark
         });
     }
+
     /**
      * Get specific question from the paper
      * @param index the number for the question
@@ -154,6 +154,10 @@ public class ExamPaper
         } catch (IndexOutOfBoundsException e) {
             return null;
         }
+    }
+
+    public void clearQuestions() {
+
     }
 
     public Page getPage(int index) {
