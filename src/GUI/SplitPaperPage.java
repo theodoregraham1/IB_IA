@@ -100,9 +100,9 @@ public class SplitPaperPage extends JFrame
             currentPage -= 1;
             setPageImage(currentPage);
         } else if (e.getSource() == nextPageButton && currentPage < paper.length()) {
-
+            alterPage(1);
         } else if (e.getSource() == savePaperButton) {
-
+            alterPage(-1);
         }
     }
 
@@ -162,8 +162,9 @@ public class SplitPaperPage extends JFrame
         pageComponent.addHorizontalLine(percentageSlider.getValue(), Color.RED);
     }
 
-    private void nextPage() {
-        currentPage += 1;
+    private void alterPage(int movement) {
+        //TODO
+        currentPage += movement;
 
         setPageImage(currentPage);
     }
