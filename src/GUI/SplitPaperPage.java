@@ -116,13 +116,13 @@ public class SplitPaperPage extends JFrame
         int mark = Integer.parseInt(markString);
 
         questions.add(new int[]{
-                        questionNumber,
-                        startPage,
-                        startPercentage,
-                        currentPage,
-                        currentLinePercentage,
-                        mark
-                });
+                questionNumber,
+                startPage,
+                startPercentage,
+                currentPage,
+                currentLinePercentage,
+                mark
+        });
 
         pageComponent.editHorizontalLine(startPercentage, Color.GREEN, Color.BLACK);
         pageComponent.editHorizontalLine(currentLinePercentage, Color.RED, Color.BLACK);
@@ -172,12 +172,16 @@ public class SplitPaperPage extends JFrame
         }
 
         paperImagePane.setViewportView(pageComponent);
-        addLine(currentPage, percentageSlider.getValue(), Color.RED)
+        addLine(currentPage, percentageSlider.getValue(), Color.RED);
     }
 
     private void addLine(int page, int percentage, Color color) {
         if (page == currentPage) {
             pageComponent.addHorizontalLine(percentage, color);
+        }
+
+        if (!allLines.containsKey(page)) {
+            allLines.put(page, new MultiValueMap<>());
         }
         allLines.get(page).put(percentage, color);
     }
@@ -189,7 +193,7 @@ public class SplitPaperPage extends JFrame
 
         // Get minimum line in this page
         int minimum = 0;
-        for (Integer i: allLines.keySet()) {
+        for (Integer i : allLines.keySet()) {
             if (minimum > i) {
                 minimum = i;
             }
