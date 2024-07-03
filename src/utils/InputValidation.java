@@ -9,4 +9,12 @@ public class InputValidation {
             return false;
         }
     }
+
+    public static Pages getPage(Object selectedAnchor) {
+        // TODO
+    }
+
+    public enum Pages {
+
+    }
 }

@@ -15,12 +15,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 // TODO: Throw splits on a stack and have a back button
 // TODO: Allow user to cut off footers and headers in multi-page questions (stretch)
-// TODO: Hold splits in here (use stack) so that page button doesn't lose them
 // TODO: Allow cutting off the vertical sides (stretch)
 // TODO: Allow loading of lines from a current ExamPaper
 
@@ -30,6 +28,7 @@ public class SplitPaperPage extends JFrame
     // private final Stack<>
     private final HashMap<Integer, MultiValueMap<Integer, Color>> allLines;
     private final ArrayList<int[]> questions;
+    private int marksSum = 0;
 
     private int currentPage = 0;
     private int startPage;
@@ -81,6 +80,12 @@ public class SplitPaperPage extends JFrame
 
         setVisible(true);
 
+        // Set the start of all lines
+        for (Integer line : allLines.keySet()) {
+            allLines.put(line, new MultiValueMap<>());
+            allLines.get(line).put(0, Color.RED);
+        }
+
         setPageImage(currentPage);
     }
 
@@ -104,6 +109,9 @@ public class SplitPaperPage extends JFrame
         } else if (e.getSource() == nextPageButton && currentPage < paper.length()) {
             alterPage(1);
         } else if (e.getSource() == savePaperButton) {
+            saveAllToPaper(questions);
+        } else if (e.getSource() == anchorSelection) {
+            Object selectedItem = anchorSelection.getSelectedItem();
 
         }
     }
@@ -113,7 +121,9 @@ public class SplitPaperPage extends JFrame
         while (!InputValidation.isNumeric(markString)) {
             markString = JOptionPane.showInputDialog(this, "Marks for question:");
         }
+
         int mark = Integer.parseInt(markString);
+        updateMarks(mark);
 
         questions.add(new int[]{
                 questionNumber,
@@ -133,6 +143,18 @@ public class SplitPaperPage extends JFrame
         questionNumber++;
         startPage = currentPage;
         startPercentage = -1;
+    }
+
+    public void updateMarks(int mark) {
+        marksSum += mark;
+        totalMarks.setText("Number of marks: " + mark);
+    }
+
+    public void saveAllToPaper(ArrayList<int[]> allData) {
+        paper.clearQuestions();
+        for (int[] d: allData) {
+            saveToPaper(d);
+        }
     }
 
     public void saveToPaper(int[] data) {
@@ -171,8 +193,18 @@ public class SplitPaperPage extends JFrame
             pageComponent = new LinedImageScroller(image, 10, paperImagePane.getWidth());
         }
 
+        // Get minimum line in this page
+        int minimum = 0;
+        for (Integer i : allLines.keySet()) {
+            if (minimum > i) {
+                minimum = i;
+            }
+        }
+        percentageSlider.setMinimum(minimum);
+
+        percentageSlider.setValue(0);
+
         paperImagePane.setViewportView(pageComponent);
-        addLine(currentPage, percentageSlider.getValue(), Color.RED);
     }
 
     private void addLine(int page, int percentage, Color color) {
@@ -187,19 +219,10 @@ public class SplitPaperPage extends JFrame
     }
 
     private void alterPage(int movement) {
+        allLines.put(currentPage, pageComponent.getLines());
         currentPage += movement;
 
         setPageImage(currentPage);
-
-        // Get minimum line in this page
-        int minimum = 0;
-        for (Integer i : allLines.keySet()) {
-            if (minimum > i) {
-                minimum = i;
-            }
-        }
-        percentageSlider.setMinimum(minimum);
-        // TODO: Change to max
     }
 
     /**

@@ -23,6 +23,10 @@ public class LinedImageScroller extends ImageScroller {
         drawLines();
     }
 
+    public MultiValueMap<Integer, Color> getLines() {
+        return lines;
+    }
+
     public void addHorizontalLine(int percentage, Color color) {
         lines.put(percentage, color);
 
