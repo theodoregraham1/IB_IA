@@ -4,7 +4,6 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import examdocs.ExamPaper;
-import utils.InputValidation;
 import utils.MultiValueMap;
 
 import javax.swing.*;
@@ -57,7 +56,7 @@ public class SplitPaperPage extends JFrame
     private JButton undoButton;
     private JButton redoButton;
 
-    public SplitPaperPage(ExamPaper paper) {
+    public SplitPaperPage(ExamPaper paper, ActionListener anchorListener) {
         this.paper = paper;
         this.allLines = new HashMap<>(paper.length());
         this.questions = new ArrayList<>();
@@ -68,6 +67,8 @@ public class SplitPaperPage extends JFrame
         setSize(1200, 600);
         setContentPane(mainPanel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        anchorSelection.addActionListener(anchorListener);
 
         savePaperButton.addActionListener(this);
         confirmPercentageButton.addActionListener(this);
@@ -112,7 +113,6 @@ public class SplitPaperPage extends JFrame
             saveAllToPaper(questions);
         } else if (e.getSource() == anchorSelection) {
             Object selectedItem = anchorSelection.getSelectedItem();
-
         }
     }
 

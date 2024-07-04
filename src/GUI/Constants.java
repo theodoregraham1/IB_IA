@@ -1,9 +1,9 @@
 package GUI;
 
 public class Constants {
-    String[] ANCHORS = {
-            "Questions",
+    public static final String[] ANCHORS = {
             "Create Paper",
-            "Import Paper"
+            "Import Paper",
+            "View Papers"
     };
 }
