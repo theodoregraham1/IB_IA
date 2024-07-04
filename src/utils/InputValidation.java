@@ -1,5 +1,7 @@
 package utils;
 
+import javax.swing.*;
+
 public class InputValidation {
     public static boolean isNumeric(String s) {
         try {
@@ -10,8 +12,12 @@ public class InputValidation {
         }
     }
 
-    public static Pages getPage(Object selectedAnchor) {
-        // TODO
+    public static Class<? extends JFrame> getPage(Object selectedAnchor) {
+        if (!(selectedAnchor instanceof String)) {
+            return null;
+        }
+        String choice = (String) selectedAnchor;
+
     }
 
     public enum Pages {

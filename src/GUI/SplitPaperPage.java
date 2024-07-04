@@ -152,7 +152,7 @@ public class SplitPaperPage extends JFrame
 
     public void saveAllToPaper(ArrayList<int[]> allData) {
         paper.clearQuestions();
-        for (int[] d: allData) {
+        for (int[] d : allData) {
             saveToPaper(d);
         }
     }
