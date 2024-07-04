@@ -5,6 +5,7 @@ import examdocs.ExamBoard;
 import examdocs.ExamPaper;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -28,6 +29,13 @@ public class GuiMain {
             if (source instanceof JComboBox<?>) {
                 Object selectedItem = ((JComboBox<?>) source).getSelectedItem();
                 getPage(selectedItem);
+
+                for (Container c = (JComboBox<?>) source; c != null; c=c.getParent()){
+                    if (c instanceof JFrame) {
+                        c.setVisible(false);
+                        ((JFrame) c).dispose();
+                    }
+                }
             }
         }
     }

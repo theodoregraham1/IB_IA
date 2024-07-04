@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 // TODO: Throw splits on a stack and have a back button
 // TODO: Allow user to cut off footers and headers in multi-page questions (stretch)
@@ -68,6 +69,8 @@ public class SplitPaperPage extends JFrame
         setContentPane(mainPanel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        anchorSelection.setModel(Constants.getAnchorModel());
+        anchorSelection.setSelectedIndex(1);
         anchorSelection.addActionListener(anchorListener);
 
         savePaperButton.addActionListener(this);
@@ -111,8 +114,6 @@ public class SplitPaperPage extends JFrame
             alterPage(1);
         } else if (e.getSource() == savePaperButton) {
             saveAllToPaper(questions);
-        } else if (e.getSource() == anchorSelection) {
-            Object selectedItem = anchorSelection.getSelectedItem();
         }
     }
 
@@ -147,7 +148,7 @@ public class SplitPaperPage extends JFrame
 
     public void updateMarks(int mark) {
         marksSum += mark;
-        totalMarks.setText("Number of marks: " + mark);
+        totalMarks.setText("Number of marks: " + marksSum);
     }
 
     public void saveAllToPaper(ArrayList<int[]> allData) {
@@ -201,7 +202,6 @@ public class SplitPaperPage extends JFrame
             }
         }
         percentageSlider.setMinimum(minimum);
-
         percentageSlider.setValue(0);
 
         paperImagePane.setViewportView(pageComponent);
@@ -219,9 +219,11 @@ public class SplitPaperPage extends JFrame
     }
 
     private void alterPage(int movement) {
+        // Hold current lines
         allLines.put(currentPage, pageComponent.getLines());
-        currentPage += movement;
 
+        // Update to next page
+        currentPage += movement;
         setPageImage(currentPage);
     }
 
@@ -240,9 +242,6 @@ public class SplitPaperPage extends JFrame
         mainPanel.add(paperImagePane, new GridConstraints(1, 0, 1, 4, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         anchorSelection = new JComboBox();
         final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
-        defaultComboBoxModel1.addElement("Questions");
-        defaultComboBoxModel1.addElement("Create Paper");
-        defaultComboBoxModel1.addElement("Import Paper");
         anchorSelection.setModel(defaultComboBoxModel1);
         mainPanel.add(anchorSelection, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         pageLabel = new JLabel();
@@ -298,6 +297,7 @@ public class SplitPaperPage extends JFrame
     }
 
     private void createUIComponents() {
+        // Percentage slider
         percentageSlider = new JSlider(JSlider.VERTICAL, 0, 100, 0);
         percentageSlider.setLabelTable(percentageSlider.createStandardLabels(25, 0));
         percentageSlider.setPaintLabels(true);
