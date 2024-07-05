@@ -167,7 +167,7 @@ public class FileHandler {
 
             for (String s: currentLines) {
                 if (!s.equals(text)) {
-                    newLines.add(s);
+                    newLines.add(s + "\n");
                 }
             }
 
@@ -186,5 +186,14 @@ public class FileHandler {
             logger.log(Level.SEVERE, e.toString());
         }
         return false;
+    }
+
+    public static String getFileExtension(File file) {
+        String fileName = file.getName();
+        int lastIndexOfDot = fileName.lastIndexOf(".");
+        if (lastIndexOfDot == -1) {
+            return ""; // Empty extension
+        }
+        return fileName.substring(lastIndexOfDot + 1);
     }
 }

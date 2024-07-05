@@ -15,9 +15,7 @@ public class GuiMain {
 
     public static void main(String[] args) {
         // TODO: Loading screen
-        board.removePaper("Paper-2022-June-1");
-        ExamPaper paper = board.addPaper(new File("./Papers/GCSE/June-2022/Question-paper/Questionpaper-Paper1-June2022.pdf"), "Paper-2022-June-1");
-        new SplitPaperPage(paper, new AnchorListener());
+        getPage(Constants.CREATE_PAPER);
     }
 
     public static class AnchorListener implements ActionListener {
@@ -30,7 +28,7 @@ public class GuiMain {
                 Object selectedItem = ((JComboBox<?>) source).getSelectedItem();
                 getPage(selectedItem);
 
-                for (Container c = (JComboBox<?>) source; c != null; c=c.getParent()){
+                for (Container c = (JComboBox<?>) source; c != null; c=c.getParent()) {
                     if (c instanceof JFrame) {
                         c.setVisible(false);
                         ((JFrame) c).dispose();
@@ -41,15 +39,17 @@ public class GuiMain {
     }
 
     public static JFrame getPage(Object selectedAnchor) {
-        if (!(selectedAnchor instanceof String)) {
+        if (!(selectedAnchor instanceof String || selectedAnchor instanceof Integer)) {
             return null;
+        } else if (selectedAnchor instanceof String) {
+            selectedAnchor = linearSearch(Constants.ANCHORS, selectedAnchor);
         }
-        int index = linearSearch(Constants.ANCHORS, selectedAnchor);
 
-        return switch (index) {
-            case 0 -> new CreatePaperPage(board);
-            case 1 -> new ImportPaperPage();
-            case 2 -> null; //TODO
+        // Move indexes to constants
+        return switch ((int) selectedAnchor) {
+            case Constants.CREATE_PAPER -> new CreatePaperPage(board, new AnchorListener());
+            case Constants.IMPORT_PAPER -> new ImportPaperPage(board, new AnchorListener());
+            case Constants.VIEW_PAPERS -> null; //TODO
             default -> null;
         };
     }

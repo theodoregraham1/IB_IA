@@ -141,7 +141,9 @@ public class ExamBoard
             @Override
             public boolean hasNext() {
                 // Check if there is another question in the current paper
-                if (getPaper(paperNum).getQuestion(questionIndex+1) != null) {
+                if (getPaper(paperNum) == null) {
+                    return false;
+                } else if (getPaper(paperNum).getQuestion(questionIndex+1) != null) {
                     questionIndex++;
                     return true;
 
@@ -161,7 +163,4 @@ public class ExamBoard
             }
         };
     }
-
-    // TODO: Make a 'reset' method
-
 }

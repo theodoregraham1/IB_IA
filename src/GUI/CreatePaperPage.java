@@ -40,7 +40,7 @@ public class CreatePaperPage extends JFrame
     private JPanel sideBottomPanel;
     private JPanel sideTopPanel;
 
-    public CreatePaperPage(ExamBoard examBoard) {
+    public CreatePaperPage(ExamBoard examBoard, ActionListener anchorListener) {
         this.examBoard = examBoard;
 
         // Set JFrame properties
@@ -51,6 +51,10 @@ public class CreatePaperPage extends JFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         paperImagePane.setWheelScrollingEnabled(true);
+
+        anchorSelection.setModel(Constants.getAnchorModel());
+        anchorSelection.setSelectedIndex(0);
+        anchorSelection.addActionListener(anchorListener);
 
         // Add action listeners
         addQuestionBtn.addActionListener(this);
