@@ -14,7 +14,13 @@ public class GuiMain {
     private static ExamBoard board = new ExamBoard(BoardLevel.GCSE, new File("./Papers/GCSE"));
 
     public static void main(String[] args) {
-        // TODO: Loading screen
+        try {
+            // Set the look and feel to the system look and feel
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         getPage(Constants.CREATE_PAPER);
     }
 

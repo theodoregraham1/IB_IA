@@ -15,22 +15,19 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 // TODO: Throw splits on a stack and have a back button
 // TODO: Allow user to cut off footers and headers in multi-page questions (stretch)
 // TODO: Allow cutting off the vertical sides (stretch)
 // TODO: Allow loading of lines from a current ExamPaper
 
-public class SplitPaperPage extends JFrame
+public class SplitPaperPage extends SplitPDFPage
         implements ActionListener, ChangeListener {
     private final ExamPaper paper;
     // private final Stack<>
-    private final HashMap<Integer, MultiValueMap<Integer, Color>> allLines;
-    private final ArrayList<int[]> questions;
+
     private int marksSum = 0;
 
-    private int currentPage = 0;
     private int startPage;
     private int startPercentage;
 

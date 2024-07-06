@@ -18,8 +18,8 @@ import java.io.File;
 public class ImportPaperPage extends JFrame
         implements ActionListener {
 
-    private ExamBoard board;
-    private ActionListener finishedListener;
+    private final ExamBoard board;
+    private final ActionListener finishedListener;
 
     private JFileChooser fileChooser;
     private JPanel filePanel;
@@ -30,10 +30,12 @@ public class ImportPaperPage extends JFrame
         this.board = board;
         this.finishedListener = finishedListener;
 
+
+
         // Set JFrame properties
         $$$setupUI$$$();
         setTitle("Exams Manager - Split paper");
-        setSize(600, 400);
+        setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(mainPanel);
 
@@ -89,7 +91,6 @@ public class ImportPaperPage extends JFrame
 
                 String name = JOptionPane.showInputDialog("Name of new paper:");
                 new SplitPaperPage(board.addPaper(paperFile, name), finishedListener);
-                this.dispose();
             }
         }
     }
