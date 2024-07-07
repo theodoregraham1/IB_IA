@@ -4,7 +4,6 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import examdocs.ExamPaper;
-import utils.MultiValueMap;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -14,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 // TODO: Throw splits on a stack and have a back button
 // TODO: Allow user to cut off footers and headers in multi-page questions (stretch)
@@ -29,45 +27,29 @@ public class SplitPaperPage extends SplitPDFPage
     private int marksSum = 0;
 
     private int startPage;
-    private int startPercentage;
 
     private int questionNumber = 1;
-    private boolean inQuestion = false;
 
-    private int currentLinePercentage = 0;
-
-    private LinedImageScroller pageComponent;
 
     private JPanel mainPanel;
-    private JComboBox<String> anchorSelection;
     private JButton savePaperButton;
-    private JScrollPane paperImagePane;
     private JLabel pageLabel;
     private JLabel totalMarks;
-    private JSlider percentageSlider;
     private JButton confirmPercentageButton;
     private JLabel percentageSliderLabel;
-    private JLabel percentageDisplay;
-    private JButton previousPageButton;
-    private JButton nextPageButton;
-    private JLabel currentPageLabel;
     private JButton undoButton;
     private JButton redoButton;
 
     public SplitPaperPage(ExamPaper paper, ActionListener anchorListener) {
+        super(paper.length());
+
         this.paper = paper;
-        this.allLines = new HashMap<>(paper.length());
-        this.questions = new ArrayList<>();
 
         // Set JFrame properties
         $$$setupUI$$$();
         setTitle("Exams Manager - Split paper");
-        setSize(1200, 600);
         setContentPane(mainPanel);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        anchorSelection.setModel(Constants.getAnchorModel());
-        anchorSelection.setSelectedIndex(1);
         anchorSelection.addActionListener(anchorListener);
 
         savePaperButton.addActionListener(this);
@@ -75,27 +57,16 @@ public class SplitPaperPage extends SplitPDFPage
         previousPageButton.addActionListener(this);
         nextPageButton.addActionListener(this);
 
-        percentageSlider.addChangeListener(this);
-
-        paperImagePane.setWheelScrollingEnabled(true);
 
         setVisible(true);
-
-        // Set the start of all lines
-        for (Integer line : allLines.keySet()) {
-            allLines.put(line, new MultiValueMap<>());
-            allLines.get(line).put(0, Color.RED);
-        }
-
-        setPageImage(currentPage);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == confirmPercentageButton) {
-            if (inQuestion) {
-                saveQuestion();
-                inQuestion = false;
+            if (inSplit) {
+                saveSplit();
+                inSplit = false;
             } else {
                 startPercentage = currentLinePercentage;
                 startPage = currentPage;
@@ -103,18 +74,17 @@ public class SplitPaperPage extends SplitPDFPage
                 percentageSlider.setMinimum(startPercentage + 1);
                 addLine(currentPage, startPercentage, Color.GREEN);
 
-                inQuestion = true;
+                inSplit = true;
             }
-        } else if (e.getSource() == previousPageButton && currentPage > 0) {
-            alterPage(-1);
-        } else if (e.getSource() == nextPageButton && currentPage < paper.length()) {
-            alterPage(1);
         } else if (e.getSource() == savePaperButton) {
-            saveAllToPaper(questions);
+            saveAllToPaper(splits);
+        } else {
+            super.actionPerformed(e);
         }
     }
 
-    public void saveQuestion() {
+    @Override
+    public void saveSplit() {
         String markString = "a";
         while (!InputValidation.isNumeric(markString)) {
             markString = JOptionPane.showInputDialog(this, "Marks for question:");
@@ -123,7 +93,7 @@ public class SplitPaperPage extends SplitPDFPage
         int mark = Integer.parseInt(markString);
         updateMarks(mark);
 
-        questions.add(new int[]{
+        splits.add(new int[]{
                 questionNumber,
                 startPage,
                 startPercentage,
@@ -167,61 +137,10 @@ public class SplitPaperPage extends SplitPDFPage
     }
 
     @Override
-    public void stateChanged(ChangeEvent e) {
-        int newLinePercentage = percentageSlider.getValue();
-
-
-        if (newLinePercentage != startPercentage) {
-            percentageDisplay.setText("Current percentage: " + newLinePercentage);
-
-            pageComponent.editHorizontalLine(currentLinePercentage, newLinePercentage, Color.RED);
-
-            currentLinePercentage = newLinePercentage;
-        }
-    }
-
-    private void setPageImage(int pageNumber) {
-        currentPageLabel.setText("Page: " + pageNumber);
-
+    protected void setPageImage(int pageNumber) {
         BufferedImage image = paper.getPage(pageNumber).getImage();
 
-        if (allLines.containsKey(pageNumber)) {
-            pageComponent = new LinedImageScroller(image, 10, paperImagePane.getWidth(), allLines.get(pageNumber));
-        } else {
-            pageComponent = new LinedImageScroller(image, 10, paperImagePane.getWidth());
-        }
-
-        // Get minimum line in this page
-        int minimum = 0;
-        for (Integer i : allLines.keySet()) {
-            if (minimum > i) {
-                minimum = i;
-            }
-        }
-        percentageSlider.setMinimum(minimum);
-        percentageSlider.setValue(0);
-
-        paperImagePane.setViewportView(pageComponent);
-    }
-
-    private void addLine(int page, int percentage, Color color) {
-        if (page == currentPage) {
-            pageComponent.addHorizontalLine(percentage, color);
-        }
-
-        if (!allLines.containsKey(page)) {
-            allLines.put(page, new MultiValueMap<>());
-        }
-        allLines.get(page).put(percentage, color);
-    }
-
-    private void alterPage(int movement) {
-        // Hold current lines
-        allLines.put(currentPage, pageComponent.getLines());
-
-        // Update to next page
-        currentPage += movement;
-        setPageImage(currentPage);
+        super.setPageImage(pageNumber, image);
     }
 
     /**
@@ -291,12 +210,5 @@ public class SplitPaperPage extends SplitPDFPage
      */
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
-    }
-
-    private void createUIComponents() {
-        // Percentage slider
-        percentageSlider = new JSlider(JSlider.VERTICAL, 0, 100, 0);
-        percentageSlider.setLabelTable(percentageSlider.createStandardLabels(25, 0));
-        percentageSlider.setPaintLabels(true);
     }
 }
