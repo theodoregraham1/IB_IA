@@ -1,7 +1,7 @@
 package examdocs;
 
-import utils.Constants;
 import database.ImageFile;
+import utils.Constants;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

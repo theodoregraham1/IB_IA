@@ -1,7 +1,5 @@
 package GUI;
 
-import utils.ImageHandler;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;

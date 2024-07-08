@@ -6,7 +6,10 @@ import examdocs.Question;
 import utils.FileHandler;
 
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Objects;

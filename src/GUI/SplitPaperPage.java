@@ -7,14 +7,9 @@ import examdocs.ExamPaper;
 import utils.MultiValueMap;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 // TODO: Throw splits on a stack and have a back button
 // TODO: Allow user to cut off footers and headers in multi-page questions (stretch)
@@ -24,17 +19,6 @@ import java.util.HashMap;
 public class SplitPaperPage extends SplitPDFPage
         implements ActionListener {
     private int marksSum = 0;
-
-    private int currentPage = 0;
-    private int startPage;
-    private int startPercentage;
-
-    private int questionNumber = 1;
-    private boolean inSplit = false;
-
-    private int currentLinePercentage = 0;
-
-    private LinedImageScroller pageComponent;
 
     private JPanel mainPanel;
     private JComboBox<String> anchorSelection;
@@ -131,10 +115,9 @@ public class SplitPaperPage extends SplitPDFPage
         });
 
         pageComponent.editHorizontalLine(startPercentage, Color.GREEN, Color.BLACK);
-        pageComponent.editHorizontalLine(currentLinePercentage, Color.RED, Color.BLACK);
+        pageComponent.addHorizontalLine(currentLinePercentage, Color.BLACK);
 
         percentageSlider.setMinimum(currentLinePercentage);
-        pageComponent.addHorizontalLine(currentLinePercentage, Color.RED);
 
         questionNumber++;
         startPage = currentPage;

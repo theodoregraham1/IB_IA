@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 import static utils.Constants.DATABASE_INFO_FILE_NAME;
 
-public class Database {
+public abstract class Database {
     protected static final Logger logger = Logger.getLogger(PaperDatabase.class.getName());
 
     // Initialise logging level

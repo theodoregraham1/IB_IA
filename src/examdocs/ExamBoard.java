@@ -1,6 +1,5 @@
 package examdocs;
 
-import database.ImageFile;
 import database.PaperDatabase;
 import utils.FileHandler;
 

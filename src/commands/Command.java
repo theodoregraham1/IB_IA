@@ -1,5 +1,6 @@
 package commands;
 
+@Deprecated
 public class Command {
     private final String name;
     private final String[] inputs;

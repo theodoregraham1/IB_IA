@@ -1,7 +1,5 @@
 package GUI;
 
-import javax.swing.*;
-
 public class InputValidation {
     public static boolean isNumeric(String s) {
         try {

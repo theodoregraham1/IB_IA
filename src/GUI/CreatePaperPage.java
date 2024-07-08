@@ -3,9 +3,7 @@ package GUI;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import database.ImageFile;
 import examdocs.ExamBoard;
-import examdocs.ExamPaper;
 import examdocs.Question;
 
 import javax.swing.*;

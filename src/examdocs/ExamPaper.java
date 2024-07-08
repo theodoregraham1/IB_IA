@@ -2,12 +2,13 @@ package examdocs;
 
 import commands.Command;
 import commands.Commands;
-import database.ImageFile;
 import database.PaperDatabase;
 import utils.FileHandler;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

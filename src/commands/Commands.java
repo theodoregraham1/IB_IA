@@ -2,6 +2,7 @@ package commands;
 
 import java.util.Scanner;
 
+@Deprecated
 public class Commands {
     private final Command[] commands;
 

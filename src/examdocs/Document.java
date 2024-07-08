@@ -10,8 +10,9 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.text.PDFTextStripper;
+import utils.Constants;
+import utils.FileHandler;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,9 +20,6 @@ import java.io.IOException;
 import java.nio.file.NoSuchFileException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import utils.Constants;
-import utils.FileHandler;
 
 
 public class Document {
