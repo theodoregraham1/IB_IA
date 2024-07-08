@@ -22,17 +22,15 @@ import java.util.HashMap;
 // TODO: Allow loading of lines from a current ExamPaper
 
 public class SplitPaperPage extends SplitPDFPage
-        implements ActionListener, ChangeListener {
-    private final ExamPaper paper;
-    // private final Stack<>
-
+        implements ActionListener {
     private int marksSum = 0;
 
+    private int currentPage = 0;
     private int startPage;
     private int startPercentage;
 
     private int questionNumber = 1;
-    private boolean inQuestion = false;
+    private boolean inSplit = false;
 
     private int currentLinePercentage = 0;
 
@@ -55,9 +53,7 @@ public class SplitPaperPage extends SplitPDFPage
     private JButton redoButton;
 
     public SplitPaperPage(ExamPaper paper, ActionListener anchorListener) {
-        this.paper = paper;
-        this.allLines = new HashMap<>(paper.length());
-        this.questions = new ArrayList<>();
+        super(paper);
 
         // Set JFrame properties
         $$$setupUI$$$();
@@ -90,12 +86,13 @@ public class SplitPaperPage extends SplitPDFPage
         setPageImage(currentPage);
     }
 
+    // Much could be moved up
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == confirmPercentageButton) {
-            if (inQuestion) {
+            if (inSplit) {
                 saveQuestion();
-                inQuestion = false;
+                inSplit = false;
             } else {
                 startPercentage = currentLinePercentage;
                 startPage = currentPage;
@@ -103,17 +100,18 @@ public class SplitPaperPage extends SplitPDFPage
                 percentageSlider.setMinimum(startPercentage + 1);
                 addLine(currentPage, startPercentage, Color.GREEN);
 
-                inQuestion = true;
+                inSplit = true;
             }
         } else if (e.getSource() == previousPageButton && currentPage > 0) {
             alterPage(-1);
-        } else if (e.getSource() == nextPageButton && currentPage < paper.length()) {
+        } else if (e.getSource() == nextPageButton && currentPage < document.length()) {
             alterPage(1);
         } else if (e.getSource() == savePaperButton) {
             saveAllToPaper(questions);
         }
     }
 
+    // Specific for exam papers
     public void saveQuestion() {
         String markString = "a";
         while (!InputValidation.isNumeric(markString)) {
@@ -143,20 +141,15 @@ public class SplitPaperPage extends SplitPDFPage
         startPercentage = -1;
     }
 
+    // Specific for exam papers
     public void updateMarks(int mark) {
         marksSum += mark;
         totalMarks.setText("Number of marks: " + marksSum);
     }
 
-    public void saveAllToPaper(ArrayList<int[]> allData) {
-        paper.clearQuestions();
-        for (int[] d : allData) {
-            saveToPaper(d);
-        }
-    }
-
+    @Override
     public void saveToPaper(int[] data) {
-        paper.saveQuestion(
+        document.saveQuestion(
                 data[0],
                 data[1],
                 data[2],
@@ -167,61 +160,23 @@ public class SplitPaperPage extends SplitPDFPage
     }
 
     @Override
-    public void stateChanged(ChangeEvent e) {
-        int newLinePercentage = percentageSlider.getValue();
-
-
-        if (newLinePercentage != startPercentage) {
-            percentageDisplay.setText("Current percentage: " + newLinePercentage);
-
-            pageComponent.editHorizontalLine(currentLinePercentage, newLinePercentage, Color.RED);
-
-            currentLinePercentage = newLinePercentage;
-        }
+    protected JSlider getPercentageSlider() {
+        return percentageSlider;
     }
 
-    private void setPageImage(int pageNumber) {
-        currentPageLabel.setText("Page: " + pageNumber);
-
-        BufferedImage image = paper.getPage(pageNumber).getImage();
-
-        if (allLines.containsKey(pageNumber)) {
-            pageComponent = new LinedImageScroller(image, 10, paperImagePane.getWidth(), allLines.get(pageNumber));
-        } else {
-            pageComponent = new LinedImageScroller(image, 10, paperImagePane.getWidth());
-        }
-
-        // Get minimum line in this page
-        int minimum = 0;
-        for (Integer i : allLines.keySet()) {
-            if (minimum > i) {
-                minimum = i;
-            }
-        }
-        percentageSlider.setMinimum(minimum);
-        percentageSlider.setValue(0);
-
-        paperImagePane.setViewportView(pageComponent);
+    @Override
+    protected JLabel getPercentageDisplay() {
+        return percentageDisplay;
     }
 
-    private void addLine(int page, int percentage, Color color) {
-        if (page == currentPage) {
-            pageComponent.addHorizontalLine(percentage, color);
-        }
-
-        if (!allLines.containsKey(page)) {
-            allLines.put(page, new MultiValueMap<>());
-        }
-        allLines.get(page).put(percentage, color);
+    @Override
+    protected JLabel getCurrentPageLabel() {
+        return currentPageLabel;
     }
 
-    private void alterPage(int movement) {
-        // Hold current lines
-        allLines.put(currentPage, pageComponent.getLines());
-
-        // Update to next page
-        currentPage += movement;
-        setPageImage(currentPage);
+    @Override
+    protected JScrollPane getPaperImagePane() {
+        return paperImagePane;
     }
 
     /**
