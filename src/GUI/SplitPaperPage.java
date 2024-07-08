@@ -39,6 +39,13 @@ public class SplitPaperPage extends SplitPDFPage
     private JLabel percentageSliderLabel;
     private JButton undoButton;
     private JButton redoButton;
+    protected JSlider percentageSlider;
+    protected JScrollPane paperImagePane;
+    protected JLabel currentPageLabel;
+    protected JButton previousPageButton;
+    protected JButton nextPageButton;
+    protected JComboBox<String> anchorSelection;
+    protected JLabel percentageDisplay;
 
     public SplitPaperPage(ExamPaper paper, ActionListener anchorListener) {
         super(paper.length());

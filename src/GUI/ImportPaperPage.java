@@ -30,8 +30,6 @@ public class ImportPaperPage extends JFrame
         this.board = board;
         this.finishedListener = finishedListener;
 
-
-
         // Set JFrame properties
         $$$setupUI$$$();
         setTitle("Exams Manager - Split paper");
