@@ -1,6 +1,7 @@
 package examdocs;
 
 import database.PaperDatabase;
+import utils.Constants;
 import utils.FileHandler;
 
 import java.io.File;
@@ -21,6 +22,7 @@ public class ExamBoard
 
     private final BoardLevel level;
     private ArrayList<ExamPaper> papers;
+    private ArrayList<ExamPaper> markSchemes;
 
 
     // Initialise logging level
@@ -52,8 +54,16 @@ public class ExamBoard
             String[] lines = FileHandler.readLines(infoFile);
 
             papers = new ArrayList<>();
-            for(String line: lines) {
-                papers.add(new ExamPaper(new File(directory, line)));
+            markSchemes = new ArrayList<>();
+
+            for (String line: lines) {
+                File paperDirectory = new File(directory, line);
+                papers.add(
+                        new ExamPaper(new File(paperDirectory, Constants.PAPER_DIR_NAME))
+                );
+                markSchemes.add(
+                        new ExamPaper(new File(paperDirectory, Constants.SCHEME_DIR_NAME))
+                );
             }
 
         } catch (FileNotFoundException e) {
@@ -62,7 +72,6 @@ public class ExamBoard
             papers = new ArrayList<>();
 
         } catch (IOException e) {
-            // TODO: More robust error handling
             logger.log(Level.SEVERE, e.toString());
         }
     }
@@ -74,12 +83,13 @@ public class ExamBoard
      * @param document the pdf file to make the paper from
      * @param name     the name of the paper, in the format: YEAR-MONTH-NUMBER
      */
-    public ExamPaper addPaper(File document, String name) {
-        // Make the files
-        File paperFile = new File(directory, name);
+    public ExamPaper[] addPaper(File paperDocument, File schemeDocument, String name) {
+        // Make the files for a paper
+        File superDirectory = new File(directory, name);
 
-        PaperDatabase.makeDatabase(paperFile, document);
-        ExamPaper paper = new ExamPaper(paperFile);
+
+        PaperDatabase.makeDatabase(new File(superDirectory, Constants.PAPER_DIR_NAME), paperDocument);
+        ExamPaper paper = new ExamPaper(new File(superDirectory, Constants.PAPER_DIR_NAME));
 
         // Check if the paper is already in the info file
         if (!FileHandler.contains(name, infoFile)) {
@@ -99,7 +109,7 @@ public class ExamBoard
                 i++;
             }
         }
-        return paper;
+        return new ExamPaper[]{paper, scheme};
     }
 
     public ExamPaper addPaper(ArrayList<Question> questions, String name) {
@@ -134,8 +144,8 @@ public class ExamBoard
     @Override
     public Iterator<Question> iterator() {
         return new Iterator<>() {
-            int paperNum = 0;
-            int questionIndex = -1;
+            private int paperNum = 0;
+            private int questionIndex = 0;
 
             @Override
             public boolean hasNext() {

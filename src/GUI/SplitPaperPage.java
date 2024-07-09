@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 // TODO: Throw splits on a stack and have a back button
 // TODO: Allow user to cut off footers and headers in multi-page questions (stretch)
 // TODO: Allow cutting off the vertical sides (stretch)
-// TODO: Allow loading of lines from a current ExamPaper
+// TODO: Allow loading of lines from a current ExamPaper (editing so stretch)
 
 public class SplitPaperPage extends SplitPDFPage
         implements ActionListener {
@@ -70,31 +70,6 @@ public class SplitPaperPage extends SplitPDFPage
         setPageImage(currentPage);
     }
 
-    // Much could be moved up
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == confirmPercentageButton) {
-            if (inSplit) {
-                saveQuestion();
-                inSplit = false;
-            } else {
-                startPercentage = currentLinePercentage;
-                startPage = currentPage;
-
-                percentageSlider.setMinimum(startPercentage + 1);
-                addLine(currentPage, startPercentage, Color.GREEN);
-
-                inSplit = true;
-            }
-        } else if (e.getSource() == previousPageButton && currentPage > 0) {
-            alterPage(-1);
-        } else if (e.getSource() == nextPageButton && currentPage < document.length()) {
-            alterPage(1);
-        } else if (e.getSource() == savePaperButton) {
-            saveAllToPaper(questions);
-        }
-    }
-
     // Specific for exam papers
     public void saveQuestion() {
         String markString = "a";
@@ -130,6 +105,28 @@ public class SplitPaperPage extends SplitPDFPage
         totalMarks.setText("Number of marks: " + marksSum);
     }
 
+    // Much could be moved up
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        if (e.getSource() == confirmPercentageButton) {
+            if (inSplit) {
+                saveQuestion();
+                inSplit = false;
+            } else {
+                startPercentage = currentLinePercentage;
+                startPage = currentPage;
+
+                percentageSlider.setMinimum(startPercentage);
+                addLine(currentPage, startPercentage, Color.GREEN);
+
+                inSplit = true;
+            }
+        } else if (e.getSource() == savePaperButton) {
+            saveAllToPaper(questions);
+        }
+    }
+
     @Override
     public void saveToPaper(int[] data) {
         document.saveQuestion(
@@ -140,6 +137,16 @@ public class SplitPaperPage extends SplitPDFPage
                 data[4],
                 data[5]
         );
+    }
+
+    @Override
+    protected JButton getNextPageButton() {
+        return nextPageButton;
+    }
+
+    @Override
+    protected JButton getPreviousPageButton() {
+        return previousPageButton;
     }
 
     @Override

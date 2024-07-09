@@ -7,6 +7,8 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +17,7 @@ import java.util.HashMap;
 // however this does not gel with the UI designer
 // UI designer source code could be moved but I don't fancy messing with that
 public abstract class SplitPDFPage extends JFrame
-        implements ChangeListener {
+        implements ChangeListener, ActionListener {
     protected final ExamPaper document;
 
     // private final Stack<>
@@ -91,6 +93,15 @@ public abstract class SplitPDFPage extends JFrame
     }
 
     @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == getPreviousPageButton() && currentPage > 0) {
+            alterPage(-1);
+        } else if (e.getSource() == getNextPageButton() && currentPage < document.length()) {
+            alterPage(1);
+        }
+    }
+
+    @Override
     public void stateChanged(ChangeEvent e) {
         int newLinePercentage = getPercentageSlider().getValue();
 
@@ -103,6 +114,8 @@ public abstract class SplitPDFPage extends JFrame
         }
     }
 
+    protected abstract JButton getNextPageButton();
+    protected abstract JButton getPreviousPageButton();
     protected abstract JSlider getPercentageSlider();
     protected abstract JLabel getPercentageDisplay();
     protected abstract JLabel getCurrentPageLabel();

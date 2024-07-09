@@ -15,4 +15,7 @@ public class Constants {
 
     public static final String PAGES_DIR_NAME = "pages/";
     public static final String QUESTIONS_DIR_NAME = "questions/";
+
+    public static final String PAPER_DIR_NAME = "paper/";
+    public static final String SCHEME_DIR_NAME = "scheme/";
 }
