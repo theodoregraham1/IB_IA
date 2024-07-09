@@ -6,16 +6,13 @@ import database.PaperDatabase;
 import utils.FileHandler;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Scanner;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static utils.Constants.PAPER_FILE_NAME;
 
-public class ExamPaper
-    implements Iterable<Page> {
+public class ExamPaper implements Iterable<Page> {
     private static final Logger logger = Logger.getLogger(ExamPaper.class.getName());
 
     private final Document document;
@@ -158,6 +155,10 @@ public class ExamPaper
     }
 
     public void clearQuestions() {
+        database.questionTable.clear();
+    }
+
+    public void removeQuestion(int index) {
 
     }
 
@@ -171,6 +172,10 @@ public class ExamPaper
 
     public int length() {
         return database.pageTable.length();
+    }
+
+    public File getDocumentFile() {
+        return document.getFile();
     }
 
     @Override
@@ -191,11 +196,11 @@ public class ExamPaper
         };
     }
 
-    public File getDocumentFile() {
-        return document.getFile();
-    }
-
-    public boolean equals(ExamPaper paper) {
-        return getDocumentFile().equals(paper.getDocumentFile());
+    @Override
+    public boolean equals(Object paper) {
+        if (paper instanceof ExamPaper) {
+            return getDocumentFile().equals(((ExamPaper) paper).getDocumentFile());
+        }
+        return false;
     }
 }

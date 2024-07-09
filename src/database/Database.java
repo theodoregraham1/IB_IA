@@ -6,6 +6,7 @@ import utils.FileHandler;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
@@ -66,6 +67,37 @@ public abstract class Database {
                 }
 
                 rf.seek((long) start * getDataLength());
+                int[] currentData = new int[getDataLength()];
+                int index = rf.read();
+                while (index < end && index != -1) {
+
+                    File imageFile = getInstanceFile(index, -1);
+
+                    data.add(generateObjectInstance(rf, index));
+
+                    index = rf.read();
+                }
+            } catch (IOException | NullPointerException e) {
+                return data;
+            }
+            return data;
+        }
+
+        private ArrayList<int[]> readRows(int start, int end) {
+            ArrayList<int[]> data = new ArrayList<>();
+
+            try (
+                    RandomAccessFile rf = new RandomAccessFile(dataFile, "r")
+            ) {
+                if (end == -1) {
+                    try {
+                        end = Objects.requireNonNull(imageDir.listFiles()).length;
+                    } catch (NullPointerException e) {
+                        end = 0;
+                    }
+                }
+
+                rf.seek((long) start * getDataLength());
 
                 int index = rf.read();
                 while (index < end && index != -1) {
@@ -87,6 +119,10 @@ public abstract class Database {
                 return data;
             }
             return data;
+        }
+
+        public T getRow(int index) {
+            return getRows(index, index+1).get(0);
         }
 
         /**
@@ -139,6 +175,27 @@ public abstract class Database {
             } catch (IOException e) {
                 logger.log(Level.SEVERE, e.toString());
             }
+        }
+
+        public int[] editIndex(int oldIndex, int newIndex) {
+            try (
+                    RandomAccessFile rf = new RandomAccessFile(dataFile, "rw")
+            ) {
+                rf.seek((long) getDataLength() * oldIndex);
+
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        public void deleteRow(int index) {
+            ArrayList<T> data = getRows(0, index);
+            data.addAll(getRows(index+1, -1));
+
+            clear();
+
 
         }
 

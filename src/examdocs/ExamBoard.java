@@ -3,6 +3,7 @@ package examdocs;
 import database.PaperDatabase;
 import utils.Constants;
 import utils.FileHandler;
+import utils.Searches;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -80,36 +81,38 @@ public class ExamBoard
      * Adds a new paper from scratch, assuming nothing has been saved before.
      * Then saves images and questions
      *
-     * @param document the pdf file to make the paper from
-     * @param name     the name of the paper, in the format: YEAR-MONTH-NUMBER
+     * @param paperDocument the PDF file to make the paper from
+     * @param schemeDocument the PDF file to make the mark scheme from
+     * @param name the name of the paper, in the format: YEAR-MONTH-NUMBER
      */
     public ExamPaper[] addPaper(File paperDocument, File schemeDocument, String name) {
-        // Make the files for a paper
+        // Make the files
         File superDirectory = new File(directory, name);
+        File paperDirectory = new File(superDirectory, Constants.PAPER_DIR_NAME);
+        File schemeDirectory = new File(superDirectory, Constants.SCHEME_DIR_NAME);
 
+        // Make the paper
+        PaperDatabase.makeDatabase(paperDirectory, paperDocument);
+        ExamPaper paper = new ExamPaper(paperDirectory);
 
-        PaperDatabase.makeDatabase(new File(superDirectory, Constants.PAPER_DIR_NAME), paperDocument);
-        ExamPaper paper = new ExamPaper(new File(superDirectory, Constants.PAPER_DIR_NAME));
+        // Make the scheme
+        PaperDatabase.makeDatabase(schemeDirectory, schemeDocument);
+        ExamPaper scheme = new ExamPaper(schemeDirectory);
 
         // Check if the paper is already in the info file
         if (!FileHandler.contains(name, infoFile)) {
             FileHandler.addLine("\n"+name, infoFile);
+
             papers.add(paper);
-
+            markSchemes.add(scheme);
         } else {
-            // Linear search to replace old version of paper
-            int i = 0;
-            boolean found = false;
-
-            while (i < papers.size() && !found) {
-                if (paper.equals(papers.get(i))) {
-                    papers.set(i, paper);
-                    found = true;
-                }
-                i++;
-            }
+            // Replace old version of the paper
+            int i = papers.indexOf(paper);
+            papers.set(i, paper);
+            markSchemes.set(i, scheme);
         }
-        return new ExamPaper[]{paper, scheme};
+
+        return new ExamPaper[] {paper, scheme};
     }
 
     public ExamPaper addPaper(ArrayList<Question> questions, String name) {
