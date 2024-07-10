@@ -8,6 +8,6 @@ public class Main {
     public static void main(String[] args) {
 
         ExamBoard board = new ExamBoard(BoardLevel.GCSE, new File("./Papers/GCSE"));
-        board.getPaper(0).makeQuestions();
+        board.getPaper(0);
     }
 }

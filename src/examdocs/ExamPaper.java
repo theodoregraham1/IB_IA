@@ -12,11 +12,8 @@ import java.util.logging.Logger;
 
 import static utils.Constants.PAPER_FILE_NAME;
 
-public class ExamPaper implements Iterable<Page> {
+public class ExamPaper extends QuestionPaper {
     private static final Logger logger = Logger.getLogger(ExamPaper.class.getName());
-
-    private final Document document;
-    private final PaperDatabase database;
 
     // Initialise logging level
     static {
@@ -28,28 +25,10 @@ public class ExamPaper implements Iterable<Page> {
      * @param databaseFile the directory where this paper has its database's root
      */
     public ExamPaper(File databaseFile) {
-        this.document = new Document(new File(databaseFile, PAPER_FILE_NAME));
-        this.database = new PaperDatabase(databaseFile, document);
+        super(databaseFile);
     }
 
-    public ExamPaper(ArrayList<Question> questions, File databaseFile) {
-        // FIXME
-        FileHandler.clearDirectory(databaseFile);
-
-        this.document = new Document(new File(databaseFile, PAPER_FILE_NAME), true);
-        this.database = new PaperDatabase(databaseFile, document);
-
-        int index = 0;
-        for (Question question: questions) {
-            int startPage = document.length();
-
-            document.addPage(question);
-            database.questionTable.setRow(
-                    question.getImage(),
-                    new int[] {index, startPage+index, 0, document.length(), 0, question.getMarks()}); // TODO: Improve this to actually use the correct page
-            index ++;
-        }
-    }
+    // TODO: Custom paper creation from questions
 
     /**
      * Saves all the questions in files and updates the instance's questions to match.
@@ -130,77 +109,4 @@ public class ExamPaper implements Iterable<Page> {
         }
     }
 
-    public void saveQuestion(int questionNumber, int startPage, int startPercent, int endPage, int endPercent, int mark) {
-        database.questionTable.setRow(new int[] {
-                questionNumber,
-                startPage,
-                startPercent,
-                endPage,
-                endPercent,
-                mark
-        });
-    }
-
-    /**
-     * Get specific question from the paper
-     * @param index the number for the question
-     * @return a reference to the Question
-     */
-    public Question getQuestion(int index) {
-        try {
-            return database.questionTable.getRows(index, index + 1).get(0);
-        } catch (IndexOutOfBoundsException e) {
-            return null;
-        }
-    }
-
-    public void clearQuestions() {
-        database.questionTable.clear();
-    }
-
-    public void removeQuestion(int index) {
-
-    }
-
-    public Page getPage(int index) {
-        try {
-            return database.pageTable.getRows(index, index + 1).get(0);
-        } catch (IndexOutOfBoundsException e) {
-            return null;
-        }
-    }
-
-    public int length() {
-        return database.pageTable.length();
-    }
-
-    public File getDocumentFile() {
-        return document.getFile();
-    }
-
-    @Override
-    public Iterator<Page> iterator() {
-        return new Iterator<>() {
-            int count = 0;
-
-            @Override
-            public boolean hasNext() {
-                return !database.pageTable.getRows(count, count + 1).isEmpty();
-            }
-
-            @Override
-            public Page next() {
-                count++;
-                return database.pageTable.getRows(count - 1, count).get(0);
-            }
-        };
-    }
-
-    @Override
-    public boolean equals(Object paper) {
-        if (paper instanceof ExamPaper) {
-            return getDocumentFile().equals(((ExamPaper) paper).getDocumentFile());
-        }
-        return false;
-    }
 }

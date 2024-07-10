@@ -3,7 +3,6 @@ package examdocs;
 import database.PaperDatabase;
 import utils.Constants;
 import utils.FileHandler;
-import utils.Searches;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -115,20 +114,7 @@ public class ExamBoard
         return new ExamPaper[] {paper, scheme};
     }
 
-    public ExamPaper addPaper(ArrayList<Question> questions, String name) {
-        File paperFile = new File(directory, name);
-        FileHandler.clearDirectory(paperFile);
-
-        ExamPaper paper = new ExamPaper(questions, paperFile);
-
-        papers.add(paper);
-
-        // Check if the paper is already in the info file
-        if (!FileHandler.contains(name, infoFile)) {
-            FileHandler.addLine("\n" + name, infoFile);
-        }
-        return paper;
-    }
+    // TODO: Custom paper create
 
     public ExamPaper getPaper(int index) {
         if (index >= papers.size()) {

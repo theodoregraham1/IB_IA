@@ -98,7 +98,7 @@ public class CreatePaperPage extends JFrame
 
             questionsList.clearSelection();
         } else if (event.getSource() == exportPaperButton) {
-            examBoard.addPaper(selectedQuestions, "PLACEHOLDER"); // TODO
+            // examBoard.addPaper(selectedQuestions, "PLACEHOLDER"); // TODO
 
         } else if (event.getSource() == sortQuestions) {
             // TODO

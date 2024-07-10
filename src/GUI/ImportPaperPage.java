@@ -62,7 +62,8 @@ public class ImportPaperPage extends JFrame
                 }
 
                 String name = JOptionPane.showInputDialog("Name of new paper:");
-                new SplitPaperPage(board.addPaper(paperFile, name), finishedListener);
+                // FIXME
+                new SplitPaperPage(board.addPaper(paperFile, null, name)[0], finishedListener);
                 this.dispose();
             }
         }

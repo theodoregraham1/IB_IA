@@ -46,6 +46,10 @@ public class PaperDatabase extends Database {
             );
         }
 
+        private int getMarksFromName(String name) {
+            return Integer.parseInt(name.substring(name.length() - 7, name.length() - 4));
+        }
+
         /**
          * Returns the length of each piece of data in the RandomAccessFile
          * @return the number of bytes per ImageFile
@@ -58,10 +62,6 @@ public class PaperDatabase extends Database {
         @Override
         protected Question getObjectInstance(File file) {
             return new Question(file, this.getMarksFromName(file.getName()), logger);
-        }
-
-        private int getMarksFromName(String name) {
-            return Integer.parseInt(name.substring(name.length() - 7, name.length() - 4));
         }
 
         @Override

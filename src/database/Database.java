@@ -24,7 +24,6 @@ public abstract class Database {
         logger.setLevel(Level.FINEST);
     }
 
-
     public abstract class ImageTable<T> {
         // Optimised mainly for memory usage (not speed)
 
@@ -37,7 +36,9 @@ public abstract class Database {
          */
         protected ImageTable(File imageDir) {
             if (!imageDir.isDirectory()) {
-                if (!imageDir.mkdirs()) throw new IllegalArgumentException("Image directory must be a directory");
+                if (!imageDir.mkdirs()) {
+                    throw new IllegalArgumentException("Image directory must be a directory");
+                }
             }
 
             this.dataFile = new File(imageDir, DATABASE_INFO_FILE_NAME);
@@ -83,7 +84,7 @@ public abstract class Database {
             return data;
         }
 
-        private ArrayList<int[]> readRows(int start, int end) {
+        protected ArrayList<int[]> readRows(int start, int end) {
             ArrayList<int[]> data = new ArrayList<>();
 
             try (
@@ -101,18 +102,13 @@ public abstract class Database {
 
                 int index = rf.read();
                 while (index < end && index != -1) {
-
-                    File imageFile = getInstanceFile(index, -1);
-
-                    if (Objects.requireNonNull(imageFile).exists()) {
-                        // If the image exists, get the data from there
-                        T currentData = getObjectInstance(imageFile);
-                        rf.skipBytes(getDataLength() - 1);
-
-                        data.add(currentData);
-                    } else {
-                        data.add(generateObjectInstance(rf, index));
+                    int[] currentData = new int[getDataLength()];
+                    currentData[0] = index;
+                    for (int i=1; i<getDataLength(); i++) {
+                        currentData[i] = rf.read();
                     }
+                    data.add(currentData);
+
                     index = rf.read();
                 }
             } catch (IOException | NullPointerException e) {
@@ -152,7 +148,7 @@ public abstract class Database {
             return getObjectInstance(outputFile);
         }
 
-        public void setRow(BufferedImage image, int[] data) {
+        protected void setRow(BufferedImage image, int[] data) {
             if (data.length != getDataLength()) {
                 return;
             }
@@ -182,17 +178,31 @@ public abstract class Database {
                     RandomAccessFile rf = new RandomAccessFile(dataFile, "rw")
             ) {
                 rf.seek((long) getDataLength() * oldIndex);
-
+                // TODO
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            return null;
         }
 
         public void deleteRow(int index) {
-            ArrayList<T> data = getRows(0, index);
-            data.addAll(getRows(index+1, -1));
+            getInstanceFile(index).delete();
+
+            ArrayList<int[]> data = readRows(0, index);
+
+            ArrayList<int[]> postData = readRows(index+1, -1);
+
+            for (int[] row: postData) {
+                getInstanceFile(row[0], -1).renameTo(getInstanceFile(row[0]-1, row[getDataLength()-1]));
+                row[0] --;
+            }
+            data.addAll(postData);
+
+            for (int[] row: data) {
+                setRow(getObjectInstance(getInstanceFile(row[0], -1)));
+            }
 
             clear();
 
