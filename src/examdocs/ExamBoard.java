@@ -1,7 +1,5 @@
 package examdocs;
 
-import database.PaperDatabase;
-import utils.Constants;
 import utils.FileHandler;
 
 import java.io.File;
@@ -47,21 +45,23 @@ public class ExamBoard
      * path and every other as the directory of the exam paper
      */
     public void makePapers() {
+        exams = new ArrayList<>();
+
         try {
             // Get all the papers from the data file
             String[] lines = FileHandler.readLines(infoFile);
 
-            exams = new ArrayList<>();
 
             for (String line: lines) {
                 File examDirectory = new File(directory, line);
-                exams.add(new FullExam(examDirectory));
+                if (!examDirectory.equals(directory)) {
+                    exams.add(new FullExam(examDirectory));
+                }
             }
 
         } catch (FileNotFoundException e) {
             // If the file doesn't exist, make it ready for papers to be added
             boolean ignored = FileHandler.makeFile(infoFile);
-            exams = new ArrayList<>();
 
         } catch (IOException e) {
             logger.log(Level.SEVERE, e.toString());
@@ -106,6 +106,9 @@ public class ExamBoard
     }
 
     public ExamPaper getPaper(int index) {
+        if (getExam(index) == null) {
+            return null;
+        }
         return getExam(index).getPaper();
     }
 

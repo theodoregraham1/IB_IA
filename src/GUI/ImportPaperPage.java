@@ -65,10 +65,17 @@ public class ImportPaperPage extends JFrame
 
                 if (examPaperFile == null) {
                     examPaperFile = chosenFile;
+
                     title.setText("Choose mark scheme file to import");
+                    fileChooser.setSelectedFile(chosenFile.getParentFile());
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Exam paper saved, please select mark scheme"
+                    );
                 } else {
                     String name = JOptionPane.showInputDialog("Name of new exam:");
-                    // FIXME
+                    name = name.strip().replaceAll(" ", "-");
+
                     new SplitPaperPage(board.addPaper(examPaperFile, chosenFile, name), finishedListener);
                     this.dispose();
                 }
@@ -87,7 +94,7 @@ public class ImportPaperPage extends JFrame
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         title = new JLabel();
-        title.setText("Choose paper file to import");
+        title.setText("Choose exam paper file to import");
         mainPanel.add(title, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         filePanel = new JPanel();
         filePanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
@@ -102,4 +109,5 @@ public class ImportPaperPage extends JFrame
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
+
 }

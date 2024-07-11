@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
 
 // TODO: Throw splits on a stack and have a back button
 // TODO: Allow user to cut off footers and headers in multi-page questions (stretch)
@@ -53,11 +54,20 @@ public class SplitPaperPage extends SplitPDFPage
         anchorSelection.addActionListener(anchorListener);
 
         savePaperButton.addActionListener(e -> {
-            // if (JOptionPane.showConfirmDialog(this, "Are you sure you have finished editing the paper?"))
+            int choice = JOptionPane.showConfirmDialog(
+                    this,
+                    "Are you sure you have finished editing the paper?",
+                    "Save paper",
+                    JOptionPane.YES_NO_OPTION
+            );
 
-            new SplitSchemePage(exam, anchorListener);
-            this.dispose();
+            if (choice == JOptionPane.YES_OPTION) {
+                saveAllToPaper(questions);
+                new SplitSchemePage(exam, anchorListener);
+                this.dispose();
+            }
         });
+
         confirmPercentageButton.addActionListener(this);
         previousPageButton.addActionListener(this);
         nextPageButton.addActionListener(this);
@@ -132,18 +142,6 @@ public class SplitPaperPage extends SplitPDFPage
         } else if (e.getSource() == savePaperButton) {
             saveAllToPaper(questions);
         }
-    }
-
-    @Override
-    public void saveToPaper(int[] data) {
-        document.saveQuestion(
-                data[0],
-                data[1],
-                data[2],
-                data[3],
-                data[4],
-                data[5]
-        );
     }
 
     @Override

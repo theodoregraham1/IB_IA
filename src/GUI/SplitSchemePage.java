@@ -75,11 +75,6 @@ public class SplitSchemePage extends SplitPDFPage
     }
 
     @Override
-    protected void saveToPaper(int[] data) {
-
-    }
-
-    @Override
     protected JButton getNextPageButton() {
         return nextPageButton;
     }

@@ -10,6 +10,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +20,7 @@ import java.util.HashMap;
 // however this does not gel with the UI designer
 // UI designer source code could be moved but I don't fancy messing with that
 public abstract class SplitPDFPage extends JFrame
-        implements ChangeListener, ActionListener {
+        implements ChangeListener, ActionListener, WindowListener {
     protected final QuestionPaper document;
 
     // private final Stack<>
@@ -44,7 +46,6 @@ public abstract class SplitPDFPage extends JFrame
             saveToPaper(d);
         }
     }
-    protected abstract void saveToPaper(int[] data);
 
     protected void setPageImage(int pageNumber) {
         getCurrentPageLabel().setText("Page: " + pageNumber);
@@ -92,6 +93,17 @@ public abstract class SplitPDFPage extends JFrame
         allLines.get(page).put(percentage, color);
     }
 
+    public void saveToPaper(int[] data) {
+        document.saveQuestion(
+                data[0],
+                data[1],
+                data[2],
+                data[3],
+                data[4],
+                data[5]
+        );
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == getPreviousPageButton() && currentPage > 0) {
@@ -112,6 +124,53 @@ public abstract class SplitPDFPage extends JFrame
 
             currentLinePercentage = newLinePercentage;
         }
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {}
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        int choice = JOptionPane.showConfirmDialog(
+                this,
+                "Save paper?",
+                "Window closing",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        switch (choice) {
+            case JOptionPane.YES_OPTION -> saveAllToPaper(questions);
+            case JOptionPane.NO_OPTION -> {
+
+            }
+        }
+
+        System.exit(0);
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+        this.repaint();
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+        this.repaint();
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+        this.repaint();
     }
 
     protected abstract JButton getNextPageButton();

@@ -68,13 +68,16 @@ public abstract class Database {
                 }
 
                 rf.seek((long) start * getDataLength());
-                int[] currentData = new int[getDataLength()];
+
                 int index = rf.read();
                 while (index < end && index != -1) {
 
                     File imageFile = getInstanceFile(index, -1);
 
-                    data.add(generateObjectInstance(rf, index));
+                    if (!imageFile.exists()) {
+                        data.add(generateObjectInstance(rf, index));
+                    }
+                    data.add(getObjectInstance(imageFile));
 
                     index = rf.read();
                 }
@@ -188,7 +191,7 @@ public abstract class Database {
         }
 
         public void deleteRow(int index) {
-            getInstanceFile(index).delete();
+            getInstanceFile(index, -1).delete();
 
             ArrayList<int[]> data = readRows(0, index);
 
@@ -199,14 +202,25 @@ public abstract class Database {
                 row[0] --;
             }
             data.addAll(postData);
-
-            for (int[] row: data) {
-                setRow(getObjectInstance(getInstanceFile(row[0], -1)));
-            }
-
             clear();
 
 
+            try (
+                    RandomAccessFile rf = new RandomAccessFile(dataFile, "w");
+            ) {
+                for (int[] row : data) {
+                    // Convert data to bytes for writing
+                    byte[] bytes = new byte[row.length];
+
+                    for (int i = 0; i < row.length; i++) {
+                        bytes[i] = (byte) row[i];
+                    }
+
+                    rf.write(bytes);
+                }
+            } catch(IOException e){
+                logger.log(Level.SEVERE, e.toString());
+            }
         }
 
         public int length() {

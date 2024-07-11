@@ -167,7 +167,7 @@ public class PaperDatabase extends Database {
         }
 
         @Override
-        protected Page generateObjectInstance(RandomAccessFile rf, int index) throws IOException {
+        protected Page generateObjectInstance(RandomAccessFile rf, int index) {
             pageTable.makeFromDocument();
 
             return pageTable.getRows(index, index+1).get(0);
