@@ -21,9 +21,7 @@ public class ExamBoard
     private final File infoFile;
 
     private final BoardLevel level;
-    private ArrayList<ExamPaper> papers;
-    private ArrayList<ExamPaper> markSchemes;
-
+    private ArrayList<FullExam> exams;
 
     // Initialise logging level
     static {
@@ -53,23 +51,17 @@ public class ExamBoard
             // Get all the papers from the data file
             String[] lines = FileHandler.readLines(infoFile);
 
-            papers = new ArrayList<>();
-            markSchemes = new ArrayList<>();
+            exams = new ArrayList<>();
 
             for (String line: lines) {
-                File paperDirectory = new File(directory, line);
-                papers.add(
-                        new ExamPaper(new File(paperDirectory, Constants.PAPER_DIR_NAME))
-                );
-                markSchemes.add(
-                        new ExamPaper(new File(paperDirectory, Constants.SCHEME_DIR_NAME))
-                );
+                File examDirectory = new File(directory, line);
+                exams.add(new FullExam(examDirectory));
             }
 
         } catch (FileNotFoundException e) {
             // If the file doesn't exist, make it ready for papers to be added
             boolean ignored = FileHandler.makeFile(infoFile);
-            papers = new ArrayList<>();
+            exams = new ArrayList<>();
 
         } catch (IOException e) {
             logger.log(Level.SEVERE, e.toString());
@@ -84,46 +76,40 @@ public class ExamBoard
      * @param schemeDocument the PDF file to make the mark scheme from
      * @param name the name of the paper, in the format: YEAR-MONTH-NUMBER
      */
-    public ExamPaper[] addPaper(File paperDocument, File schemeDocument, String name) {
+    public FullExam addPaper(File paperDocument, File schemeDocument, String name) {
         // Make the files
         File superDirectory = new File(directory, name);
-        File paperDirectory = new File(superDirectory, Constants.PAPER_DIR_NAME);
-        File schemeDirectory = new File(superDirectory, Constants.SCHEME_DIR_NAME);
 
-        // Make the paper
-        PaperDatabase.makeDatabase(paperDirectory, paperDocument);
-        ExamPaper paper = new ExamPaper(paperDirectory);
-
-        // Make the scheme
-        PaperDatabase.makeDatabase(schemeDirectory, schemeDocument);
-        ExamPaper scheme = new ExamPaper(schemeDirectory);
+        FullExam newExam = new FullExam(superDirectory, paperDocument, schemeDocument);
 
         // Check if the paper is already in the info file
         if (!FileHandler.contains(name, infoFile)) {
             FileHandler.addLine("\n"+name, infoFile);
 
-            papers.add(paper);
-            markSchemes.add(scheme);
+            exams.add(newExam);
         } else {
             // Replace old version of the paper
-            int i = papers.indexOf(paper);
-            papers.set(i, paper);
-            markSchemes.set(i, scheme);
+            int i = exams.indexOf(newExam);
+            exams.set(i, newExam);
         }
 
-        return new ExamPaper[] {paper, scheme};
+        return newExam;
     }
 
     // TODO: Custom paper create
 
-    public ExamPaper getPaper(int index) {
-        if (index >= papers.size()) {
+    public FullExam getExam(int index) {
+        if (index >= exams.size()) {
             return null;
         }
-        return papers.get(index);
+        return exams.get(index);
     }
 
-    public void removePaper(String name) {
+    public ExamPaper getPaper(int index) {
+        return getExam(index).getPaper();
+    }
+
+    public void removeExam(String name) {
         if (!FileHandler.removeLine(name, infoFile)) {
             return;
         }
@@ -139,18 +125,21 @@ public class ExamBoard
             @Override
             public boolean hasNext() {
                 // Check if there is another question in the current paper
-                if (getPaper(paperNum) == null) {
+                ExamPaper paper = getPaper(paperNum);
+                if (paper == null) {
                     return false;
-                } else if (getPaper(paperNum).getQuestion(questionIndex+1) != null) {
+                } else if (paper.getQuestion(questionIndex+1) != null) {
                     questionIndex++;
                     return true;
 
-                } else if (getPaper(paperNum+1) != null) {
+                }
+                paper = getPaper(paperNum+1);
+                if (paper != null) {
                     // Check if the next paper exists and if it has any questions
                     paperNum++;
                     questionIndex = 0;
 
-                    return getPaper(paperNum).getQuestion(questionIndex) != null;
+                    return paper.getQuestion(questionIndex) != null;
                 }
                 return false;
             }

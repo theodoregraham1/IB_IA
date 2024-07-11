@@ -18,6 +18,8 @@ public class ImportPaperPage extends JFrame
     private final ExamBoard board;
     private final ActionListener finishedListener;
 
+    private File examPaperFile = null;
+
     private JFileChooser fileChooser;
     private JPanel filePanel;
     private JLabel title;
@@ -55,16 +57,21 @@ public class ImportPaperPage extends JFrame
             }
 
             case "ApproveSelection" -> {
-                File paperFile = fileChooser.getSelectedFile();
+                File chosenFile = fileChooser.getSelectedFile();
 
-                if (!FileHandler.getFileExtension(paperFile).equals("pdf")) {
+                if (!FileHandler.getFileExtension(chosenFile).equals("pdf")) {
                     return;
                 }
 
-                String name = JOptionPane.showInputDialog("Name of new paper:");
-                // FIXME
-                new SplitPaperPage(board.addPaper(paperFile, null, name)[0], finishedListener);
-                this.dispose();
+                if (examPaperFile == null) {
+                    examPaperFile = chosenFile;
+                    title.setText("Choose mark scheme file to import");
+                } else {
+                    String name = JOptionPane.showInputDialog("Name of new exam:");
+                    // FIXME
+                    new SplitPaperPage(board.addPaper(examPaperFile, chosenFile, name), finishedListener);
+                    this.dispose();
+                }
             }
         }
     }

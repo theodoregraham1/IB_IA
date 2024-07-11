@@ -4,6 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import examdocs.ExamPaper;
+import examdocs.FullExam;
 import utils.MultiValueMap;
 
 import javax.swing.*;
@@ -18,6 +19,7 @@ import java.awt.event.ActionListener;
 
 public class SplitPaperPage extends SplitPDFPage
         implements ActionListener {
+    private ActionListener finishedListener;
     private int marksSum = 0;
 
     private JPanel mainPanel;
@@ -36,8 +38,8 @@ public class SplitPaperPage extends SplitPDFPage
     private JButton undoButton;
     private JButton redoButton;
 
-    public SplitPaperPage(ExamPaper paper, ActionListener anchorListener) {
-        super(paper);
+    public SplitPaperPage(FullExam exam, ActionListener anchorListener) {
+        super(exam.getPaper());
 
         // Set JFrame properties
         $$$setupUI$$$();
@@ -50,7 +52,12 @@ public class SplitPaperPage extends SplitPDFPage
         anchorSelection.setSelectedIndex(1);
         anchorSelection.addActionListener(anchorListener);
 
-        savePaperButton.addActionListener(this);
+        savePaperButton.addActionListener(e -> {
+            // if (JOptionPane.showConfirmDialog(this, "Are you sure you have finished editing the paper?"))
+
+            new SplitSchemePage(exam, anchorListener);
+            this.dispose();
+        });
         confirmPercentageButton.addActionListener(this);
         previousPageButton.addActionListener(this);
         nextPageButton.addActionListener(this);

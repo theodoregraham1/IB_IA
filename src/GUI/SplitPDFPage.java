@@ -1,6 +1,7 @@
 package GUI;
 
 import examdocs.ExamPaper;
+import examdocs.QuestionPaper;
 import utils.MultiValueMap;
 
 import javax.swing.*;
@@ -18,12 +19,11 @@ import java.util.HashMap;
 // UI designer source code could be moved but I don't fancy messing with that
 public abstract class SplitPDFPage extends JFrame
         implements ChangeListener, ActionListener {
-    protected final ExamPaper document;
+    protected final QuestionPaper document;
 
     // private final Stack<>
     protected final HashMap<Integer, MultiValueMap<Integer, Color>> allLines;
     protected final ArrayList<int[]> questions;
-    protected int marksSum = 0;
     protected int currentPage = 0;
     protected int startPage;
     protected int startPercentage;
@@ -32,7 +32,7 @@ public abstract class SplitPDFPage extends JFrame
     protected int currentLinePercentage = 0;
     protected LinedImageScroller pageComponent;
 
-    public SplitPDFPage(ExamPaper paper) {
+    public SplitPDFPage(QuestionPaper paper) {
         this.document = paper;
         this.allLines = new HashMap<>(paper.length());
         this.questions = new ArrayList<>();

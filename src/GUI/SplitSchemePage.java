@@ -3,6 +3,8 @@ package GUI;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import examdocs.ExamPaper;
+import examdocs.FullExam;
+import examdocs.MarkScheme;
 import utils.MultiValueMap;
 
 import javax.swing.*;
@@ -12,6 +14,8 @@ import java.awt.event.ActionListener;
 
 public class SplitSchemePage extends SplitPDFPage
         implements ActionListener {
+
+    private ExamPaper examPaper;
 
     // Swing Components
     private JPanel mainPanel;
@@ -30,8 +34,10 @@ public class SplitSchemePage extends SplitPDFPage
     private JButton redoButton;
     private JButton viewQuestionButton;
 
-    public SplitSchemePage(ExamPaper scheme, ActionListener anchorListener) {
-        super(scheme);
+    public SplitSchemePage(FullExam exam, ActionListener anchorListener) {
+        super(exam.getScheme());
+        this.examPaper = exam.getPaper();
+
         // Set JFrame properties
         $$$setupUI$$$();
         setTitle("Exams Manager - Split Mark Scheme");
