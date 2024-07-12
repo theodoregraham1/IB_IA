@@ -44,7 +44,7 @@ public class SplitSchemePage extends SplitPDFPage
         setTitle("Exams Manager - Split Mark Scheme");
         setSize(1200, 600);
         setContentPane(mainPanel);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         anchorSelection.setModel(Constants.getAnchorModel());
         anchorSelection.setSelectedIndex(1);
@@ -59,8 +59,6 @@ public class SplitSchemePage extends SplitPDFPage
 
         paperImagePane.setWheelScrollingEnabled(true);
 
-        setVisible(true);
-
         // Set the start of all lines
         for (Integer line : allLines.keySet()) {
             allLines.put(line, new MultiValueMap<>());
@@ -68,6 +66,7 @@ public class SplitSchemePage extends SplitPDFPage
         }
 
         setPageImage(currentPage);
+        setVisible(true);
     }
 
     @Override

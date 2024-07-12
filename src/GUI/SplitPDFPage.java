@@ -191,6 +191,7 @@ public abstract class SplitPDFPage extends JFrame
     }
 
     public abstract void saveQuestion();
+
     protected abstract JButton getConfirmPercentageButton();
     protected abstract JButton getSaveButton();
     protected abstract JButton getNextPageButton();

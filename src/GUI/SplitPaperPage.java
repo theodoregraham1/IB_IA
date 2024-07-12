@@ -47,7 +47,7 @@ public class SplitPaperPage extends SplitPDFPage
         setTitle("Exams Manager - Split paper");
         setSize(1200, 600);
         setContentPane(mainPanel);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         anchorSelection.setModel(Constants.getAnchorModel());
         anchorSelection.setSelectedIndex(1);
@@ -76,8 +76,6 @@ public class SplitPaperPage extends SplitPDFPage
 
         paperImagePane.setWheelScrollingEnabled(true);
 
-        setVisible(true);
-
         // Set the start of all lines
         for (Integer line : allLines.keySet()) {
             allLines.put(line, new MultiValueMap<>());
@@ -85,6 +83,7 @@ public class SplitPaperPage extends SplitPDFPage
         }
 
         setPageImage(currentPage);
+        setVisible(true);
     }
 
     @Override
@@ -115,9 +114,6 @@ public class SplitPaperPage extends SplitPDFPage
         startPage = currentPage;
         startPercentage = -1;
     }
-
-
-
 
     // Specific for exam papers
     public void updateMarks(int mark) {
