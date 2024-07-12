@@ -161,34 +161,6 @@ public class Document {
         }
     }
 
-    // TODO: Change this back to questions only
-    public void addPage(ImageFile data) {
-        PDPage page = new PDPage(PDRectangle.A4);
-
-        try (
-                PDDocument document = getDocument();
-        ) {
-            // Add the blank page to the document
-            document.addPage(page);
-
-            // Make a data stream to write to
-            PDPageContentStream contentStream = new PDPageContentStream(document, page);
-
-            // Format the ImageFile into a PDImage
-            PDImageXObject imageX = PDImageXObject.createFromFileByContent(data.getFile(), document);
-
-            // Draw the image, properly scaled
-            PDRectangle mediaBox = page.getMediaBox();
-            contentStream.drawImage(imageX, 0, 0, mediaBox.getWidth(), mediaBox.getHeight());
-
-            contentStream.close();
-            document.save(documentFile);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     /**
      * Returns the full filepath to the file from the root directory
      * @return a String of the filepath

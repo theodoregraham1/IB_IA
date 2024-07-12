@@ -4,6 +4,7 @@ import database.PaperDatabase;
 import utils.Constants;
 
 import java.io.File;
+import java.util.Objects;
 
 public class FullExam {
     private final ExamPaper paper;
@@ -35,5 +36,12 @@ public class FullExam {
 
     public ExamPaper getPaper() {
         return paper;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof FullExam fullExam)) return false;
+        return Objects.equals(paper, fullExam.getPaper());
     }
 }

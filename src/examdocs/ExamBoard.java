@@ -90,7 +90,12 @@ public class ExamBoard
         } else {
             // Replace old version of the paper
             int i = exams.indexOf(newExam);
-            exams.set(i, newExam);
+
+            if (i != -1) {
+                exams.set(i, newExam);
+            } else {
+                exams.add(newExam);
+            }
         }
 
         return newExam;

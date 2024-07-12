@@ -54,6 +54,7 @@ public class SplitSchemePage extends SplitPDFPage
         confirmPercentageButton.addActionListener(this);
         previousPageButton.addActionListener(this);
         nextPageButton.addActionListener(this);
+        viewQuestionButton.addActionListener(this);
 
         percentageSlider.addChangeListener(this);
 
@@ -65,8 +66,9 @@ public class SplitSchemePage extends SplitPDFPage
             allLines.get(line).put(0, Color.RED);
         }
 
-        setPageImage(currentPage);
         setVisible(true);
+
+        setPageImage(currentPage);
     }
 
     @Override
@@ -95,7 +97,8 @@ public class SplitSchemePage extends SplitPDFPage
     @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        System.out.println("hello");
+        System.out.println(e.getSource());
+        System.out.println(viewQuestionButton);
         if (e.getSource() == viewQuestionButton) {
             System.out.println("Hi");
             JOptionPane.showMessageDialog(
@@ -186,9 +189,6 @@ public class SplitSchemePage extends SplitPDFPage
         percentageDisplay = new JLabel();
         percentageDisplay.setText("Current percentage: 0");
         panel2.add(percentageDisplay, new GridConstraints(3, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(95, 16), null, 0, false));
-        nextPageButton = new JButton();
-        nextPageButton.setText("Next Page");
-        panel2.add(nextPageButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         percentageSlider.setInverted(true);
         percentageSlider.setMajorTickSpacing(25);
         percentageSlider.putClientProperty("JSlider.isFilled", Boolean.FALSE);
@@ -199,7 +199,10 @@ public class SplitSchemePage extends SplitPDFPage
         panel2.add(percentageSliderLabel, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(95, 32), null, 0, false));
         previousPageButton = new JButton();
         previousPageButton.setText("Previous Page");
-        panel2.add(previousPageButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel2.add(previousPageButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        nextPageButton = new JButton();
+        nextPageButton.setText("Next Page");
+        panel2.add(nextPageButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         confirmPercentageButton = new JButton();
         confirmPercentageButton.setText("Confirm percentage");
         mainPanel.add(confirmPercentageButton, new GridConstraints(3, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
