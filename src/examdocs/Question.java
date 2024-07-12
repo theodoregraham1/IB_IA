@@ -104,12 +104,17 @@ public class Question
 
     @Override
     public String toString() {
+        // Format question name as the paper it is from, followed by its number in that paper
         Path path = imageFile.toPath();
         int nameCount = path.getNameCount();
-        String number = path.getName(nameCount-1).toString()
+
+        String number = path.getName(nameCount-1)
+                .toString()
                 .replace("question_", "").replace("."+Constants.IMAGE_IO_FORMAT, "")
                 .substring(0, 3);
-        String paper = path.getName(nameCount-3).toString();
-        return paper+" "+number;
+
+        String paper = path.getName(nameCount-4).toString();
+
+        return paper + " " + number;
     }
 }

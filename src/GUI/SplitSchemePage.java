@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
 public class SplitSchemePage extends SplitPDFPage
         implements ActionListener {
 
-    private ExamPaper examPaper;
+    private final ExamPaper examPaper;
 
     // Swing Components
     private JPanel mainPanel;
@@ -33,6 +33,7 @@ public class SplitSchemePage extends SplitPDFPage
     private JButton undoButton;
     private JButton redoButton;
     private JButton viewQuestionButton;
+    private JLabel currentQuestionLabel;
 
     public SplitSchemePage(FullExam exam, ActionListener anchorListener) {
         super(exam.getScheme());
@@ -70,8 +71,51 @@ public class SplitSchemePage extends SplitPDFPage
     }
 
     @Override
+    public void saveQuestion() {
+        questions.add(new int[]{
+                questionNumber,
+                startPage,
+                startPercentage,
+                currentPage,
+                currentLinePercentage,
+                examPaper.getQuestion(questionNumber).getMarks()
+        });
+
+        pageComponent.editHorizontalLine(startPercentage, Color.GREEN, Color.BLACK);
+        pageComponent.addHorizontalLine(currentLinePercentage, Color.BLACK);
+
+        percentageSlider.setMinimum(currentLinePercentage);
+
+        questionNumber++;
+        startPage = currentPage;
+        startPercentage = -1;
+
+        currentQuestionLabel.setText("Current question: " + questionNumber);
+    }
+
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
+        System.out.println("hello");
+        if (e.getSource() == viewQuestionButton) {
+            System.out.println("Hi");
+            JOptionPane.showMessageDialog(
+                    this,
+                    new ImageIcon(examPaper.getQuestion(questionNumber).getImage()),
+                    "Current question",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+        }
+    }
+
+    @Override
+    protected JButton getConfirmPercentageButton() {
+        return confirmPercentageButton;
+    }
+
+    @Override
+    protected JButton getSaveButton() {
+        return savePaperButton;
     }
 
     @Override
@@ -169,9 +213,9 @@ public class SplitSchemePage extends SplitPDFPage
         redoButton = new JButton();
         redoButton.setText("Redo");
         mainPanel.add(redoButton, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label1 = new JLabel();
-        label1.setText("Current Question: 0");
-        mainPanel.add(label1, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        currentQuestionLabel = new JLabel();
+        currentQuestionLabel.setText("Current Question: 1");
+        mainPanel.add(currentQuestionLabel, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         viewQuestionButton = new JButton();
         viewQuestionButton.setText("View Question");
         mainPanel.add(viewQuestionButton, new GridConstraints(3, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));

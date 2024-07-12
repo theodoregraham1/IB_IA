@@ -54,7 +54,7 @@ public class ExamBoard
 
             for (String line: lines) {
                 File examDirectory = new File(directory, line);
-                if (!examDirectory.equals(directory)) {
+                if (examDirectory.exists() && !examDirectory.equals(directory)) {
                     exams.add(new FullExam(examDirectory));
                 }
             }

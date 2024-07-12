@@ -108,8 +108,25 @@ public abstract class SplitPDFPage extends JFrame
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == getPreviousPageButton() && currentPage > 0) {
             alterPage(-1);
+
         } else if (e.getSource() == getNextPageButton() && currentPage < document.length()) {
             alterPage(1);
+
+        } else if (e.getSource() == getConfirmPercentageButton()) {
+            if (inSplit) {
+                saveQuestion();
+                inSplit = false;
+            } else {
+                startPercentage = currentLinePercentage;
+                startPage = currentPage;
+
+                getPercentageSlider().setMinimum(startPercentage);
+                addLine(currentPage, startPercentage, Color.GREEN);
+
+                inSplit = true;
+            }
+        } else if (e.getSource() == getSaveButton()) {
+            saveAllToPaper(questions);
         }
     }
 
@@ -173,6 +190,9 @@ public abstract class SplitPDFPage extends JFrame
         this.repaint();
     }
 
+    public abstract void saveQuestion();
+    protected abstract JButton getConfirmPercentageButton();
+    protected abstract JButton getSaveButton();
     protected abstract JButton getNextPageButton();
     protected abstract JButton getPreviousPageButton();
     protected abstract JSlider getPercentageSlider();

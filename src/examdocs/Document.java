@@ -30,7 +30,7 @@ public class Document {
         logger.setLevel(Level.FINEST);
     }
 
-    private final File documentFile;
+    private File documentFile;
 
 
     /**
@@ -48,7 +48,7 @@ public class Document {
             FileHandler.makeFile(documentFile);
 
         } catch (IOException e) {
-            throw new IllegalArgumentException(e);
+            this.documentFile = null;
         }
     }
 

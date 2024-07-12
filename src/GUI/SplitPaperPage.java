@@ -87,7 +87,7 @@ public class SplitPaperPage extends SplitPDFPage
         setPageImage(currentPage);
     }
 
-    // Specific for exam papers
+    @Override
     public void saveQuestion() {
         String markString = "a";
         while (!InputValidation.isNumeric(markString)) {
@@ -116,32 +116,23 @@ public class SplitPaperPage extends SplitPDFPage
         startPercentage = -1;
     }
 
+
+
+
     // Specific for exam papers
     public void updateMarks(int mark) {
         marksSum += mark;
         totalMarks.setText("Number of marks: " + marksSum);
     }
 
-    // Much could be moved up
     @Override
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        if (e.getSource() == confirmPercentageButton) {
-            if (inSplit) {
-                saveQuestion();
-                inSplit = false;
-            } else {
-                startPercentage = currentLinePercentage;
-                startPage = currentPage;
+    protected JButton getConfirmPercentageButton() {
+        return confirmPercentageButton;
+    }
 
-                percentageSlider.setMinimum(startPercentage);
-                addLine(currentPage, startPercentage, Color.GREEN);
-
-                inSplit = true;
-            }
-        } else if (e.getSource() == savePaperButton) {
-            saveAllToPaper(questions);
-        }
+    @Override
+    protected JButton getSaveButton() {
+        return savePaperButton;
     }
 
     @Override
