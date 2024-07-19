@@ -124,6 +124,10 @@ public class ExamBoard
         FileHandler.clearDirectory(new File(directory, name));
     }
 
+    public int size() {
+        return exams.size();
+    }
+
     @Override
     public Iterator<Question> iterator() {
         return new Iterator<>() {

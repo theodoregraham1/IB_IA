@@ -50,7 +50,7 @@ public class SplitPaperPage extends SplitPDFPage
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         anchorSelection.setModel(Constants.getAnchorModel());
-        anchorSelection.setSelectedIndex(1);
+        anchorSelection.setSelectedIndex(Constants.IMPORT_PAPER);
         anchorSelection.addActionListener(anchorListener);
 
         savePaperButton.addActionListener(e -> {

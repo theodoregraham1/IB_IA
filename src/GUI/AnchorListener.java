@@ -45,7 +45,7 @@ public class AnchorListener implements ActionListener {
         return switch ((int) selectedAnchor) {
             case Constants.CREATE_PAPER -> new CreatePaperPage(board, new AnchorListener());
             case Constants.IMPORT_PAPER -> new ImportPaperPage(board, new AnchorListener());
-            case Constants.VIEW_PAPERS -> null; //TODO
+            case Constants.VIEW_PAPERS -> new ViewPapersPage(board, new AnchorListener());
             default -> null;
         };
     }

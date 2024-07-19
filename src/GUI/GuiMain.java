@@ -12,6 +12,6 @@ public class GuiMain {
             e.printStackTrace();
         }
 
-        AnchorListener.getPage(Constants.CREATE_PAPER);
+        AnchorListener.getPage(Constants.VIEW_PAPERS);
     }
 }

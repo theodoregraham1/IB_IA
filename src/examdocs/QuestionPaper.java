@@ -3,6 +3,7 @@ package examdocs;
 import database.PaperDatabase;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.Iterator;
 
 import static utils.Constants.PAPER_FILE_NAME;
@@ -60,6 +61,9 @@ public abstract class QuestionPaper implements Iterable<Page> {
     public int length() {
         return database.pageTable.length();
     }
+    public int numQuestions() {
+        return database.questionTable.length();
+    }
 
     public File getDocumentFile() {
         return document.getFile();
@@ -89,5 +93,13 @@ public abstract class QuestionPaper implements Iterable<Page> {
             return getDocumentFile().equals(((ExamPaper) paper).getDocumentFile());
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        Path path = getDocumentFile().toPath();
+        int nameCount = path.getNameCount();
+
+        return path.getName(nameCount-3).toString();
     }
 }
