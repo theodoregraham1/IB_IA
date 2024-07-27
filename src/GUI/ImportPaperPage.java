@@ -16,7 +16,7 @@ public class ImportPaperPage extends JFrame
         implements ActionListener {
 
     private final ExamBoard board;
-    private final ActionListener finishedListener;
+    private final AnchorListener finishedListener;
 
     private File examPaperFile = null;
 
@@ -25,7 +25,7 @@ public class ImportPaperPage extends JFrame
     private JLabel title;
     private JPanel mainPanel;
 
-    public ImportPaperPage(ExamBoard board, ActionListener finishedListener) {
+    public ImportPaperPage(ExamBoard board, AnchorListener finishedListener) {
         this.board = board;
         this.finishedListener = finishedListener;
 
@@ -48,11 +48,7 @@ public class ImportPaperPage extends JFrame
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             case "CancelSelection" -> {
-                SwingUtilities.invokeLater(
-                        () -> {
-                            AnchorListener.getPage(Constants.CREATE_PAPER); // TODO: Change to view
-                        });
-
+                finishedListener.getPage(Constants.VIEW_PAPERS);
                 this.dispose();
             }
 

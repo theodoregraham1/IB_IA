@@ -5,6 +5,7 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import examdocs.ExamPaper;
 import examdocs.FullExam;
 import examdocs.MarkScheme;
+import examdocs.PaperType;
 import utils.MultiValueMap;
 
 import javax.swing.*;
@@ -14,8 +15,6 @@ import java.awt.event.ActionListener;
 
 public class SplitSchemePage extends SplitPDFPage
         implements ActionListener {
-
-    private final ExamPaper examPaper;
 
     // Swing Components
     private JPanel mainPanel;
@@ -35,20 +34,15 @@ public class SplitSchemePage extends SplitPDFPage
     private JButton viewQuestionButton;
     private JLabel currentQuestionLabel;
 
-    public SplitSchemePage(FullExam exam, ActionListener anchorListener) {
-        super(exam.getScheme());
-        this.examPaper = exam.getPaper();
+    public SplitSchemePage(FullExam exam, AnchorListener anchorListener) {
+        super(exam, PaperType.MarkScheme, anchorListener);
 
         // Set JFrame properties
         $$$setupUI$$$();
-        setTitle("Exams Manager - View papers");
-        setSize(1200, 600);
+        setTitle("Exams Manager - Split Mark Scheme");
+        setSize(2400, 1200);
         setContentPane(mainPanel);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
-        anchorSelection.setModel(Constants.getAnchorModel());
-        anchorSelection.setSelectedIndex(Constants.IMPORT_PAPER);
-        anchorSelection.addActionListener(anchorListener);
 
         savePaperButton.addActionListener(this);
         confirmPercentageButton.addActionListener(this);
@@ -79,15 +73,32 @@ public class SplitSchemePage extends SplitPDFPage
                 startPercentage,
                 currentPage,
                 currentLinePercentage,
-                examPaper.getQuestion(questionNumber).getMarks()
+                exam.getPaper().getQuestion(questionNumber).getMarks()
         });
+
+        questionNumber++;
+
+        // If the mark scheme is complete, save it
+        if (questionNumber >= exam.getPaper().numQuestions()) {
+            int choice = JOptionPane.showConfirmDialog(
+                    this,
+                    "All questions complete, are you finished?",
+                    "Mark scheme complete",
+                    JOptionPane.OK_CANCEL_OPTION
+            );
+
+            if (choice == JOptionPane.OK_OPTION) {
+                saveAllToPaper(questions);
+                anchorListener.getPage(Constants.VIEW_PAPERS);
+                dispose();
+            }
+        }
 
         pageComponent.editHorizontalLine(startPercentage, Color.GREEN, Color.BLACK);
         pageComponent.addHorizontalLine(currentLinePercentage, Color.BLACK);
 
         percentageSlider.setMinimum(currentLinePercentage);
 
-        questionNumber++;
         startPage = currentPage;
         startPercentage = -1;
 
@@ -97,13 +108,14 @@ public class SplitSchemePage extends SplitPDFPage
     @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        System.out.println(e.getSource());
-        System.out.println(viewQuestionButton);
+
         if (e.getSource() == viewQuestionButton) {
-            System.out.println("Hi");
+            Image questionImage = exam.getPaper().getQuestion(questionNumber).getImage()
+                    .getScaledInstance(getWidth(), -1, Image.SCALE_FAST);
+
             JOptionPane.showMessageDialog(
                     this,
-                    new ImageIcon(examPaper.getQuestion(questionNumber).getImage()),
+                    new ImageIcon(questionImage),
                     "Current question",
                     JOptionPane.INFORMATION_MESSAGE
             );
@@ -113,11 +125,6 @@ public class SplitSchemePage extends SplitPDFPage
     @Override
     protected JButton getConfirmPercentageButton() {
         return confirmPercentageButton;
-    }
-
-    @Override
-    protected JButton getSaveButton() {
-        return savePaperButton;
     }
 
     @Override
@@ -169,23 +176,16 @@ public class SplitSchemePage extends SplitPDFPage
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayoutManager(4, 5, new Insets(0, 0, 0, 0), -1, -1));
-        panel1.add(mainPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        mainPanel.setLayout(new GridLayoutManager(4, 4, new Insets(0, 0, 0, 0), -1, -1));
+        panel1.add(mainPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         paperImagePane = new JScrollPane();
-        mainPanel.add(paperImagePane, new GridConstraints(2, 0, 1, 4, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        anchorSelection = new JComboBox();
-        final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
-        anchorSelection.setModel(defaultComboBoxModel1);
-        mainPanel.add(anchorSelection, new GridConstraints(0, 2, 2, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        mainPanel.add(paperImagePane, new GridConstraints(2, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         pageLabel = new JLabel();
         pageLabel.setText("Split Mark Scheme");
-        mainPanel.add(pageLabel, new GridConstraints(0, 3, 2, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(151, 16), null, 0, false));
-        savePaperButton = new JButton();
-        savePaperButton.setText("Save Mark Scheme");
-        mainPanel.add(savePaperButton, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        mainPanel.add(pageLabel, new GridConstraints(0, 2, 2, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(151, 16), null, 0, false));
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new GridLayoutManager(4, 2, new Insets(0, 0, 0, 0), -1, -1));
-        mainPanel.add(panel2, new GridConstraints(2, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        mainPanel.add(panel2, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         percentageDisplay = new JLabel();
         percentageDisplay.setText("Current percentage: 0");
         panel2.add(percentageDisplay, new GridConstraints(3, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(95, 16), null, 0, false));
@@ -205,10 +205,10 @@ public class SplitSchemePage extends SplitPDFPage
         panel2.add(nextPageButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         confirmPercentageButton = new JButton();
         confirmPercentageButton.setText("Confirm percentage");
-        mainPanel.add(confirmPercentageButton, new GridConstraints(3, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        mainPanel.add(confirmPercentageButton, new GridConstraints(3, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         currentPageLabel = new JLabel();
         currentPageLabel.setText("Current Page: 0");
-        mainPanel.add(currentPageLabel, new GridConstraints(1, 4, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(81, 30), null, 0, false));
+        mainPanel.add(currentPageLabel, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(81, 30), null, 0, false));
         undoButton = new JButton();
         undoButton.setText("Undo");
         mainPanel.add(undoButton, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -217,9 +217,9 @@ public class SplitSchemePage extends SplitPDFPage
         mainPanel.add(redoButton, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         currentQuestionLabel = new JLabel();
         currentQuestionLabel.setText("Current Question: 1");
-        mainPanel.add(currentQuestionLabel, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        mainPanel.add(currentQuestionLabel, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         viewQuestionButton = new JButton();
         viewQuestionButton.setText("View Question");
-        mainPanel.add(viewQuestionButton, new GridConstraints(3, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        mainPanel.add(viewQuestionButton, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 }

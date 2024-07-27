@@ -5,6 +5,7 @@ import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import examdocs.ExamPaper;
 import examdocs.FullExam;
+import examdocs.PaperType;
 import utils.MultiValueMap;
 
 import javax.swing.*;
@@ -20,7 +21,6 @@ import java.awt.event.WindowListener;
 
 public class SplitPaperPage extends SplitPDFPage
         implements ActionListener {
-    private ActionListener finishedListener;
     private int marksSum = 0;
 
     private JPanel mainPanel;
@@ -39,8 +39,8 @@ public class SplitPaperPage extends SplitPDFPage
     private JButton undoButton;
     private JButton redoButton;
 
-    public SplitPaperPage(FullExam exam, ActionListener anchorListener) {
-        super(exam.getPaper());
+    public SplitPaperPage(FullExam exam, AnchorListener anchorListener) {
+        super(exam, PaperType.ExamPaper, anchorListener);
 
         // Set JFrame properties
         $$$setupUI$$$();
@@ -53,21 +53,7 @@ public class SplitPaperPage extends SplitPDFPage
         anchorSelection.setSelectedIndex(Constants.IMPORT_PAPER);
         anchorSelection.addActionListener(anchorListener);
 
-        savePaperButton.addActionListener(e -> {
-            int choice = JOptionPane.showConfirmDialog(
-                    this,
-                    "Are you sure you have finished editing the paper?",
-                    "Save paper",
-                    JOptionPane.YES_NO_OPTION
-            );
-
-            if (choice == JOptionPane.YES_OPTION) {
-                saveAllToPaper(questions);
-                new SplitSchemePage(exam, anchorListener);
-                this.dispose();
-            }
-        });
-
+        savePaperButton.addActionListener(this);
         confirmPercentageButton.addActionListener(this);
         previousPageButton.addActionListener(this);
         nextPageButton.addActionListener(this);
@@ -85,6 +71,31 @@ public class SplitPaperPage extends SplitPDFPage
         setVisible(true);
 
         setPageImage(currentPage);
+    }
+
+    public void updateMarks(int mark) {
+        marksSum += mark;
+        totalMarks.setText("Number of marks: " + marksSum);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+
+        if (e.getSource() == savePaperButton) {
+            int choice = JOptionPane.showConfirmDialog(
+                    this,
+                    "Are you sure you have finished editing the paper?",
+                    "Save paper",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if (choice == JOptionPane.YES_OPTION) {
+                saveAllToPaper(questions);
+                new SplitSchemePage(exam, anchorListener);
+                this.dispose();
+            }
+        }
     }
 
     @Override
@@ -116,20 +127,9 @@ public class SplitPaperPage extends SplitPDFPage
         startPercentage = -1;
     }
 
-    // Specific for exam papers
-    public void updateMarks(int mark) {
-        marksSum += mark;
-        totalMarks.setText("Number of marks: " + marksSum);
-    }
-
     @Override
     protected JButton getConfirmPercentageButton() {
         return confirmPercentageButton;
-    }
-
-    @Override
-    protected JButton getSaveButton() {
-        return savePaperButton;
     }
 
     @Override

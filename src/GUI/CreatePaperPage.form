@@ -96,10 +96,10 @@
           </component>
           <component id="9d249" class="javax.swing.JLabel" binding="totalMarks">
             <constraints>
-              <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Number of marks: 00"/>
+              <text value="Marks: 0"/>
             </properties>
           </component>
           <hspacer id="80f32">
@@ -117,7 +117,7 @@
               <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Export paper"/>
+              <text value="Finish questions"/>
             </properties>
           </component>
           <component id="5e78d" class="javax.swing.JLabel" binding="pageLabel">

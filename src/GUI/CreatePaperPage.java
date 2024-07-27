@@ -62,7 +62,7 @@ public class CreatePaperPage extends JFrame
 
         // TODO: Make a list for papers and then put more info on Question.toString()
         final DefaultListModel<Question> questionsModel = new DefaultListModel<>();
-        for (Question question: examBoard) {
+        for (Question question : examBoard) {
             questionsModel.addElement(question);
         }
         questionsList.setModel(questionsModel);
@@ -78,7 +78,7 @@ public class CreatePaperPage extends JFrame
     }
 
     public void updateMarks() {
-        totalMarks.setText("Number of marks: %02d".formatted(marksNum));
+        totalMarks.setText("Marks: %02d".formatted(marksNum));
     }
 
     @Override
@@ -99,7 +99,8 @@ public class CreatePaperPage extends JFrame
 
             questionsList.clearSelection();
         } else if (event.getSource() == exportPaperButton) {
-            // examBoard.addPaper(selectedQuestions, "PLACEHOLDER"); // TODO
+            new QuestionOrderSelector(examBoard, selectedQuestions);
+            this.dispose();
 
         } else if (event.getSource() == sortQuestions) {
             // TODO
@@ -170,14 +171,14 @@ public class CreatePaperPage extends JFrame
         addQuestionBtn.setText("Add question");
         secondaryPanel.add(addQuestionBtn, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         totalMarks = new JLabel();
-        totalMarks.setText("Number of marks: 00");
-        secondaryPanel.add(totalMarks, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        totalMarks.setText("Marks: 0");
+        secondaryPanel.add(totalMarks, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
         secondaryPanel.add(spacer1, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final Spacer spacer2 = new Spacer();
         secondaryPanel.add(spacer2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         exportPaperButton = new JButton();
-        exportPaperButton.setText("Export paper");
+        exportPaperButton.setText("Finish questions");
         secondaryPanel.add(exportPaperButton, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         pageLabel = new JLabel();
         pageLabel.setText("Create Paper");

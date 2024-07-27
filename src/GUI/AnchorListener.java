@@ -15,7 +15,7 @@ public class AnchorListener implements ActionListener {
     // This is awful I know, I'm sorry
 
     // TODO: Have this chosen on start-up by user
-    private static final ExamBoard board = new ExamBoard(BoardLevel.GCSE, new File("./Papers/GCSE"));
+    private final ExamBoard board = new ExamBoard(BoardLevel.GCSE, new File("./Papers/GCSE"));
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -34,7 +34,7 @@ public class AnchorListener implements ActionListener {
         }
     }
 
-    public static JFrame getPage(Object selectedAnchor) {
+    public JFrame getPage(Object selectedAnchor) {
         if (!(selectedAnchor instanceof String || selectedAnchor instanceof Integer)) {
             return null;
         } else if (selectedAnchor instanceof String) {

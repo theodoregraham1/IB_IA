@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 
 public class ImageScroller extends JLabel
         implements Scrollable {
-    private int maxUnitIncrement = 1;
+    private int maxUnitIncrement = 5;
     private boolean missingPicture = false;
     protected final Image masterImage;
 
@@ -29,12 +29,10 @@ public class ImageScroller extends JLabel
             setOpaque(true);
             setBackground(Color.white);
         } else {
-            double scaleFactor = (double) width / i.getWidth();
-            Dimension size = new Dimension(width, (int) (scaleFactor * i.getHeight()));
-            masterImage = i.getScaledInstance(size.width, size.height, Image.SCALE_DEFAULT);
+            masterImage = i.getScaledInstance(width, -1, Image.SCALE_DEFAULT);
 
             super.setIcon(new ImageIcon(masterImage));
-            super.setSize(size);
+            super.setSize(new Dimension(masterImage.getWidth(null), masterImage.getHeight(null)));
         }
     }
 

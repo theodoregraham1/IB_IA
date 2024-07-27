@@ -23,7 +23,7 @@ public class ViewPapersPage extends JFrame
     private JPanel secondaryPanel;
     private JPanel papersTopPanel;
     private JLabel papersLabel;
-    private JButton sortPapersBtn;
+    private JButton sortPapersBtn;      // TODO
     private JComboBox<String> anchorSelection;
     private JPanel papersBottomPanel;
     private JList<FullExam> papersList;
@@ -34,7 +34,7 @@ public class ViewPapersPage extends JFrame
     private JPanel questionsBottomPanel;
     private JPanel questionsTopPanel;
     private JLabel questionsLabel;
-    private JButton sortQuestionsBtn;
+    private JButton sortQuestionsBtn;       // TODO
     private JPanel mainPanel;
 
     public ViewPapersPage(ExamBoard board, ActionListener anchorListener) {
@@ -43,7 +43,7 @@ public class ViewPapersPage extends JFrame
         // Set JFrame properties
         $$$setupUI$$$();
         setTitle("Exams Manager - Split Mark Scheme");
-        setSize(1200, 600);
+        setSize(1600, 800);
         setContentPane(mainPanel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -88,7 +88,7 @@ public class ViewPapersPage extends JFrame
         } else if (e.getSource() == questionsList) {
             BufferedImage image = questionsList.getSelectedValue().getImage();
             paperImagePane.setViewportView(
-                    new ImageScroller(image, image.getWidth())
+                    new ImageScroller(image, paperImagePane.getWidth())
             );
         }
     }
@@ -108,7 +108,7 @@ public class ViewPapersPage extends JFrame
         mainPanel.add(secondaryPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         papersTopPanel = new JPanel();
         papersTopPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
-        secondaryPanel.add(papersTopPanel, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        secondaryPanel.add(papersTopPanel, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         papersLabel = new JLabel();
         papersLabel.setText("Papers");
         papersTopPanel.add(papersLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -125,14 +125,14 @@ public class ViewPapersPage extends JFrame
         papersList = new JList();
         final DefaultListModel defaultListModel1 = new DefaultListModel();
         papersList.setModel(defaultListModel1);
-        papersBottomPanel.add(papersList, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
+        papersBottomPanel.add(papersList, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
         paperImagePane = new JScrollPane();
         paperImagePane.setHorizontalScrollBarPolicy(31);
         paperImagePane.setVerticalScrollBarPolicy(22);
         secondaryPanel.add(paperImagePane, new GridConstraints(1, 0, 1, 4, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         totalMarks = new JLabel();
         totalMarks.setText("Number of marks: 00");
-        secondaryPanel.add(totalMarks, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        secondaryPanel.add(totalMarks, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         pageLabel = new JLabel();
         pageLabel.setText("View Papers");
         secondaryPanel.add(pageLabel, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -160,4 +160,5 @@ public class ViewPapersPage extends JFrame
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
+
 }

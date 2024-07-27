@@ -1,6 +1,7 @@
 package GUI;
 
-import examdocs.ExamPaper;
+import examdocs.FullExam;
+import examdocs.PaperType;
 import examdocs.QuestionPaper;
 import utils.MultiValueMap;
 
@@ -16,11 +17,10 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-// This was used in one branch to be a superclass to SplitPaperPage and SplitSchemePage,
-// however this does not gel with the UI designer
-// UI designer source code could be moved but I don't fancy messing with that
 public abstract class SplitPDFPage extends JFrame
         implements ChangeListener, ActionListener, WindowListener {
+    protected final AnchorListener anchorListener;
+    protected final FullExam exam;
     protected final QuestionPaper document;
 
     // private final Stack<>
@@ -34,9 +34,15 @@ public abstract class SplitPDFPage extends JFrame
     protected int currentLinePercentage = 0;
     protected LinedImageScroller pageComponent;
 
-    public SplitPDFPage(QuestionPaper paper) {
-        this.document = paper;
-        this.allLines = new HashMap<>(paper.length());
+    public SplitPDFPage(FullExam exam, PaperType type, AnchorListener anchorListener) {
+        this.exam = exam;
+        this.document = switch (type) {
+            case ExamPaper -> exam.getPaper();
+            case MarkScheme -> exam.getScheme();
+        };
+        this.anchorListener = anchorListener;
+
+        this.allLines = new HashMap<>(document.length());
         this.questions = new ArrayList<>();
     }
 
@@ -125,8 +131,6 @@ public abstract class SplitPDFPage extends JFrame
 
                 inSplit = true;
             }
-        } else if (e.getSource() == getSaveButton()) {
-            saveAllToPaper(questions);
         }
     }
 
@@ -150,19 +154,20 @@ public abstract class SplitPDFPage extends JFrame
     public void windowClosing(WindowEvent e) {
         int choice = JOptionPane.showConfirmDialog(
                 this,
-                "Save paper?",
+                "All questions will be lost, are you sure?",
                 "Window closing",
-                JOptionPane.YES_NO_OPTION
+                JOptionPane.OK_CANCEL_OPTION
         );
 
         switch (choice) {
-            case JOptionPane.YES_OPTION -> saveAllToPaper(questions);
-            case JOptionPane.NO_OPTION -> {
+            case JOptionPane.OK_OPTION -> {
+                exam.getPaper().clearQuestions();
+                exam.getScheme().clearQuestions();
 
+                System.exit(0);
             }
+            case JOptionPane.NO_OPTION -> {}
         }
-
-        System.exit(0);
     }
 
     @Override
@@ -193,7 +198,6 @@ public abstract class SplitPDFPage extends JFrame
     public abstract void saveQuestion();
 
     protected abstract JButton getConfirmPercentageButton();
-    protected abstract JButton getSaveButton();
     protected abstract JButton getNextPageButton();
     protected abstract JButton getPreviousPageButton();
     protected abstract JSlider getPercentageSlider();
