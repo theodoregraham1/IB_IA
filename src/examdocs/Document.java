@@ -32,7 +32,6 @@ public class Document {
 
     private File documentFile;
 
-
     /**
      * Creates new Document instance for a specific pdf file and checks that it is valid
      * @param documentFile the file where this document is stored
@@ -79,29 +78,6 @@ public class Document {
         logger.log(Level.FINER, "PDF loaded with file path: %s".formatted(documentFile.getPath()));
 
         return pdf;
-    }
-
-    /**
-     * Returns the text content for this document
-     * @return all the text
-     */
-    public String getText() {
-        String text;
-
-        try (PDDocument document = getDocument()) {
-
-            PDFTextStripper textStripper = new PDFTextStripper();
-            text = textStripper.getText(document);
-
-            logger.log(Level.FINER, "Text stripped from PDF with file path: %s".formatted(getFilePath()));
-
-        } catch (IOException e) {
-            text = "";
-
-            logger.log(Level.SEVERE, e.toString());
-        }
-
-        return text;
     }
 
     /**

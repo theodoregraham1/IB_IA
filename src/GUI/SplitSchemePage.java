@@ -2,11 +2,8 @@ package GUI;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import examdocs.ExamPaper;
 import examdocs.FullExam;
-import examdocs.MarkScheme;
 import examdocs.PaperType;
-import utils.MultiValueMap;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,9 +16,7 @@ public class SplitSchemePage extends SplitPDFPage
     // Swing Components
     private JPanel mainPanel;
     private JScrollPane paperImagePane;
-    private JComboBox<String> anchorSelection;
     private JLabel pageLabel;
-    private JButton savePaperButton;
     private JLabel percentageDisplay;
     private JButton nextPageButton;
     private JSlider percentageSlider;
@@ -44,7 +39,6 @@ public class SplitSchemePage extends SplitPDFPage
         setContentPane(mainPanel);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-        savePaperButton.addActionListener(this);
         confirmPercentageButton.addActionListener(this);
         previousPageButton.addActionListener(this);
         nextPageButton.addActionListener(this);
@@ -53,12 +47,6 @@ public class SplitSchemePage extends SplitPDFPage
         percentageSlider.addChangeListener(this);
 
         paperImagePane.setWheelScrollingEnabled(true);
-
-        // Set the start of all lines
-        for (Integer line : allLines.keySet()) {
-            allLines.put(line, new MultiValueMap<>());
-            allLines.get(line).put(0, Color.RED);
-        }
 
         setVisible(true);
 

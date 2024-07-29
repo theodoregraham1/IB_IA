@@ -20,6 +20,7 @@ public class CreatePaperPage extends JFrame
         implements ActionListener, ListSelectionListener {
 
     private final ExamBoard examBoard;
+    private final AnchorListener anchorListener;
     private final ArrayList<Question> selectedQuestions = new ArrayList<>();
     private int marksNum = 0;
 
@@ -38,8 +39,9 @@ public class CreatePaperPage extends JFrame
     private JPanel sideBottomPanel;
     private JPanel sideTopPanel;
 
-    public CreatePaperPage(ExamBoard examBoard, ActionListener anchorListener) {
+    public CreatePaperPage(ExamBoard examBoard, AnchorListener anchorListener) {
         this.examBoard = examBoard;
+        this.anchorListener = anchorListener;
 
         // Set JFrame properties
         $$$setupUI$$$();
@@ -99,7 +101,7 @@ public class CreatePaperPage extends JFrame
 
             questionsList.clearSelection();
         } else if (event.getSource() == exportPaperButton) {
-            new QuestionOrderSelector(examBoard, selectedQuestions);
+            new QuestionOrderSelector(examBoard, selectedQuestions, anchorListener);
             this.dispose();
 
         } else if (event.getSource() == sortQuestions) {

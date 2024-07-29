@@ -62,12 +62,6 @@ public class SplitPaperPage extends SplitPDFPage
 
         paperImagePane.setWheelScrollingEnabled(true);
 
-        // Set the start of all lines
-        for (Integer line : allLines.keySet()) {
-            allLines.put(line, new MultiValueMap<>());
-            allLines.get(line).put(0, Color.RED);
-        }
-
         setVisible(true);
 
         setPageImage(currentPage);

@@ -12,12 +12,22 @@ public class LinedImageScroller extends ImageScroller {
     private final MultiValueMap<Integer, Color> lines;
 
     public LinedImageScroller(BufferedImage i, int m, int width) {
-        super(i, m, width);
-
-        lines = new MultiValueMap<>();
+        this(i, m, width, new MultiValueMap<>());
     }
+
+    public LinedImageScroller(BufferedImage i, int width) {
+        this(i, width, new MultiValueMap<>());
+    }
+
     public LinedImageScroller(BufferedImage i, int m, int width, MultiValueMap<Integer, Color> lines) {
         super(i, m, width);
+
+        this.lines = lines;
+        drawLines();
+    }
+
+    public LinedImageScroller(BufferedImage i, int width, MultiValueMap<Integer, Color> lines) {
+        super(i, width);
 
         this.lines = lines;
         drawLines();

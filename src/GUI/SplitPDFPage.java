@@ -44,6 +44,11 @@ public abstract class SplitPDFPage extends JFrame
 
         this.allLines = new HashMap<>(document.length());
         this.questions = new ArrayList<>();
+
+        // Set the start of all lines
+        for (int page=0; page<document.length(); page++) {
+            addLine(page, 0, Color.RED);
+        }
     }
 
     protected void saveAllToPaper(ArrayList<int[]> allData) {

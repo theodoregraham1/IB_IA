@@ -18,40 +18,50 @@ public class QuestionOrderSelector extends JFrame
         implements ListSelectionListener, ActionListener {
     private final ExamBoard board;
     private final ArrayList<Question> questions;
+    private final AnchorListener finishedListener;
 
     private JList<Question> questionsList;
     private JPanel mainPanel;
     private JLabel titleLabel;
     private JButton finishSelectionButton;
+    private JScrollPane questionsView;
 
-    public QuestionOrderSelector(ExamBoard board, ArrayList<Question> questions) {
+    public QuestionOrderSelector(ExamBoard board, ArrayList<Question> questions, AnchorListener finishedListener) {
         this.board = board;
         this.questions = questions;
+        this.finishedListener = finishedListener;
 
         // Set JFrame properties
         setTitle("Exams Manager - Create paper");
         setSize(1200, 600);
         setContentPane(mainPanel);
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         DefaultListModel<Question> model = new DefaultListModel<>();
         for (Question q : questions) {
             model.addElement(q);
         }
         questionsList.setModel(model);
         questionsList.setDragEnabled(true);
+        questionsList.setTransferHandler(new QuestionTransferHandler());
+        // questionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        questionsList.addListSelectionListener(this);
+        finishSelectionButton.addActionListener(this);
 
         setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        new FinishPaperPage(board, finishedListener, questions);
     }
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-
+        questionsView.setViewportView(
+                new ImageScroller(questionsList.getSelectedValue().getImage(), questionsView.getWidth())
+        );
     }
 
     {
@@ -79,8 +89,8 @@ public class QuestionOrderSelector extends JFrame
         titleLabel = new JLabel();
         titleLabel.setText("Drag and drop questions into the order that you want");
         mainPanel.add(titleLabel, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JScrollPane scrollPane1 = new JScrollPane();
-        mainPanel.add(scrollPane1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        questionsView = new JScrollPane();
+        mainPanel.add(questionsView, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         finishSelectionButton = new JButton();
         finishSelectionButton.setText("Finish selection");
         mainPanel.add(finishSelectionButton, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -93,8 +103,9 @@ public class QuestionOrderSelector extends JFrame
         return mainPanel;
     }
 
-    private class ElementTransferHandler extends TransferHandler {
-        int fromIndex;
+    private class QuestionTransferHandler extends TransferHandler {
+        // FIXME
+        private int fromIndex;
 
         @Override
         protected Transferable createTransferable(JComponent c) {
@@ -116,20 +127,25 @@ public class QuestionOrderSelector extends JFrame
 
         @Override
         public boolean importData(TransferSupport info) {
-            /*
             if (!canImport(info)) {
+                return false;
+            } else if (!info.getComponent().equals(questionsList)) {
                 return false;
             }
 
             JList.DropLocation dl = (JList.DropLocation) info.getDropLocation();
             int toIndex = dl.getIndex();
-            JList<?> list = (JList<?>) info.getComponent();
-            DefaultListModel<?> model = (DefaultListModel<?>) list.getModel();
-            String value = (String) model.getElementAt(fromIndex);
+            if (fromIndex <= toIndex) {
+                toIndex--;
+            }
 
-            model.remove(fromIndex);
+            DefaultListModel<Question> model = (DefaultListModel<Question>) questionsList.getModel();
+            Question value = model.remove(fromIndex);
             model.add(toIndex, value);
-            */
+
+            questions.remove(fromIndex);
+            questions.add(toIndex, value);
+
             return true;
         }
     }

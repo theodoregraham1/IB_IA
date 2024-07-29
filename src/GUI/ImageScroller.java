@@ -10,7 +10,7 @@ public class ImageScroller extends JLabel
         implements Scrollable {
     private int maxUnitIncrement = 5;
     private boolean missingPicture = false;
-    protected final Image masterImage;
+    protected Image masterImage;
 
     public ImageScroller(BufferedImage i, int m, int width) {
         this(i, width);
@@ -34,6 +34,14 @@ public class ImageScroller extends JLabel
             super.setIcon(new ImageIcon(masterImage));
             super.setSize(new Dimension(masterImage.getWidth(null), masterImage.getHeight(null)));
         }
+    }
+
+    public Image getMasterImage() {
+        return masterImage;
+    }
+
+    public void setMasterImage(Image masterImage) {
+        this.masterImage = masterImage;
     }
 
     @Override
@@ -100,9 +108,5 @@ public class ImageScroller extends JLabel
     @Override
     public boolean getScrollableTracksViewportHeight() {
         return false;
-    }
-
-    public void setMaxUnitIncrement(int pixels) {
-        maxUnitIncrement = pixels;
     }
 }
