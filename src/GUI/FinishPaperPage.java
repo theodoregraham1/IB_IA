@@ -66,6 +66,8 @@ public class FinishPaperPage extends JFrame
 
         locationSlider.addChangeListener(this);
         locationSlider.addFocusListener(this);
+
+        setVisible(true);
     }
 
     private void alterPage(int movement) {

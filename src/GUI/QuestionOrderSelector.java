@@ -43,6 +43,7 @@ public class QuestionOrderSelector extends JFrame
         }
         questionsList.setModel(model);
         questionsList.setDragEnabled(true);
+        questionsList.setDropMode(DropMode.INSERT);
         questionsList.setTransferHandler(new QuestionTransferHandler());
         // questionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -55,10 +56,13 @@ public class QuestionOrderSelector extends JFrame
     @Override
     public void actionPerformed(ActionEvent e) {
         new FinishPaperPage(board, finishedListener, questions);
+        dispose();
     }
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
+        if (questionsList.getSelectedValue() == null) return;
+
         questionsView.setViewportView(
                 new ImageScroller(questionsList.getSelectedValue().getImage(), questionsView.getWidth())
         );
@@ -135,16 +139,23 @@ public class QuestionOrderSelector extends JFrame
 
             JList.DropLocation dl = (JList.DropLocation) info.getDropLocation();
             int toIndex = dl.getIndex();
+
             if (fromIndex <= toIndex) {
                 toIndex--;
             }
 
-            DefaultListModel<Question> model = (DefaultListModel<Question>) questionsList.getModel();
-            Question value = model.remove(fromIndex);
-            model.add(toIndex, value);
+            try {
+                DefaultListModel<Question> model = (DefaultListModel<Question>) questionsList.getModel();
+                Question value = model.elementAt(fromIndex);
 
-            questions.remove(fromIndex);
-            questions.add(toIndex, value);
+                model.removeElementAt(fromIndex);
+                model.add(toIndex, value);
+
+                questions.remove(fromIndex);
+                questions.add(toIndex, value);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             return true;
         }
