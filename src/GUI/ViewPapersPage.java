@@ -16,7 +16,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
-// Urgent TODO: Add button to view mark scheme for any given question or paper and allow paper to be opened
 // TODO: Paper deletion
 
 public class ViewPapersPage extends JFrame
@@ -30,7 +29,7 @@ public class ViewPapersPage extends JFrame
     private JPanel papersBottomPanel;
     private JList<FullExam> papersList;
     private JScrollPane paperImagePane;
-    private JLabel totalMarks;      // TODO
+    private JLabel totalMarks;
     private JLabel pageLabel;
     private JList<Question> questionsList;
     private JPanel questionsBottomPanel;

@@ -22,8 +22,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-// TODO: Support for multi-page questions
-
 public class FinishPaperPage extends JFrame
         implements ActionListener, ChangeListener, FocusListener {
     private final ExamBoard board;
@@ -37,7 +35,7 @@ public class FinishPaperPage extends JFrame
 
     private int currentQuestion = 0;
     private int currentPage = 0;
-    private int finalQuestionPage = 0;      // TODO: Use this
+    private int finalQuestionPage = 0;
     private int currentLinePercentage;
 
     private JPanel mainPanel;

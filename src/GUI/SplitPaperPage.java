@@ -14,11 +14,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
 
-// TODO: Throw splits on a stack and have a back button
-// TODO: Allow user to cut off footers and headers in multi-page questions (stretch)
-// TODO: Allow cutting off the vertical sides (stretch)
-// TODO: Allow loading of lines from a current ExamPaper (editing so stretch)
-
 public class SplitPaperPage extends SplitPDFPage
         implements ActionListener {
     private int marksSum = 0;

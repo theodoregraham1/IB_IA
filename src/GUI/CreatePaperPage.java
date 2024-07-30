@@ -32,7 +32,7 @@ public class CreatePaperPage extends JFrame
     private JLabel questionTitle;
     private JButton exportPaperButton;
     private JLabel allQuestionsLabel;
-    private JButton sortQuestions;
+    private JButton sortQuestions; // TODO By radio buttons for papers
     private JList<Question> questionsList;
     private JPanel mainPanel;
     private JPanel secondaryPanel;
@@ -62,7 +62,6 @@ public class CreatePaperPage extends JFrame
         sortQuestions.addActionListener(this);
         questionsList.addListSelectionListener(this);
 
-        // TODO: Make a list for papers and then put more info on Question.toString()
         final DefaultListModel<Question> questionsModel = new DefaultListModel<>();
         for (Question question : examBoard) {
             questionsModel.addElement(question);
@@ -104,8 +103,6 @@ public class CreatePaperPage extends JFrame
             new QuestionOrderSelector(examBoard, selectedQuestions, anchorListener);
             this.dispose();
 
-        } else if (event.getSource() == sortQuestions) {
-            // TODO
         } else {
             System.out.println(event.getActionCommand());
         }

@@ -108,7 +108,6 @@ public class QuestionOrderSelector extends JFrame
     }
 
     private class QuestionTransferHandler extends TransferHandler {
-        // FIXME
         private int fromIndex;
 
         @Override
