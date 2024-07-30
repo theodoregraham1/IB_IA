@@ -1,6 +1,5 @@
 package examdocs;
 
-import database.ImageFile;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -9,7 +8,6 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
-import org.apache.pdfbox.text.PDFTextStripper;
 import utils.Constants;
 import utils.FileHandler;
 
@@ -63,6 +61,37 @@ public class Document {
         } catch (IOException | AssertionError e) {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    public Document(Page[] pages, File documentFile) {
+       this.documentFile = documentFile;
+
+       try (
+               PDDocument document = new PDDocument()
+       ) {
+           for (Page pageStruct: pages) {
+               PDImageXObject pdImage = PDImageXObject.createFromFile(pageStruct.getFile().getPath(), document);
+
+               PDPage pdPage = new PDPage();
+               document.addPage(pdPage);
+
+               try (
+                       PDPageContentStream pageContentStream = new PDPageContentStream(document, pdPage)
+               ) {
+                   PDRectangle mediaBox = pdPage.getMediaBox();
+                   pageContentStream.drawImage(pdImage, 0, 0, mediaBox.getWidth(), mediaBox.getHeight());
+               }
+           }
+
+           document.save(documentFile);
+
+           logger.log(Level.INFO, "New PDF successfully created!");
+
+       } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+       }
+
+
     }
 
     /**
@@ -125,16 +154,6 @@ public class Document {
      */
     public BufferedImage[] splitToImages() {
         return splitToImages(0, -1);
-    }
-
-    public void addPage(PDPage page) {
-        try (PDDocument document = getDocument()) {
-            document.addPage(page);
-            document.save(documentFile);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     /**

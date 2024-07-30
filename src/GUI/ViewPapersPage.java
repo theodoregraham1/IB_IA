@@ -6,7 +6,7 @@ import examdocs.ExamBoard;
 import examdocs.ExamPaper;
 import examdocs.FullExam;
 import examdocs.Question;
-import utils.MultiValueMap;
+import utils.FileHandler;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -16,6 +16,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
+// Urgent TODO: Add button to view mark scheme for any given question or paper and allow paper to be opened
+// TODO: Paper deletion
+
 public class ViewPapersPage extends JFrame
         implements ActionListener, ListSelectionListener {
     private ExamBoard board;
@@ -23,19 +26,20 @@ public class ViewPapersPage extends JFrame
     private JPanel secondaryPanel;
     private JPanel papersTopPanel;
     private JLabel papersLabel;
-    private JButton sortPapersBtn;      // TODO
     private JComboBox<String> anchorSelection;
     private JPanel papersBottomPanel;
     private JList<FullExam> papersList;
     private JScrollPane paperImagePane;
-    private JLabel totalMarks;
+    private JLabel totalMarks;      // TODO
     private JLabel pageLabel;
     private JList<Question> questionsList;
     private JPanel questionsBottomPanel;
     private JPanel questionsTopPanel;
     private JLabel questionsLabel;
-    private JButton sortQuestionsBtn;       // TODO
     private JPanel mainPanel;
+    private JButton viewPaperButton;
+    private JButton paperMarkSchemeBtn;
+    private JButton questionMarkSchemeBtn;
 
     public ViewPapersPage(ExamBoard board, ActionListener anchorListener) {
         this.board = board;
@@ -63,14 +67,40 @@ public class ViewPapersPage extends JFrame
         questionsList.addListSelectionListener(this);
         papersList.addListSelectionListener(this);
 
+        questionMarkSchemeBtn.addActionListener(this);
+        viewPaperButton.addActionListener(this);
+        paperMarkSchemeBtn.addActionListener(this);
+
         paperImagePane.setWheelScrollingEnabled(true);
+
+        questionMarkSchemeBtn.setEnabled(false);
+        viewPaperButton.setEnabled(false);
+        paperMarkSchemeBtn.setEnabled(false);
 
         setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == questionMarkSchemeBtn) {
+            Question markSchemeQuestion = questionsList.getSelectedValue().getMarkSchemeQuestion();
+            Image image = markSchemeQuestion.getImage().getScaledInstance(getWidth(), -1, Image.SCALE_FAST);
 
+            JOptionPane.showMessageDialog(
+                    this,
+                    new ImageIcon(image),
+                    "Current question",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+        } else if (e.getSource() == viewPaperButton) {
+            FullExam exam = papersList.getSelectedValue();
+
+            FileHandler.openFileOnDesktop(exam.getPaper().getDocumentFile());
+        } else if (e.getSource() == paperMarkSchemeBtn) {
+            FullExam exam = papersList.getSelectedValue();
+
+            FileHandler.openFileOnDesktop(exam.getScheme().getDocumentFile());
+        }
     }
 
     @Override
@@ -85,11 +115,19 @@ public class ViewPapersPage extends JFrame
             }
 
             questionsList.setModel(questionsModel);
+
+            totalMarks.setText("Total marks: " + exam.getPaper().totalMarks());
+
+            viewPaperButton.setEnabled(true);
+            paperMarkSchemeBtn.setEnabled(true);
+
         } else if (e.getSource() == questionsList) {
             BufferedImage image = questionsList.getSelectedValue().getImage();
             paperImagePane.setViewportView(
                     new ImageScroller(image, paperImagePane.getWidth())
             );
+
+            questionMarkSchemeBtn.setEnabled(true);
         }
     }
 
@@ -107,14 +145,17 @@ public class ViewPapersPage extends JFrame
         secondaryPanel.setLayout(new GridLayoutManager(3, 6, new Insets(0, 0, 0, 0), -1, -1));
         mainPanel.add(secondaryPanel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         papersTopPanel = new JPanel();
-        papersTopPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
+        papersTopPanel.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
         secondaryPanel.add(papersTopPanel, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         papersLabel = new JLabel();
         papersLabel.setText("Papers");
         papersTopPanel.add(papersLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        sortPapersBtn = new JButton();
-        sortPapersBtn.setText("Sort");
-        papersTopPanel.add(sortPapersBtn, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        paperMarkSchemeBtn = new JButton();
+        paperMarkSchemeBtn.setText("View mark scheme");
+        papersTopPanel.add(paperMarkSchemeBtn, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        viewPaperButton = new JButton();
+        viewPaperButton.setText("View paper");
+        papersTopPanel.add(viewPaperButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         anchorSelection = new JComboBox();
         final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
         anchorSelection.setModel(defaultComboBoxModel1);
@@ -131,7 +172,7 @@ public class ViewPapersPage extends JFrame
         paperImagePane.setVerticalScrollBarPolicy(22);
         secondaryPanel.add(paperImagePane, new GridConstraints(1, 0, 1, 4, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         totalMarks = new JLabel();
-        totalMarks.setText("Number of marks: 00");
+        totalMarks.setText("Total marks: N/A");
         secondaryPanel.add(totalMarks, new GridConstraints(2, 3, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         pageLabel = new JLabel();
         pageLabel.setText("View Papers");
@@ -142,9 +183,9 @@ public class ViewPapersPage extends JFrame
         questionsLabel = new JLabel();
         questionsLabel.setText("Questions: ");
         questionsTopPanel.add(questionsLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        sortQuestionsBtn = new JButton();
-        sortQuestionsBtn.setText("Sort");
-        questionsTopPanel.add(sortQuestionsBtn, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        questionMarkSchemeBtn = new JButton();
+        questionMarkSchemeBtn.setText("View mark scheme");
+        questionsTopPanel.add(questionMarkSchemeBtn, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         questionsBottomPanel = new JPanel();
         questionsBottomPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         secondaryPanel.add(questionsBottomPanel, new GridConstraints(1, 5, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));

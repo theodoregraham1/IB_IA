@@ -74,4 +74,10 @@ public class LinedImageScroller extends ImageScroller {
 
         super.setIcon(new ImageIcon(newIcon));
     }
+
+    @Override
+    public void setMasterImage(Image image) {
+        super.setMasterImage(image);
+        drawLines();
+    }
 }

@@ -79,6 +79,20 @@ public class Question
         return combinedImage;
     }
 
+    public Question getMarkSchemeQuestion() {
+        // This is a scuffed way to do this, relying on information that shouldn't be known by this class, but it will work
+        File databaseDirectory = imageFile.getParentFile().getParentFile().getParentFile();
+        File schemeQuestionFile =
+                new File(
+                    new File(
+                            new File(databaseDirectory, Constants.SCHEME_DIR_NAME),
+                            Constants.QUESTIONS_DIR_NAME
+                        ),
+                        imageFile.getName()
+                );
+        return new Question(schemeQuestionFile, marks, logger);
+    }
+
     public int getMarks() {
         return marks;
     }

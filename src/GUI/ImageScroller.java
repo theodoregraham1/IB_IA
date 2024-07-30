@@ -29,10 +29,10 @@ public class ImageScroller extends JLabel
             setOpaque(true);
             setBackground(Color.white);
         } else {
-            masterImage = i.getScaledInstance(width, -1, Image.SCALE_DEFAULT);
+            masterImage = i.getScaledInstance(width, -1, Image.SCALE_SMOOTH);
 
             super.setIcon(new ImageIcon(masterImage));
-            super.setSize(new Dimension(masterImage.getWidth(null), masterImage.getHeight(null)));
+            super.setSize(new Dimension(width, masterImage.getHeight(null)));
         }
     }
 
@@ -41,7 +41,8 @@ public class ImageScroller extends JLabel
     }
 
     public void setMasterImage(Image masterImage) {
-        this.masterImage = masterImage;
+        this.masterImage = masterImage.getScaledInstance(getWidth(), -1, Image.SCALE_SMOOTH);
+        repaint();
     }
 
     @Override
@@ -64,9 +65,7 @@ public class ImageScroller extends JLabel
     }
 
     @Override
-    public int getScrollableUnitIncrement(Rectangle visibleRect,
-                                          int orientation,
-                                          int direction) {
+    public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
         //Get the current position.
         int currentPosition;
         if (orientation == SwingConstants.HORIZONTAL) {
@@ -90,9 +89,7 @@ public class ImageScroller extends JLabel
     }
 
     @Override
-    public int getScrollableBlockIncrement(Rectangle visibleRect,
-                                           int orientation,
-                                           int direction) {
+    public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
         if (orientation == SwingConstants.HORIZONTAL) {
             return visibleRect.width - maxUnitIncrement;
         } else {

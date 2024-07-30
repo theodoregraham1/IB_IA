@@ -17,4 +17,12 @@ public class ImageHandler {
 
         return copy;
     }
+
+    public static int heightToPercentage(Image image, int height) {
+        return (int) Math.ceil(100 * height / (double) image.getHeight(null));
+    }
+
+    public static int percentageToHeight(Image image, int percentage) {
+        return (int) (image.getHeight(null) * (percentage / 100.0));
+    }
 }

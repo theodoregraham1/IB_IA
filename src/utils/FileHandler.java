@@ -1,5 +1,6 @@
 package utils;
 
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -194,5 +195,25 @@ public class FileHandler {
             return ""; // Empty extension
         }
         return fileName.substring(lastIndexOfDot + 1);
+    }
+
+    public static boolean openFileOnDesktop(File file) {
+        if (!Desktop.isDesktopSupported()) {
+            return false;
+        }
+
+        Desktop desktop = Desktop.getDesktop();
+
+        try {
+            if (!file.exists()) {
+                return false;
+            }
+
+            desktop.open(file);
+
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 }

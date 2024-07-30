@@ -176,20 +176,6 @@ public abstract class Database {
             }
         }
 
-        public int[] editIndex(int oldIndex, int newIndex) {
-            try (
-                    RandomAccessFile rf = new RandomAccessFile(dataFile, "rw")
-            ) {
-                rf.seek((long) getDataLength() * oldIndex);
-                // TODO
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            return null;
-        }
-
         public void deleteRow(int index) {
             getInstanceFile(index, -1).delete();
 

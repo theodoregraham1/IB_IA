@@ -2,6 +2,7 @@ package examdocs;
 
 import utils.FileHandler;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -83,6 +84,19 @@ public class ExamBoard
         FullExam newExam = new FullExam(superDirectory, paperDocument, schemeDocument);
 
         // Check if the paper is already in the info file
+        return addExamToFile(name, newExam);
+    }
+
+    public FullExam addPaper(String name, Image[] paperPages, Question[] questions, int[][] paperQuestionData) {
+        File superDirectory = new File(directory, name);
+
+        FullExam newExam = new FullExam(superDirectory, paperPages, questions, paperQuestionData);
+
+        // Check if the paper is already in the info file
+        return addExamToFile(name, newExam);
+    }
+
+    private FullExam addExamToFile(String name, FullExam newExam) {
         if (!FileHandler.contains(name, infoFile)) {
             FileHandler.addLine("\n"+name, infoFile);
 
@@ -100,8 +114,6 @@ public class ExamBoard
 
         return newExam;
     }
-
-    // TODO: Custom paper create
 
     public FullExam getExam(int index) {
         if (index >= exams.size()) {

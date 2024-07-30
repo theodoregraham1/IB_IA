@@ -4,7 +4,9 @@ import examdocs.Document;
 import examdocs.Page;
 import examdocs.Question;
 import utils.FileHandler;
+import utils.ImageHandler;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,11 +28,41 @@ public class PaperDatabase extends Database {
         this.questionTable = new QuestionTable(new File(directory, QUESTIONS_DIR_NAME));
     }
 
+    /**
+     * Creates a completely new paper in its entirety, for use by paper compilation front-end
+     * @param directory the root of the database system
+     * @param pages images of every single page in order
+     * @param questions the questions used to compile the new paper
+     * @param questionData data for each question in the form: [startPage, startPercent, endPage, endPercent]
+     */
+    public PaperDatabase(File directory, Image[] pages, Question[] questions, int[][] questionData) {
+        this.pageTable = new PageTable(new File(directory, PAGES_DIR_NAME), pages);
+        this.questionTable = new QuestionTable(new File(directory, QUESTIONS_DIR_NAME), questions, questionData);
+    }
+
     public class QuestionTable
             extends ImageTable<Question> {
 
         public QuestionTable(File imageDir) {
             super(imageDir);
+        }
+
+        public QuestionTable(File imageDir, Question[] questions, int[][] questionData) {
+            super(imageDir);
+
+            for (int i=0; i<questions.length; i++) {
+                setRow(
+                        questions[i].getImage(),
+                        new int[] {
+                                i,
+                                questionData[i][0],
+                                questionData[i][1],
+                                questionData[i][2],
+                                questionData[i][3],
+                                questions[i].getMarks()
+                        }
+                );
+            }
         }
 
         public void setRow(int[] data) {
@@ -56,6 +88,13 @@ public class PaperDatabase extends Database {
          */
         @Override
         protected int getDataLength() {
+            // questionNumber,
+            // startPage,
+            // startPercent,
+            // endPage,
+            // endPercent,
+            // marks
+
             return 6;
         }
 
@@ -111,6 +150,19 @@ public class PaperDatabase extends Database {
             makeFromDocument();
         }
 
+        public PageTable(File imageDir, Image[] pageImages) {
+            super(imageDir);
+
+            for (int i=0; i < pageImages.length; i++) {
+                setRow(ImageHandler.copyImage(pageImages[i]), new int[] {i});
+            }
+
+            this.document = new Document(
+                    getRows(0, -1).toArray(new Page[0]),
+                    new File(imageDir.getParentFile(), PAPER_FILE_NAME)
+            );
+        }
+
         public void makeFromDocument() {
             // Assume document is not too large where images will overflow memory
 
@@ -147,12 +199,17 @@ public class PaperDatabase extends Database {
             }
         }
 
+        public Document getDocument() {
+            return document;
+        }
+
         /**
          * Returns the length of each piece of data in the RandomAccessFile
          * @return the number of bytes per ImageFile
          */
         @Override
         protected int getDataLength() {
+            // pageNumber
             return 1;
         }
 
@@ -190,7 +247,7 @@ public class PaperDatabase extends Database {
 
         if (replace) {
             try {
-                paperFile.mkdirs();
+                boolean ignored = paperFile.mkdirs();
                 Files.copy(newPaper.toPath(), paperFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 throw new IllegalArgumentException(e);
