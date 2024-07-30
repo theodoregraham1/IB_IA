@@ -44,8 +44,12 @@ public class Question
         int height = inputPages[0].getImage().getHeight();
 
         // Find the heights for the partial pages
-        int startHeight = height * startPercent / 100;
-        int endHeight = height * endPercent / 100;
+        int startHeight = (int) (height * startPercent / 100.0);
+        int endHeight = (int) (height * endPercent / 100.0);
+
+        if (endHeight == height) {
+            endHeight --;
+        }
 
         // Get cut off images at start and end
         BufferedImage firstImage = inputPages[0].getImage()

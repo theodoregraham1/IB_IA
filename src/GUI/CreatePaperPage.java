@@ -32,7 +32,6 @@ public class CreatePaperPage extends JFrame
     private JLabel questionTitle;
     private JButton exportPaperButton;
     private JLabel allQuestionsLabel;
-    private JButton sortQuestions; // TODO By radio buttons for papers
     private JList<Question> questionsList;
     private JPanel mainPanel;
     private JPanel secondaryPanel;
@@ -59,7 +58,6 @@ public class CreatePaperPage extends JFrame
         // Add action listeners
         addQuestionBtn.addActionListener(this);
         exportPaperButton.addActionListener(this);
-        sortQuestions.addActionListener(this);
         questionsList.addListSelectionListener(this);
 
         final DefaultListModel<Question> questionsModel = new DefaultListModel<>();
@@ -141,14 +139,11 @@ public class CreatePaperPage extends JFrame
         secondaryPanel.setLayout(new GridLayoutManager(3, 6, new Insets(0, 0, 0, 0), -1, -1));
         mainPanel.add(secondaryPanel, BorderLayout.CENTER);
         sideTopPanel = new JPanel();
-        sideTopPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
+        sideTopPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         secondaryPanel.add(sideTopPanel, new GridConstraints(0, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         allQuestionsLabel = new JLabel();
         allQuestionsLabel.setText("Questions");
         sideTopPanel.add(allQuestionsLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        sortQuestions = new JButton();
-        sortQuestions.setText("Sort");
-        sideTopPanel.add(sortQuestions, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
         anchorSelection.setModel(defaultComboBoxModel1);
         secondaryPanel.add(anchorSelection, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));

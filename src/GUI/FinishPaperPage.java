@@ -20,6 +20,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class FinishPaperPage extends JFrame
@@ -85,10 +86,9 @@ public class FinishPaperPage extends JFrame
 
         // Update to next page
         currentPage += movement;
+        drawPageImage();
 
         locationSlider.setEnabled(currentPage >= finalQuestionPage);
-
-        drawPageImage();
     }
 
     private void drawPageImage() {
@@ -119,28 +119,25 @@ public class FinishPaperPage extends JFrame
 
             // Add selection line
             addLine(currentPage, 0, Color.RED);
-        }
-        pageComponent = new LinedImageScroller(image, paperViewPane.getWidth(), allLines.get(currentPage));
-        paperViewPane.setViewportView(pageComponent);
 
-
-        if (finalQuestionPage <= currentPage) {
-            // Get minimum line in this page
-            int minimum = 0;
-            for (Integer i : allLines.get(currentPage).keySet()) {
-                if (minimum < i) {
-                    minimum = i;
-                }
-            }
-
-            locationSlider.setMinimum(minimum);
-            locationSlider.setValue(0);
-            locationSlider.setEnabled(true);
-        } else {
             locationSlider.setMinimum(0);
             locationSlider.setValue(0);
-            locationSlider.setEnabled(false);
+        } else {
+            if (finalQuestionPage <= currentPage) {
+                // Get minimum line in this page
+                locationSlider.setMinimum(Collections.max(allLines.get(currentPage).keySet()));
+                locationSlider.setValue(0);
+                locationSlider.setEnabled(true);
+            } else {
+                locationSlider.setMinimum(0);
+                locationSlider.setMaximum(100);
+                locationSlider.setValue(0);
+                locationSlider.setEnabled(false);
+            }
         }
+
+        pageComponent = new LinedImageScroller(image, paperViewPane.getWidth(), allLines.get(currentPage));
+        paperViewPane.setViewportView(pageComponent);
     }
 
     private void addLine(int page, int percentage, Color color) {
@@ -155,6 +152,10 @@ public class FinishPaperPage extends JFrame
     }
 
     private void drawQuestion(BufferedImage questionImage) {
+        if (finalQuestionPage > currentPage) {
+            return;
+        }
+
         // Change current page to have current question image in the right place
         BufferedImage currentPageImage = ImageHandler.copyImage(pages.get(currentPage));
         Graphics g = currentPageImage.getGraphics();
@@ -193,7 +194,6 @@ public class FinishPaperPage extends JFrame
         // Save question image to page
         drawQuestion();
         pages.set(currentPage, ImageHandler.copyImage(pageComponent.getMasterImage()));
-        finalQuestionPage = currentPage;
 
         BufferedImage questionImage = questions.get(currentQuestion).getImage();
         double scaleFactor = (double) (pageComponent.getWidth()) / questionImage.getWidth(null);
@@ -274,6 +274,8 @@ public class FinishPaperPage extends JFrame
         pageComponent.addHorizontalLine(endPercentage, Color.BLACK);
 
         currentQuestion++;
+        finalQuestionPage = currentPage;
+
         drawQuestion();
     }
 

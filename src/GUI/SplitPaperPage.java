@@ -59,7 +59,7 @@ public class SplitPaperPage extends SplitPDFPage
 
         setVisible(true);
 
-        setPageImage(currentPage);
+        alterPage(0);
     }
 
     public void updateMarks(int mark) {
@@ -106,7 +106,7 @@ public class SplitPaperPage extends SplitPDFPage
                 mark
         });
 
-        pageComponent.editHorizontalLine(startPercentage, Color.GREEN, Color.BLACK);
+        pageComponent.editHorizontalLine(startPercentage, Color.GREEN, Color.BLACK); // Doesn't work sometimes for unknown reason FIXME
         pageComponent.addHorizontalLine(currentLinePercentage, Color.BLACK);
 
         percentageSlider.setMinimum(currentLinePercentage);

@@ -29,7 +29,7 @@ public abstract class SplitPDFPage extends JFrame
     protected int currentPage = 0;
     protected int startPage;
     protected int startPercentage;
-    protected int questionNumber = 1;
+    protected int questionNumber = 0;
     protected boolean inSplit = false;
     protected int currentLinePercentage = 0;
     protected LinedImageScroller pageComponent;
@@ -40,6 +40,7 @@ public abstract class SplitPDFPage extends JFrame
             case ExamPaper -> exam.getPaper();
             case MarkScheme -> exam.getScheme();
         };
+
         this.anchorListener = anchorListener;
 
         this.allLines = new HashMap<>(document.length());
@@ -86,15 +87,21 @@ public abstract class SplitPDFPage extends JFrame
 
     protected void alterPage(int movement) {
         // Hold current lines
-        allLines.put(currentPage, pageComponent.getLines());
+        if (pageComponent != null) {
+            allLines.put(currentPage, pageComponent.getLines());
+        }
 
         // Update to next page
         currentPage += movement;
+
+        getNextPageButton().setEnabled(currentPage < document.length());
+        getPreviousPageButton().setEnabled(currentPage > 0);
+
         setPageImage(currentPage);
     }
 
     protected void addLine(int page, int percentage, Color color) {
-        if (page == currentPage) {
+        if (page == currentPage && pageComponent != null) {
             pageComponent.addHorizontalLine(percentage, color);
         }
 
@@ -104,7 +111,7 @@ public abstract class SplitPDFPage extends JFrame
         allLines.get(page).put(percentage, color);
     }
 
-    public void saveToPaper(int[] data) {
+    protected void saveToPaper(int[] data) {
         document.saveQuestion(
                 data[0],
                 data[1],

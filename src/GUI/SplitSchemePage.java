@@ -35,7 +35,7 @@ public class SplitSchemePage extends SplitPDFPage
         // Set JFrame properties
         $$$setupUI$$$();
         setTitle("Exams Manager - Split Mark Scheme");
-        setSize(2400, 1200);
+        setSize(1200, 600);
         setContentPane(mainPanel);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
@@ -50,7 +50,7 @@ public class SplitSchemePage extends SplitPDFPage
 
         setVisible(true);
 
-        setPageImage(currentPage);
+        alterPage(0);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class SplitSchemePage extends SplitPDFPage
         startPage = currentPage;
         startPercentage = -1;
 
-        currentQuestionLabel.setText("Current question: " + questionNumber);
+        currentQuestionLabel.setText("Current question: " + (questionNumber + 1));
     }
 
     @Override

@@ -16,8 +16,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
-// TODO: Paper deletion
-
 public class ViewPapersPage extends JFrame
         implements ActionListener, ListSelectionListener {
     private ExamBoard board;
@@ -39,6 +37,7 @@ public class ViewPapersPage extends JFrame
     private JButton viewPaperButton;
     private JButton paperMarkSchemeBtn;
     private JButton questionMarkSchemeBtn;
+    private JButton deleteButton;
 
     public ViewPapersPage(ExamBoard board, ActionListener anchorListener) {
         this.board = board;
@@ -69,6 +68,7 @@ public class ViewPapersPage extends JFrame
         questionMarkSchemeBtn.addActionListener(this);
         viewPaperButton.addActionListener(this);
         paperMarkSchemeBtn.addActionListener(this);
+        deleteButton.addActionListener(this);
 
         paperImagePane.setWheelScrollingEnabled(true);
 
@@ -83,7 +83,13 @@ public class ViewPapersPage extends JFrame
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == questionMarkSchemeBtn) {
             Question markSchemeQuestion = questionsList.getSelectedValue().getMarkSchemeQuestion();
+
             Image image = markSchemeQuestion.getImage().getScaledInstance(getWidth(), -1, Image.SCALE_FAST);
+
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            if (image.getHeight(null) > screenSize.height) {
+                image = markSchemeQuestion.getImage().getScaledInstance(-1, screenSize.height, Image.SCALE_FAST);
+            }
 
             JOptionPane.showMessageDialog(
                     this,
@@ -99,6 +105,22 @@ public class ViewPapersPage extends JFrame
             FullExam exam = papersList.getSelectedValue();
 
             FileHandler.openFileOnDesktop(exam.getScheme().getDocumentFile());
+        } else if (e.getSource() == deleteButton) {
+            int selection = JOptionPane.showConfirmDialog(
+                    this,
+                    "Delete paper",
+                    "Are you sure you want to delete this paper?",
+                    JOptionPane.OK_CANCEL_OPTION
+            );
+
+            if (selection == JOptionPane.OK_OPTION) {
+                board.removeExam(papersList.getSelectedValue().toString());
+
+                DefaultListModel<FullExam> model = (DefaultListModel<FullExam>) papersList.getModel();
+                model.removeElement(papersList.getSelectedValue());
+
+                questionsList.setModel(new DefaultListModel<>());
+            }
         }
     }
 
@@ -106,6 +128,10 @@ public class ViewPapersPage extends JFrame
     public void valueChanged(ListSelectionEvent e) {
         if (e.getSource() == papersList) {
             FullExam exam = papersList.getSelectedValue();
+            if (exam == null) {
+                return;
+            }
+
             ExamPaper paper = exam.getPaper();
 
             DefaultListModel<Question> questionsModel = new DefaultListModel<>();
@@ -192,6 +218,9 @@ public class ViewPapersPage extends JFrame
         final DefaultListModel defaultListModel2 = new DefaultListModel();
         questionsList.setModel(defaultListModel2);
         questionsBottomPanel.add(questionsList, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
+        deleteButton = new JButton();
+        deleteButton.setText("Delete Paper");
+        secondaryPanel.add(deleteButton, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

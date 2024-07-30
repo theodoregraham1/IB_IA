@@ -1,5 +1,6 @@
 package examdocs;
 
+import utils.Constants;
 import utils.FileHandler;
 
 import java.awt.*;
@@ -37,7 +38,14 @@ public class ExamBoard
         this.directory = directory;
 
         this.infoFile = new File(directory, INFO_FILE_NAME);
+        makePapers();
+    }
 
+    public ExamBoard(BoardLevel level) {
+        this.level = level;
+        this.directory = new File(Constants.BOARD_DIR_FORMAT.formatted(level.toString()));
+
+        this.infoFile = new File(directory, INFO_FILE_NAME);
         makePapers();
     }
 
@@ -130,10 +138,8 @@ public class ExamBoard
     }
 
     public void removeExam(String name) {
-        if (!FileHandler.removeLine(name, infoFile)) {
-            return;
-        }
         FileHandler.clearDirectory(new File(directory, name));
+        FileHandler.removeLine(name, infoFile);
     }
 
     public int size() {

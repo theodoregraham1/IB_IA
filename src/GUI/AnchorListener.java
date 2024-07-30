@@ -7,28 +7,28 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import static utils.Searches.linearSearch;
 
 public class AnchorListener implements ActionListener {
-    // This is awful I know, I'm sorry
+    private final ExamBoard board;
 
-    // TODO: Have this chosen on start-up by user
-    private final ExamBoard board = new ExamBoard(BoardLevel.GCSE, new File("./Papers/GCSE"));
+    public AnchorListener(BoardLevel level) {
+        board = new ExamBoard(level);
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
 
-        if (source instanceof JComboBox<?>) {
-            Object selectedItem = ((JComboBox<?>) source).getSelectedItem();
+        if (source instanceof JComboBox<?> comboBox) {
+            Object selectedItem = comboBox.getSelectedItem();
             getPage(selectedItem);
 
-            for (Container c = (JComboBox<?>) source; c != null; c=c.getParent()) {
-                if (c instanceof JFrame) {
+            for (Container c = comboBox; c != null; c=c.getParent()) {
+                if (c instanceof JFrame frame) {
                     c.setVisible(false);
-                    ((JFrame) c).dispose();
+                    frame.dispose();
                 }
             }
         }
@@ -43,9 +43,9 @@ public class AnchorListener implements ActionListener {
 
         // Move indexes to constants
         return switch ((int) selectedAnchor) {
-            case Constants.CREATE_PAPER -> new CreatePaperPage(board, new AnchorListener());
-            case Constants.IMPORT_PAPER -> new ImportPaperPage(board, new AnchorListener());
-            case Constants.VIEW_PAPERS -> new ViewPapersPage(board, new AnchorListener());
+            case Constants.CREATE_PAPER -> new CreatePaperPage(board, this);
+            case Constants.IMPORT_PAPER -> new ImportPaperPage(board, this);
+            case Constants.VIEW_PAPERS -> new ViewPapersPage(board, this);
             default -> null;
         };
     }

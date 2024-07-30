@@ -11,6 +11,7 @@ public class GuiMain {
             e.printStackTrace();
         }
 
-        new AnchorListener().getPage(Constants.VIEW_PAPERS);
+        // Start the Rube-Goldberg machine
+        new BoardSelector();
     }
 }

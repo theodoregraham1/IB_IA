@@ -70,7 +70,7 @@ public class PaperDatabase extends Database {
                 return;
             }
             super.setRow(Question.createQuestionImage(
-                            pageTable.getRows(data[1], data[3]+1).toArray(new Page[data[3]-data[1]]), // This may cause issues in the future, but +1 was added for selection in the GUI
+                            pageTable.getRows(data[1], data[3]+1).toArray(new Page[0]), // This may cause issues in the future, but +1 was added for selection in the GUI
                             data[2],
                             data[4]
                     ),
