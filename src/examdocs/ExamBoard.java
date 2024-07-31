@@ -138,8 +138,16 @@ public class ExamBoard
     }
 
     public void removeExam(String name) {
-        FileHandler.clearDirectory(new File(directory, name));
-        FileHandler.removeLine(name, infoFile);
+        removeExam(new File(directory, name));
+    }
+
+    public void removeExam(File examDirectory) {
+        if (!examDirectory.getParentFile().equals(directory)) {
+            return;
+        }
+        FileHandler.clearDirectory(examDirectory);
+        FileHandler.removeLine(examDirectory.getName(), infoFile);
+        examDirectory.delete();
     }
 
     public int size() {

@@ -10,15 +10,17 @@ import java.util.ArrayList;
 public class PaperGenerator {
     private final ArrayList<BufferedImage> pages;
     private final int[][] questionsData;
+    private int pageNum;
+    private int currentHeight;
+    private Graphics pageGraphics;
 
     public PaperGenerator(Question[] questions) {
         this.questionsData = new int[questions.length][4];
         this.pages = new ArrayList<>();
 
-        int currentHeight = 0;
-        int pageNum = 0;
-
-        pages.add(pageNum, getNewPageImage());
+        currentHeight = 0;
+        pageNum = -1;
+        nextPage();
 
         // Place each question
         for (int i = 0; i < questions.length; i++) {
@@ -26,16 +28,12 @@ public class PaperGenerator {
             BufferedImage currentImage = ImageHandler.copyImage(questions[i].getImage()
                     .getScaledInstance(pages.get(pageNum).getWidth(), -1, Image.SCALE_SMOOTH));
 
-            final Graphics g = pages.get(pageNum).getGraphics();
-
-            // FIXME: May be something to do with image observation?
-
             // Check if the current question will fit on the page
             if (currentHeight + currentImage.getHeight() > pages.get(pageNum).getHeight()) {
-                pageNum ++;
-                pages.add(pageNum, getNewPageImage());
-                currentHeight = 0;
+                nextPage();
             }
+
+            pageGraphics = pages.get(pageNum).getGraphics();
 
             int startPage = pageNum;
             int startHeight = currentHeight;
@@ -51,16 +49,14 @@ public class PaperGenerator {
                 );
 
                 // Draw first page
-                g.drawImage(
+                pageGraphics.drawImage(
                         currentImage.getSubimage(0, 0, currentImage.getWidth(), pages.get(pageNum).getHeight()),
                         0,
                         0,
                         null
                 );
 
-                pageNum++;
-                pages.add(pageNum, getNewPageImage());
-                currentHeight = 0;
+                nextPage();
 
                 currentImage = currentImage.getSubimage(
                         0,
@@ -70,7 +66,7 @@ public class PaperGenerator {
                 );
             }
 
-            g.drawImage(
+            pageGraphics.drawImage(
                     currentImage,
                     0,
                     startHeight,
@@ -86,6 +82,13 @@ public class PaperGenerator {
                     ImageHandler.heightToPercentage(pages.get(pageNum), currentHeight)
             };
         }
+    }
+
+    private void nextPage() {
+        pageNum ++;
+        pages.add(pageNum, getNewPageImage());
+        currentHeight = 0;
+        pageGraphics = pages.get(pageNum).getGraphics();
     }
 
     private BufferedImage getNewPageImage() {

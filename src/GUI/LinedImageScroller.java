@@ -22,6 +22,9 @@ public class LinedImageScroller extends ImageScroller {
     public LinedImageScroller(BufferedImage i, int m, int width, MultiValueMap<Integer, Color> lines) {
         super(i, m, width);
 
+        if (lines == null) {
+            lines = new MultiValueMap<>();
+        }
         this.lines = lines;
         drawLines();
     }
@@ -29,6 +32,9 @@ public class LinedImageScroller extends ImageScroller {
     public LinedImageScroller(BufferedImage i, int width, MultiValueMap<Integer, Color> lines) {
         super(i, width);
 
+        if (lines == null) {
+            lines = new MultiValueMap<>();
+        }
         this.lines = lines;
         drawLines();
     }

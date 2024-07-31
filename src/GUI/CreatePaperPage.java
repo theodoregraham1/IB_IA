@@ -101,8 +101,6 @@ public class CreatePaperPage extends JFrame
             new QuestionOrderSelector(examBoard, selectedQuestions, anchorListener);
             this.dispose();
 
-        } else {
-            System.out.println(event.getActionCommand());
         }
     }
 
