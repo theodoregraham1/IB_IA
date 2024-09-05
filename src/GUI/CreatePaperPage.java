@@ -97,10 +97,9 @@ public class CreatePaperPage extends JFrame
             updateMarks();
 
             questionsList.clearSelection();
-        } else if (event.getSource() == exportPaperButton) {
+        } else if (event.getSource() == exportPaperButton && !selectedQuestions.isEmpty()) {
             new QuestionOrderSelector(examBoard, selectedQuestions, anchorListener);
             this.dispose();
-
         }
     }
 

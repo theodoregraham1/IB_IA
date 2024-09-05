@@ -1,19 +1,12 @@
 package examdocs;
 
-import commands.Command;
-import commands.Commands;
-import database.PaperDatabase;
-import utils.Constants;
-import utils.FileHandler;
 
 import java.awt.*;
 import java.io.File;
-import java.nio.file.Path;
-import java.util.*;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static utils.Constants.PAPER_FILE_NAME;
 
 public class ExamPaper extends QuestionPaper {
     private static final Logger logger = Logger.getLogger(ExamPaper.class.getName());

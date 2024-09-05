@@ -63,7 +63,6 @@ public class ImportPaperPage extends JFrame
                     examPaperFile = chosenFile;
 
                     title.setText("Choose mark scheme file to import");
-                    fileChooser.setSelectedFile(chosenFile.getParentFile());
                     JOptionPane.showMessageDialog(
                             this,
                             "Exam paper saved, please select mark scheme"
