@@ -19,5 +19,5 @@ public class Constants {
     public static final String PAPER_DIR_NAME = "paper/";
     public static final String SCHEME_DIR_NAME = "scheme/";
 
-    public static final String BOARD_DIR_FORMAT = "./Papers/%s";
+    public static final String BOARD_DIR_FORMAT = "./paperbase/Papers/%s";
 }
