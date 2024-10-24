@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="IB_IA:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Continue working on image sizing">
-      <change afterPath="$PROJECT_DIR$/src/GUI/LinedImageScroller.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/ImageHandler.java" afterDir="false" />
+    <list default="true" id="ba048f5d-9279-43de-afd5-2fbc478187eb" name="Changes" comment="Final bugfixing and delete commands">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/ImageScroller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/ImageScroller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/SplitPaperPage.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/SplitPaperPage.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/SplitPaperPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/SplitPaperPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/BoardSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/BoardSelector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/FileHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/FileHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,14 +44,12 @@
     &quot;assignee&quot;: &quot;theodoregraham1&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">
-    <option name="selectedUrlAndAccountId">
-      <UrlAndAccount>
-        <option name="accountId" value="17164b2d-1cd9-419a-a9f9-7cbb33bdf05c" />
-        <option name="url" value="https://github.com/theodoregraham1/IB_IA.git" />
-      </UrlAndAccount>
-    </option>
-  </component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/theodoregraham1/IB_IA.git&quot;,
+    &quot;accountId&quot;: &quot;3c2699f0-96f3-459f-bc04-ecb064fafdea&quot;
+  }
+}</component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -65,6 +66,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.Run GUI.executor": "Run",
     "Downloaded.Files.Path.Enabled": "false",
     "Repository.Attach.Annotations": "false",
     "Repository.Attach.JavaDocs": "false",
@@ -72,19 +74,20 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW": "true",
+    "UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW": "false",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "gui",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
     "last_opened_file_path": "N:/pdfbox-app-3.0.0.jar",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
+    "project.structure.last.edited": "Artifacts",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "advanced.settings",
+    "settings.editor.selected.configurable": "project.propCompiler",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -388,7 +391,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717662270841</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Final bugfixing and delete commands">
+      <option name="closed" value="true" />
+      <created>1725520856893</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1725520856893</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -435,7 +446,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Put some code in to testing splitting an image by BufferedImage.subImage" />
     <MESSAGE value="Add a class for commands" />
     <MESSAGE value="Work on allowing selection of questions" />
     <MESSAGE value="Decompose CLI more" />
@@ -460,16 +470,12 @@
     <MESSAGE value="Start disconnecting from form" />
     <MESSAGE value="Do bugfixing of the database &#10;(I hate inheritance :( )" />
     <MESSAGE value="Continue working on image sizing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Continue working on image sizing" />
+    <MESSAGE value="Final bugfixing and delete commands" />
+    <option name="LAST_COMMIT_MESSAGE" value="Final bugfixing and delete commands" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/GUI/GuiMain.java</url>
-          <line>9</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/database/PaperDatabase.java</url>
           <line>107</line>

@@ -160,18 +160,24 @@ public class FileHandler {
         return false;
     }
 
+    /**
+     * Removes the inputted line from the inputted text file by rewriting the file in full without the chosen line
+     * @param text the line to be removed
+     * @param file the text file to remove the line from
+     * @return true if the removal was successful, else false
+     */
     public static boolean removeLine(String text, File file) {
         try {
-            String[] currentLines = readLines(file);
-            ArrayList<String> newLines = new ArrayList<>();
+            String[] currentLines = readLines(file); // read in all the lines
+            ArrayList<String> newLines = new ArrayList<>(currentLines.length); // create an ArrayList to store the lines to be rewritten
 
             for (String s: currentLines) {
-                if (!s.equals(text)) {
-                    newLines.add(s + "\n");
+                if (!s.equals(text)) { // if the line is not the line to be removed,
+                    newLines.add(s + "\n"); // add it, formatted, to the lines to be rewritten
                 }
             }
 
-            if (newLines.size() == currentLines.length) {
+            if (newLines.size() == currentLines.length) { // if
                 return false;
             }
 

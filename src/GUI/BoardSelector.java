@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Enumeration;
 
 public class BoardSelector extends JFrame
@@ -17,7 +16,7 @@ public class BoardSelector extends JFrame
     private JPanel btnsPanel;
     private JLabel titleLabel;
     private JButton selectExamBoardButton;
-    private ButtonGroup buttonGroup;
+    private final ButtonGroup buttonGroup;
 
     public BoardSelector() {
         // Set JFrame properties
